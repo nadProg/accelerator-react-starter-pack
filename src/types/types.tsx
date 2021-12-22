@@ -1,11 +1,13 @@
+import { GuitarType } from '../components/constants/constants';
+
 export type Guitar = {
   id: number,
   name: string,
   vendorCode: string,
-  type: string, // enum?
+  type: ValuesOf<typeof GuitarType>
   description: string,
   previewImg: string,
-  stringCount: number, // enum?
+  stringCount: 4 | 6 | 7 | 12,
   rating: number,
   price: number,
   comments?: Comment[],
@@ -21,3 +23,5 @@ export type Comment = {
   createAt: string,
   guitarId: 1,
 };
+
+export type ValuesOf<T> = T[keyof T];
