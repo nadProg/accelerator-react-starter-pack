@@ -4,7 +4,9 @@ import { AxiosInstance } from 'axios';
 import { FetchStatus, GuitarType } from '../constants/constants';
 import {
   setCatalogGuitars,
-  setCatalogGuitarsStatus
+  setCatalogGuitarsStatus,
+  setCurrentGuitar,
+  setCurrentGuitarStatus
 } from '../store/guitars/guitars-actions';
 import { rootReducer } from '../store/root-reducer';
 
@@ -45,7 +47,9 @@ export type State = ReturnType<typeof rootReducer>;
 
 export type Action =
   | ReturnType<typeof setCatalogGuitars>
-  | ReturnType<typeof setCatalogGuitarsStatus>;
+  | ReturnType<typeof setCatalogGuitarsStatus>
+  | ReturnType<typeof setCurrentGuitar>
+  | ReturnType<typeof setCurrentGuitarStatus>;
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<
   R,
@@ -63,3 +67,8 @@ export type PropsWithClassName = {
 export type ModalProps = {
   onClose: () => void;
 }
+
+export type ParamsWithId = {
+  [key: string]: string;
+  id: string;
+};

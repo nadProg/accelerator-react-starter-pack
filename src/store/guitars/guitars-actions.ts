@@ -13,3 +13,15 @@ export const setCatalogGuitarsStatus = createAction(ActionType.SetCatalogGuitars
     status,
   },
 }));
+
+export const setCurrentGuitar = createAction(ActionType.SetCurrentGuitar, (currentGuitar: Guitar | null) => ({
+  payload: {
+    currentGuitar,
+  },
+}));
+
+export const setCurrentGuitarStatus = createAction(ActionType.SetCurrentGuitarStatus, (status: FetchStatusType) => ({
+  payload: {
+    status,
+  },
+}));

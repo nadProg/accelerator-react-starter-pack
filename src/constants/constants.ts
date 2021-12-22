@@ -14,10 +14,13 @@ export const FetchStatus = {
 export const ActionType = {
   SetCatalogGuitars: 'catalogGuitars/setData',
   SetCatalogGuitarsStatus: 'catalogGuitars/setStatus',
+  SetCurrentGuitar: 'currentGuitar/setData',
+  SetCurrentGuitarStatus: 'currentGuitar/setStatus',
 } as const;
 
 export const APIRoute = {
   CatalogGuitars: () => '/guitars?_embed=comments&_limit=9&_start=0',
+  Guitar: (id: number | string) => `/guitars/${id}?_embed=comments`,
 } as const;
 
 export const AppRoute = {

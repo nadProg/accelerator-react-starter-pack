@@ -1,7 +1,66 @@
-import { NavLink } from 'react-router-dom';
-import { AppRoute } from '../../constants/constants';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink, Redirect } from 'react-router-dom';
+import {
+  AppRoute,
+  FetchStatus,
+  HumanizedGuitarType
+} from '../../constants/constants';
+import { useIdParam } from '../../hooks/use-id-param';
+import { useReactiveRef } from '../../hooks/use-reactive-ref';
+import { setCurrentGuitarStatus } from '../../store/guitars/guitars-actions';
+import { getCurrentGuitar } from '../../store/guitars/guitars-api-actions';
+import {
+  getCurrentGuitarData,
+  getCurrentGuitarStatus
+} from '../../store/guitars/guitars-selectors';
+import {
+  isFetchError,
+  isFetchNotReady
+} from '../../utils/fetched-data';
+import Loader from '../loader/loader';
+import Rating from '../rating/rating';
 
 function CardPage(): JSX.Element {
+  const { id: guitarId, error } = useIdParam();
+
+  const guitar = useSelector(getCurrentGuitarData);
+  const guitarStatus = useSelector(getCurrentGuitarStatus);
+  const guitarStatusRef = useReactiveRef(guitarStatus);
+
+  const dispatch = useDispatch();
+
+  useEffect(
+    () => () => {
+      if (isFetchError(guitarStatusRef.current)) {
+        dispatch(setCurrentGuitarStatus(FetchStatus.Idle));
+      }
+    },
+    [],
+  );
+
+  useEffect(() => {
+    if (!guitarId) {
+      return;
+    }
+
+    if (!guitar?.id || guitar.id !== guitarId) {
+      dispatch(getCurrentGuitar(guitarId));
+    }
+  }, [guitar?.id, guitarId]);
+
+  if (error || isFetchError(guitarStatus)) {
+    return <Redirect to={AppRoute.NotFound()} />;
+  }
+
+  if (isFetchNotReady(guitarStatus)) {
+    return <Loader />;
+  }
+
+  if (!guitar) {
+    return <Redirect to={AppRoute.NotFound()} />;
+  }
+
   return (
     <>
       <h1 className="page-content__title title title--bigger">Товар</h1>
@@ -23,34 +82,18 @@ function CardPage(): JSX.Element {
       <div className="product-container">
         <img
           className="product-container__img"
-          src="/img/content/guitar-2.jpg"
+          src={`/${guitar.previewImg}`}
           width="90"
           height="235"
-          alt=""
+          alt={guitar.name}
         />
         <div className="product-container__info-wrapper">
           <h2 className="product-container__title title title--big title--uppercase">
-            СURT Z30 Plus
+            {guitar.name}
           </h2>
           <div className="rate product-container__rating" aria-hidden="true">
             <span className="visually-hidden">Рейтинг:</span>
-            <svg width="14" height="14" aria-hidden="true">
-              <use xlinkHref="#icon-full-star"></use>
-            </svg>
-            <svg width="14" height="14" aria-hidden="true">
-              <use xlinkHref="#icon-full-star"></use>
-            </svg>
-            <svg width="14" height="14" aria-hidden="true">
-              <use xlinkHref="#icon-full-star"></use>
-            </svg>
-            <svg width="14" height="14" aria-hidden="true">
-              <use xlinkHref="#icon-full-star"></use>
-            </svg>
-            <svg width="14" height="14" aria-hidden="true">
-              <use xlinkHref="#icon-star"></use>
-            </svg>
-            <span className="rate__count"></span>
-            <span className="rate__message"></span>
+            <Rating value={guitar.rating} />
           </div>
           <div className="tabs">
             <a
@@ -69,23 +112,21 @@ function CardPage(): JSX.Element {
               <table className="tabs__table">
                 <tr className="tabs__table-row">
                   <td className="tabs__title">Артикул:</td>
-                  <td className="tabs__value">SO754565</td>
+                  <td className="tabs__value">{guitar.vendorCode}</td>
                 </tr>
                 <tr className="tabs__table-row">
                   <td className="tabs__title">Тип:</td>
-                  <td className="tabs__value">Электрогитара</td>
+                  <td className="tabs__value">
+                    {HumanizedGuitarType[guitar.type]}
+                  </td>
                 </tr>
                 <tr className="tabs__table-row">
                   <td className="tabs__title">Количество струн:</td>
-                  <td className="tabs__value">6 струнная</td>
+                  <td className="tabs__value">{guitar.stringCount} струнная</td>
                 </tr>
               </table>
               <p className="tabs__product-description hidden">
-                Гитара подходит как для старта обучения, так и для домашних
-                занятий или использования в полевых условиях, например, в
-                походах или для проведения уличных выступлений. Доступная
-                стоимость, качество и надежная конструкция, а также приятный
-                внешний вид, который сделает вас звездой вечеринки.
+                {guitar.description}
               </p>
             </div>
           </div>
@@ -95,7 +136,7 @@ function CardPage(): JSX.Element {
             Цена:
           </p>
           <p className="product-container__price-info product-container__price-info--value">
-            52 000 ₽
+            {guitar.price} ₽
           </p>
           <a
             className="button button--red button--big product-container__button"
