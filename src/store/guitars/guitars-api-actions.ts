@@ -7,7 +7,13 @@ export const getCatalogGuitars = (): ThunkActionResult =>
     dispatch(setCatalogGuitarsStatus(FetchStatus.Loading));
 
     try {
-      const { data } = await api.get<Guitar[]>(APIRoute.CatalogGuitars());
+      const { data } = await api.get<Guitar[]>(APIRoute.CatalogGuitars(), {
+        params: {
+          _embed: 'comments',
+          _limit: 9,
+          _start: 0,
+        },
+      });
 
       dispatch(setCatalogGuitars(data));
       dispatch(setCatalogGuitarsStatus(FetchStatus.Succeeded));
@@ -22,7 +28,11 @@ export const getCurrentGuitar = (id: number): ThunkActionResult =>
     dispatch(setCurrentGuitarStatus(FetchStatus.Loading));
 
     try {
-      const { data } = await api.get<Guitar>(APIRoute.Guitar(id));
+      const { data } = await api.get<Guitar>(APIRoute.Guitar(id), {
+        params: {
+          _embed: 'comments',
+        },
+      });
 
       dispatch(setCurrentGuitar(data));
       dispatch(setCurrentGuitarStatus(FetchStatus.Succeeded));

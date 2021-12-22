@@ -19,8 +19,8 @@ export const ActionType = {
 } as const;
 
 export const APIRoute = {
-  CatalogGuitars: () => '/guitars?_embed=comments&_limit=9&_start=0',
-  Guitar: (id: number | string) => `/guitars/${id}?_embed=comments`,
+  CatalogGuitars: () => '/guitars',
+  Guitar: (id: number | string) => `/guitars/${id}`,
 } as const;
 
 export const AppRoute = {
