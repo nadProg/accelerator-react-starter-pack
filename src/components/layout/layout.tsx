@@ -10,7 +10,7 @@ function Layout({ children }: PropsWithChildren<Record<never, never>>): JSX.Elem
               className="logo__img"
               width="70"
               height="70"
-              src="./img/svg/logo.svg"
+              src="/img/svg/logo.svg"
               alt="Логотип"
             />
           </a>
@@ -104,7 +104,7 @@ function Layout({ children }: PropsWithChildren<Record<never, never>>): JSX.Elem
               className="logo__img"
               width="70"
               height="70"
-              src="./img/svg/logo.svg"
+              src="/img/svg/logo.svg"
               alt="Логотип"
             />
           </a>
