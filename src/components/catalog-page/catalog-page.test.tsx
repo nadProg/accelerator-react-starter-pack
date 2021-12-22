@@ -1,21 +1,12 @@
-import { render
-} from '@testing-library/react';
 import { configureMockStore } from '@jedmao/redux-mock-store';
+import {render} from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
-import App from './app';
-import { State } from '../../types/types';
 import { FetchStatus } from '../../constants/constants';
+import { State } from '../../types/types';
+import CatalogPage from './catalog-page';
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useLocation() {
-    return {
-      pathname: '',
-    };
-  },
-}));
 
 const mockState: State = {
   guitars: {
@@ -36,12 +27,12 @@ const mockStore = configureMockStore<State>()(mockState);
 
 mockStore.dispatch = jest.fn();
 
-describe('Component: App', () => {
+describe('Component: CatalogPage', () => {
   it('should render without errors', () => {
     render(
       <Provider store={mockStore}>
         <Router history={mockHistory}>
-          <App />
+          <CatalogPage />
         </Router>
       </Provider>,
     );

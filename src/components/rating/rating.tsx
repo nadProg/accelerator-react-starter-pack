@@ -16,11 +16,11 @@ function Rating({ value }: RatingProps): JSX.Element {
     <>
       {new Array(MAX_VALUE).fill(STAR).map((star, index) => {
         const id = `${star}-${index}`;
-        const xLinkHref = value < index + 1 ? XLinkRef.Empty :  XLinkRef.Full;
+        const isFull = index + 1 <= Math.round(value);
 
         return (
-          <svg key={id} width="12" height="11" aria-hidden="true">
-            <use xlinkHref={xLinkHref} />
+          <svg key={id} width="12" height="11" aria-hidden="true" data-testid={isFull ? 'full-star' : ''}>
+            <use xlinkHref={isFull ? XLinkRef.Full :  XLinkRef.Empty } />
           </svg>
         );
       })}

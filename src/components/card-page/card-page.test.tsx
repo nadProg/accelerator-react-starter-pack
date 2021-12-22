@@ -1,21 +1,11 @@
-import { render
-} from '@testing-library/react';
 import { configureMockStore } from '@jedmao/redux-mock-store';
+import {render} from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
-import App from './app';
-import { State } from '../../types/types';
 import { FetchStatus } from '../../constants/constants';
-
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useLocation() {
-    return {
-      pathname: '',
-    };
-  },
-}));
+import { State } from '../../types/types';
+import CardPage from './card-page';
 
 const mockState: State = {
   guitars: {
@@ -36,12 +26,26 @@ const mockStore = configureMockStore<State>()(mockState);
 
 mockStore.dispatch = jest.fn();
 
-describe('Component: App', () => {
+const mockId = 5;
+
+describe('Component: CardPage', () => {
+  beforeEach(() => {
+    jest.mock('react-router-dom', () => ({
+      ...jest.requireActual('react-router-dom'),
+      useParams() {
+        return ({
+          id: mockId,
+        });
+      },
+    }));
+  });
+
   it('should render without errors', () => {
     render(
+
       <Provider store={mockStore}>
         <Router history={mockHistory}>
-          <App />
+          <CardPage />
         </Router>
       </Provider>,
     );

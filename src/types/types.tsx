@@ -31,7 +31,7 @@ export type Comment = {
   comment: string;
   rating: number;
   createAt: string;
-  guitarId: 1;
+  guitarId: number;
 };
 
 export type ValuesOf<T> = T[keyof T];
