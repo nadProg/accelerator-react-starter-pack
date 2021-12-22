@@ -1,7 +1,8 @@
-import { MouseEventHandler } from 'react';
+import { MouseEventHandler, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AppRoute } from '../../constants/constants';
 import { Guitar } from '../../types/types';
+import ModalCartAdd from '../modal-cart-add/modal-cart-add';
 import Rating from '../rating/rating';
 
 type ProductCardProps = {
@@ -9,44 +10,50 @@ type ProductCardProps = {
 };
 
 function ProductCard({ product }: ProductCardProps): JSX.Element {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const handleBasketLinkClick: MouseEventHandler<HTMLAnchorElement> = (evt) => {
     evt.preventDefault();
+    setIsModalOpen(true);
   };
 
   return (
-    <div className="product-card">
-      <img
-        src={`/${product.previewImg}`}
-        width="75"
-        height="190"
-        alt={product.name}
-      />
-      <div className="product-card__info">
-        <div className="rate product-card__rate" aria-hidden="true">
-          <span className="visually-hidden">Рейтинг:</span>
-          <Rating value={product.rating} />
-          <span className="rate__count">{product.comments?.length || 0}</span>
-          <span className="rate__message"></span>
+    <>
+      {isModalOpen && <ModalCartAdd product={product} onClose={() => setIsModalOpen(false)}/>}
+      <div className="product-card">
+        <img
+          src={`/${product.previewImg}`}
+          width="75"
+          height="190"
+          alt={product.name}
+        />
+        <div className="product-card__info">
+          <div className="rate product-card__rate" aria-hidden="true">
+            <span className="visually-hidden">Рейтинг:</span>
+            <Rating value={product.rating} />
+            <span className="rate__count">{product.comments?.length || 0}</span>
+            <span className="rate__message"></span>
+          </div>
+          <p className="product-card__title">{product.name}</p>
+          <p className="product-card__price">
+            <span className="visually-hidden">Цена:</span>
+            {product.price} ₽
+          </p>
         </div>
-        <p className="product-card__title">{product.name}</p>
-        <p className="product-card__price">
-          <span className="visually-hidden">Цена:</span>
-          {product.price} ₽
-        </p>
-      </div>
-      <div className="product-card__buttons">
-        <NavLink className="button button--mini" to={AppRoute.Card(product.id)}>
+        <div className="product-card__buttons">
+          <NavLink className="button button--mini" to={AppRoute.Card(product.id)}>
           Подробнее
-        </NavLink>
-        <a
-          className="button button--red button--mini button--add-to-cart"
-          href={AppRoute.Basket()}
-          onClick={handleBasketLinkClick}
-        >
+          </NavLink>
+          <a
+            className="button button--red button--mini button--add-to-cart"
+            href={AppRoute.Basket()}
+            onClick={handleBasketLinkClick}
+          >
           Купить
-        </a>
+          </a>
+        </div>
       </div>
-    </div>
+    </>
+
   );
 }
 

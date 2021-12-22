@@ -1,6 +1,6 @@
 export const GuitarType = {
-  Electric: 'electric',
   Acoustic: 'acoustic',
+  Electric: 'electric',
   Ukulele :'ukulele',
 } as const;
 
@@ -27,4 +27,10 @@ export const AppRoute = {
   Card: (id: number | string = ':id') => `/card/${id}`,
   Basket: () => '/basket',
   NotFound: () => '/404',
+} as const;
+
+export const HumanizedGuitarType = {
+  [GuitarType.Acoustic]: 'Акустическая гитара',
+  [GuitarType.Electric]: 'Электрогитара',
+  [GuitarType.Ukulele]: 'Укулеле',
 } as const;
