@@ -1,11 +1,18 @@
+import { MouseEventHandler } from 'react';
+import { NavLink } from 'react-router-dom';
+import { AppRoute } from '../../constants/constants';
 import { Guitar } from '../../types/types';
 import Rating from '../rating/rating';
 
 type ProductCardProps = {
   product: Guitar;
-}
+};
 
 function ProductCard({ product }: ProductCardProps): JSX.Element {
+  const handleBasketLinkClick: MouseEventHandler<HTMLAnchorElement> = (evt) => {
+    evt.preventDefault();
+  };
+
   return (
     <div className="product-card">
       <img
@@ -23,16 +30,18 @@ function ProductCard({ product }: ProductCardProps): JSX.Element {
         </div>
         <p className="product-card__title">{product.name}</p>
         <p className="product-card__price">
-          <span className="visually-hidden">Цена:</span>{product.price} ₽
+          <span className="visually-hidden">Цена:</span>
+          {product.price} ₽
         </p>
       </div>
       <div className="product-card__buttons">
-        <a className="button button--mini" href="#">
+        <NavLink className="button button--mini" to={AppRoute.Card(product.id)}>
           Подробнее
-        </a>
+        </NavLink>
         <a
           className="button button--red button--mini button--add-to-cart"
-          href="#"
+          href={AppRoute.Basket()}
+          onClick={handleBasketLinkClick}
         >
           Купить
         </a>
