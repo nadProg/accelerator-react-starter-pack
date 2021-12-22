@@ -1,7 +1,26 @@
-import { mockGuitars } from '../../mock/mock';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCatalogGuitars } from '../../store/guitars/guitars-api-actions';
+import { getCatalogGuitarsData, getCatalogGuitarsStatus } from '../../store/guitars/guitars-selectors';
+import { isFetchIdle } from '../../utils/fetched-data';
 import ProductCard from '../product-card/product-card';
 
 function Main(): JSX.Element {
+  const catalogGuitars = useSelector(getCatalogGuitarsData);
+  const catalogGuitarsStatus = useSelector(getCatalogGuitarsStatus);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isFetchIdle(catalogGuitarsStatus)) {
+      dispatch(getCatalogGuitars());
+    }
+  }, []);
+
+  if (!catalogGuitars) {
+    return <p>Loading</p>;
+  }
+
   return (
     <>
       <h1 className="page-content__title title title--bigger">
@@ -162,7 +181,7 @@ function Main(): JSX.Element {
           </div>
         </div>
         <div className="cards catalog__cards">
-          {mockGuitars.map((guitar) => <ProductCard key={guitar.id} product={guitar} />)}
+          {catalogGuitars.map((guitar) => <ProductCard key={guitar.id} product={guitar} />)}
         </div>
         <div className="pagination page-content__pagination">
           <ul className="pagination__list">

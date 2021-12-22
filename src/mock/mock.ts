@@ -294,7 +294,7 @@ export const mockGuitars: Guitar[] = [
     'type': 'ukulele',
     'description': 'Укулеле класса премиум с цельной верхней декой - самый качественный, но более дорогой вариант. Требовательнее в уходе, но глубже и громче по звучанию.',
     'previewImg': 'img/guitar-3.jpg',
-    'stringCount': 2.5,
+    'stringCount': 12,
     'rating': 4,
     'price': 6700,
   },
