@@ -5,7 +5,7 @@ import { getCatalogGuitarsData, getCatalogGuitarsStatus } from '../../store/guit
 import { isFetchIdle } from '../../utils/fetched-data';
 import ProductCard from '../product-card/product-card';
 
-function Main(): JSX.Element {
+function CatalogPage(): JSX.Element {
   const catalogGuitars = useSelector(getCatalogGuitarsData);
   const catalogGuitarsStatus = useSelector(getCatalogGuitarsStatus);
 
@@ -212,4 +212,4 @@ function Main(): JSX.Element {
   );
 }
 
-export default Main;
+export default CatalogPage;

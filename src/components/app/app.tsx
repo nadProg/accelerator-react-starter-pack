@@ -1,7 +1,7 @@
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { AppRoute } from '../../constants/constants';
 import Layout from '../layout/layout';
-import Main from '../main/main';
+import CatalogPage from '../catalog-page/catalog-page';
 
 function App(): JSX.Element {
   return (
@@ -14,7 +14,7 @@ function App(): JSX.Element {
           <Redirect to={AppRoute.CatalogPage(1)}/>
         </Route>
         <Route path={AppRoute.CatalogPage()} exact>
-          <Main />
+          <CatalogPage />
         </Route>
         <Route path={AppRoute.Card()} exact>
           <p>Card page to be defined</p>

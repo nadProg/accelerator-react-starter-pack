@@ -1,4 +1,5 @@
 import { ThunkAction } from '@reduxjs/toolkit';
+import { PropsWithChildren as ReactPropsWithChildren } from 'react';
 import { AxiosInstance } from 'axios';
 import { FetchStatus, GuitarType } from '../constants/constants';
 import {
@@ -52,3 +53,9 @@ export type ThunkActionResult<R = Promise<void>> = ThunkAction<
   AxiosInstance,
   Action
 >;
+
+export type PropsWithChildren = ReactPropsWithChildren<Record<never, never>>;
+
+export type PropsWithClassName = {
+  className?: string | string[];
+};
