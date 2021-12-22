@@ -26,5 +26,5 @@ export const AppRoute = {
   CatalogPage: (pageNumber?: number) => `/catalog/${Number.isFinite(pageNumber) ? `page_${pageNumber}` : ':page'}`,
   Card: (id: number | string = ':id') => `/card/${id}`,
   Basket: () => '/basket',
-  NotFound: () => '404',
+  NotFound: () => '/404',
 } as const;

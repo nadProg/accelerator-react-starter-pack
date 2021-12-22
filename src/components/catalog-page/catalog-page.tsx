@@ -1,8 +1,17 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCatalogGuitars } from '../../store/guitars/guitars-api-actions';
-import { getCatalogGuitarsData, getCatalogGuitarsStatus } from '../../store/guitars/guitars-selectors';
-import { isFetchIdle } from '../../utils/fetched-data';
+import {
+  getCatalogGuitarsData,
+  getCatalogGuitarsStatus
+} from '../../store/guitars/guitars-selectors';
+import {
+  isFetchError,
+  isFetchIdle,
+  isFetchNotReady
+} from '../../utils/fetched-data';
+import InfoScreen from '../info-screen/info-screen';
+import Loader from '../loader/loader';
 import ProductCard from '../product-card/product-card';
 
 function CatalogPage(): JSX.Element {
@@ -17,19 +26,26 @@ function CatalogPage(): JSX.Element {
     }
   }, []);
 
-  if (!catalogGuitars) {
-    return <p>Loading</p>;
+  if (isFetchNotReady(catalogGuitarsStatus)) {
+    return <Loader />;
+  }
+
+  if (isFetchError(catalogGuitarsStatus) || !catalogGuitars) {
+    return (
+      <InfoScreen>
+        <h2>Ошибка загрузки!</h2>
+        <p>Не удалось загрузить каталог</p>
+      </InfoScreen>
+    );
   }
 
   return (
     <>
-      <h1 className="page-content__title title title--bigger">
-          Каталог гитар
-      </h1>
+      <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
       <ul className="breadcrumbs page-content__breadcrumbs">
         <li className="breadcrumbs__item">
           <a className="link" href="./main.html">
-              Главная
+            Главная
           </a>
         </li>
         <li className="breadcrumbs__item">
@@ -38,9 +54,7 @@ function CatalogPage(): JSX.Element {
       </ul>
       <div className="catalog">
         <form className="catalog-filter">
-          <h2 className="title title--bigger catalog-filter__title">
-              Фильтр
-          </h2>
+          <h2 className="title title--bigger catalog-filter__title">Фильтр</h2>
           <fieldset className="catalog-filter__block">
             <legend className="catalog-filter__block-title">Цена, ₽</legend>
             <div className="catalog-filter__price-range">
@@ -98,7 +112,7 @@ function CatalogPage(): JSX.Element {
           </fieldset>
           <fieldset className="catalog-filter__block">
             <legend className="catalog-filter__block-title">
-                Количество струн
+              Количество струн
             </legend>
             <div className="form-checkbox catalog-filter__block-item">
               <input
@@ -151,13 +165,13 @@ function CatalogPage(): JSX.Element {
               aria-label="по цене"
               tabIndex={-1}
             >
-                по цене
+              по цене
             </button>
             <button
               className="catalog-sort__type-button"
               aria-label="по популярности"
             >
-                по популярности
+              по популярности
             </button>
           </div>
           <div className="catalog-sort__order">
@@ -181,28 +195,30 @@ function CatalogPage(): JSX.Element {
           </div>
         </div>
         <div className="cards catalog__cards">
-          {catalogGuitars.map((guitar) => <ProductCard key={guitar.id} product={guitar} />)}
+          {catalogGuitars.map((guitar) => (
+            <ProductCard key={guitar.id} product={guitar} />
+          ))}
         </div>
         <div className="pagination page-content__pagination">
           <ul className="pagination__list">
             <li className="pagination__page pagination__page--active">
               <a className="link pagination__page-link" href="1">
-                  1
+                1
               </a>
             </li>
             <li className="pagination__page">
               <a className="link pagination__page-link" href="2">
-                  2
+                2
               </a>
             </li>
             <li className="pagination__page">
               <a className="link pagination__page-link" href="3">
-                  3
+                3
               </a>
             </li>
             <li className="pagination__page pagination__page--next" id="next">
               <a className="link pagination__page-link" href="2">
-                  Далее
+                Далее
               </a>
             </li>
           </ul>
