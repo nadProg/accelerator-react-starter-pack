@@ -7,3 +7,5 @@ export const getCatalogGuitarsStatus = ({ guitars }: State): FetchStatusType => 
 export const getCurrentGuitarData = ({ guitars }: State): Guitar | null => guitars.currentGuitar.data;
 
 export const getCurrentGuitarStatus = ({ guitars }: State): FetchStatusType => guitars.currentGuitar.status;
+
+export const getFoundGuitarsData = ({ guitars }: State): Guitar[] | null => guitars.foundGuitars.data;

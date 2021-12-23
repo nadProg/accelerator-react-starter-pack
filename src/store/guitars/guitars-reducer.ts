@@ -1,5 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setCatalogGuitars, setCatalogGuitarsStatus, setCurrentGuitar, setCurrentGuitarStatus } from './guitars-actions';
+import {
+  setCatalogGuitars,
+  setCatalogGuitarsStatus,
+  setCurrentGuitar,
+  setCurrentGuitarStatus,
+  setFoundGuitars
+} from './guitars-actions';
 import { guitarsInitialState } from './guitars-initial-state';
 
 export const guitarsReducer = createReducer(guitarsInitialState, (builder) => {
@@ -15,5 +21,8 @@ export const guitarsReducer = createReducer(guitarsInitialState, (builder) => {
     })
     .addCase(setCurrentGuitarStatus, (state, action) => {
       state.currentGuitar.status = action.payload.status;
+    })
+    .addCase(setFoundGuitars, (state, action) => {
+      state.foundGuitars.data = action.payload.foundGuitars;
     });
 });

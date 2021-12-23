@@ -1,3 +1,5 @@
+import { getLikeQuery } from '../utils/query';
+
 export const GuitarType = {
   Acoustic: 'acoustic',
   Electric: 'electric',
@@ -16,6 +18,7 @@ export const ActionType = {
   SetCatalogGuitarsStatus: 'catalogGuitars/setStatus',
   SetCurrentGuitar: 'currentGuitar/setData',
   SetCurrentGuitarStatus: 'currentGuitar/setStatus',
+  SetFoundGuitars: 'foundGuitars/setData',
 } as const;
 
 export const APIRoute = {
@@ -37,3 +40,26 @@ export const HumanizedGuitarType = {
   [GuitarType.Electric]: 'Электрогитара',
   [GuitarType.Ukulele]: 'Укулеле',
 } as const;
+
+export const CATALOG_PAGE_SIZE = 9;
+
+export const COMMENTS = 'comments';
+
+export const Query = {
+  Embed: '_embed',
+  Limit: '_limit',
+  Start: '_start',
+  Sort: '_sort',
+  Order: '_order',
+  Like: '_like',
+} as const;
+
+export const NAME_LIKE_QUERY = getLikeQuery('name');
+
+export const KeyCode = {
+  ArrowUp: 'ArrowUp',
+  ArrowDown: 'ArrowDown',
+  Enter: 'Enter',
+} as const;
+
+export const SEARCH_LIST_LENGTH = 4;

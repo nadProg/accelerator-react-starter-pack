@@ -4,6 +4,9 @@ import { FetchedData, Guitar } from '../../types/types';
 export type GuitarsState = {
   catalogGuitars: FetchedData<Guitar[]>,
   currentGuitar: FetchedData<Guitar>,
+  foundGuitars: {
+    data: Guitar[] | null,
+  },
 };
 
 export const guitarsInitialState: GuitarsState = {
@@ -14,5 +17,8 @@ export const guitarsInitialState: GuitarsState = {
   currentGuitar: {
     data: null,
     status: FetchStatus.Idle,
+  },
+  foundGuitars: {
+    data: null,
   },
 };

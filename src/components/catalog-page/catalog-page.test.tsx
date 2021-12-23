@@ -18,6 +18,9 @@ const mockState: State = {
       data: null,
       status: FetchStatus.Idle,
     },
+    foundGuitars: {
+      data: null,
+    },
   },
 };
 

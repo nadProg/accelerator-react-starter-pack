@@ -25,3 +25,9 @@ export const setCurrentGuitarStatus = createAction(ActionType.SetCurrentGuitarSt
     status,
   },
 }));
+
+export const setFoundGuitars = createAction(ActionType.SetFoundGuitars, (foundGuitars: Guitar[] | null) => ({
+  payload: {
+    foundGuitars,
+  },
+}));

@@ -1,6 +1,6 @@
-import { APIRoute, FetchStatus } from '../../constants/constants';
+import { APIRoute, CATALOG_PAGE_SIZE, COMMENTS, FetchStatus, NAME_LIKE_QUERY, Query } from '../../constants/constants';
 import { Guitar, ThunkActionResult } from '../../types/types';
-import { setCatalogGuitars, setCatalogGuitarsStatus, setCurrentGuitar, setCurrentGuitarStatus } from './guitars-actions';
+import { setCatalogGuitars, setCatalogGuitarsStatus, setCurrentGuitar, setCurrentGuitarStatus, setFoundGuitars } from './guitars-actions';
 
 export const getCatalogGuitars = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
@@ -9,9 +9,8 @@ export const getCatalogGuitars = (): ThunkActionResult =>
     try {
       const { data } = await api.get<Guitar[]>(APIRoute.CatalogGuitars(), {
         params: {
-          _embed: 'comments',
-          _limit: 9,
-          _start: 0,
+          [Query.Embed]: COMMENTS,
+          [Query.Limit]: CATALOG_PAGE_SIZE,
         },
       });
 
@@ -30,7 +29,7 @@ export const getCurrentGuitar = (id: number): ThunkActionResult =>
     try {
       const { data } = await api.get<Guitar>(APIRoute.Guitar(id), {
         params: {
-          _embed: 'comments',
+          [Query.Embed]: COMMENTS,
         },
       });
 
@@ -42,3 +41,13 @@ export const getCurrentGuitar = (id: number): ThunkActionResult =>
     }
   };
 
+export const getGuitarsSimilarToName = (name: string): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const { data } = await api.get<Guitar[]>(APIRoute.CatalogGuitars(), {
+      params: {
+        [NAME_LIKE_QUERY]: name,
+      },
+    });
+
+    dispatch(setFoundGuitars(data));
+  };
