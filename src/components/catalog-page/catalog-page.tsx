@@ -33,8 +33,10 @@ function CatalogPage(): JSX.Element {
   if (isFetchError(catalogGuitarsStatus) || !catalogGuitars) {
     return (
       <InfoScreen>
-        <h2>Ошибка загрузки!</h2>
-        <p>Не удалось загрузить каталог</p>
+        <div data-testid="catalog-error-message">
+          <h2>Ошибка загрузки!</h2>
+          <p>Не удалось загрузить каталог</p>
+        </div>
       </InfoScreen>
     );
   }

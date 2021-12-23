@@ -47,6 +47,7 @@ function ProductCard({ product }: ProductCardProps): JSX.Element {
             className="button button--red button--mini button--add-to-cart"
             href={AppRoute.Basket()}
             onClick={handleBasketLinkClick}
+            data-testid="button-add-to-cart"
           >
           Купить
           </a>

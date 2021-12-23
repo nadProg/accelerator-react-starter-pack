@@ -8,7 +8,7 @@ import {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
-import { KeyCode } from '../../constants/common';
+import { ACTIVE_COLOR, KeyCode } from '../../constants/common';
 import { AppRoute } from '../../constants/endpoints';
 import { SEARCH_LIST_LENGTH } from '../../constants/guitar';
 import { getGuitarsSimilarToName } from '../../store/guitars/guitars-api-actions';
@@ -119,6 +119,7 @@ function FormSearch() {
           placeholder="что вы ищите?"
           onChange={handleInputChange}
           onFocus={handleInputFocus}
+          data-testid="search-input"
         />
         <label className="visually-hidden" htmlFor="search">
           Поиск
@@ -135,13 +136,14 @@ function FormSearch() {
               key={guitar.id}
               ref={(node) => (itemsRef.current[index] = node)}
               className="form-search__select-item"
-              style={{ color: currentIndex === index ? 'orange' : '' }}
+              style={{ color: currentIndex === index ? ACTIVE_COLOR : '' }}
               tabIndex={0}
               onClick={handleItemLinkClick}
             >
               <NavLink
                 to={AppRoute.Card(guitar.id)}
                 style={{ font: 'inherit', color: 'inherit' }}
+                data-testid="found-guitar-link"
               >
                 {guitar.name}
               </NavLink>
