@@ -3,8 +3,8 @@ import { render } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
-import { FetchStatus } from '../../constants/constants';
-import { State } from '../../types/types';
+import { FetchStatus } from '../../constants/common';
+import { State } from '../../types/store';
 import CardPage from './card-page';
 
 const mockState: State = {

@@ -1,8 +1,9 @@
-import { HumanizedGuitarType } from '../../constants/constants';
-import { Guitar, ModalProps } from '../../types/types';
+import { HumanizedGuitarType } from '../../constants/guitar';
+import { GuitarWithComments } from '../../types/guitar';
+import { ModalProps } from '../../types/props';
 
 type ModalCartAddProps = ModalProps & {
-  product: Guitar;
+  product: GuitarWithComments;
 };
 
 function ModalCartAdd({ product, onClose }: ModalCartAddProps): JSX.Element {

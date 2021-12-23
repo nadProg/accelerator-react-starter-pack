@@ -5,8 +5,8 @@ import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import App from './app';
-import { State } from '../../types/types';
-import { FetchStatus } from '../../constants/constants';
+import { FetchStatus } from '../../constants/common';
+import { State } from '../../types/store';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),

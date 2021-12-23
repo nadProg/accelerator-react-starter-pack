@@ -1,12 +1,12 @@
 import { MouseEventHandler, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { AppRoute } from '../../constants/constants';
-import { Guitar } from '../../types/types';
+import { AppRoute } from '../../constants/endpoints';
+import { GuitarWithComments } from '../../types/guitar';
 import ModalCartAdd from '../modal-cart-add/modal-cart-add';
 import Rating from '../rating/rating';
 
 type ProductCardProps = {
-  product: Guitar;
+  product: GuitarWithComments;
 };
 
 function ProductCard({ product }: ProductCardProps): JSX.Element {

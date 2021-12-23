@@ -1,4 +1,4 @@
-import { PropsWithChildren } from '../../types/types';
+import { PropsWithChildren } from '../../types/props';
 import BasketLink from '../basket-link/basket-link';
 import FooterContacts from '../footer-contacts.tsx/footer-contacts';
 import FooterInfo from '../footer-info.tsx/footer-info';

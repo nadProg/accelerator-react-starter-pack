@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { AppRoute } from '../../constants/constants';
+import { AppRoute } from '../../constants/endpoints';
 import InfoScreen from '../info-screen/info-screen';
 
 function NotFoundPage(): JSX.Element {

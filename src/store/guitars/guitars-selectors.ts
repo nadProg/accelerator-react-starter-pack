@@ -1,10 +1,12 @@
-import { FetchStatusType, Guitar, State } from '../../types/types';
+import { FetchStatusType } from '../../types/common';
+import { Guitar, GuitarWithComments } from '../../types/guitar';
+import { State } from '../../types/store';
 
-export const getCatalogGuitarsData = ({ guitars }: State): Guitar[] | null => guitars.catalogGuitars.data;
+export const getCatalogGuitarsData = ({ guitars }: State): GuitarWithComments[] | null => guitars.catalogGuitars.data;
 
 export const getCatalogGuitarsStatus = ({ guitars }: State): FetchStatusType => guitars.catalogGuitars.status;
 
-export const getCurrentGuitarData = ({ guitars }: State): Guitar | null => guitars.currentGuitar.data;
+export const getCurrentGuitarData = ({ guitars }: State): GuitarWithComments | null => guitars.currentGuitar.data;
 
 export const getCurrentGuitarStatus = ({ guitars }: State): FetchStatusType => guitars.currentGuitar.status;
 

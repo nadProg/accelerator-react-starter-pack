@@ -1,22 +1,10 @@
 import {render} from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { GuitarType } from '../../constants/constants';
-import { Guitar } from '../../types/types';
+import { createMockGuitarWithComments } from '../../mock/guitar';
 import ProductCard from './product-card';
 
-const mockProduct: Guitar = {
-  id: 0,
-  name: '',
-  vendorCode: '',
-  type: GuitarType.Electric,
-  description: '',
-  previewImg: '',
-  stringCount: 4,
-  rating: 3,
-  price: 3,
-  comments: [],
-};
+const mockProduct = createMockGuitarWithComments();
 
 const mockHistory = createMemoryHistory();
 

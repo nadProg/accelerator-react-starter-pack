@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { NavLink, useLocation } from 'react-router-dom';
-import { AppRoute } from '../../constants/constants';
+import { AppRoute } from '../../constants/endpoints';
 
 const ACTIVE_CLASS = 'link--current';
 

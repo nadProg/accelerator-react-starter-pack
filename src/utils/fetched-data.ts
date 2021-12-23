@@ -1,5 +1,5 @@
-import { FetchStatus } from '../constants/constants';
-import { FetchStatusType } from '../types/types';
+import { FetchStatus } from '../constants/common';
+import { FetchStatusType } from '../types/common';
 
 export const isFetchIdle = (status: FetchStatusType): boolean => status === FetchStatus.Idle;
 

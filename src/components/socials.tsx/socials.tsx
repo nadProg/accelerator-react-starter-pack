@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { PropsWithClassName } from '../../types/types';
+import { PropsWithClassName } from '../../types/props';
 
 function Socials({ className }: PropsWithClassName) {
   return (

@@ -1,9 +1,9 @@
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { AppRoute } from '../../constants/constants';
 import Layout from '../layout/layout';
 import CatalogPage from '../catalog-page/catalog-page';
 import NotFoundPage from '../not-found-page/not-found-page';
 import CardPage from '../card-page/card-page';
+import { AppRoute } from '../../constants/endpoints';
 
 function App(): JSX.Element {
   return (

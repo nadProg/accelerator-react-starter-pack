@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
-import { AppRoute } from '../../constants/constants';
-import { PropsWithClassName } from '../../types/types';
+import { AppRoute } from '../../constants/endpoints';
+import { PropsWithClassName } from '../../types/props';
 
 function BasketLink({ className }: PropsWithClassName) {
   return (

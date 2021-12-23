@@ -8,7 +8,9 @@ import {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
-import { AppRoute, KeyCode, SEARCH_LIST_LENGTH } from '../../constants/constants';
+import { KeyCode } from '../../constants/common';
+import { AppRoute } from '../../constants/endpoints';
+import { SEARCH_LIST_LENGTH } from '../../constants/guitar';
 import { getGuitarsSimilarToName } from '../../store/guitars/guitars-api-actions';
 import { getFoundGuitarsData } from '../../store/guitars/guitars-selectors';
 import { getChangeArrayIndex } from '../../utils/common';

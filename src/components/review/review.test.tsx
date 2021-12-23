@@ -1,5 +1,5 @@
 import {render} from '@testing-library/react';
-import { Comment } from '../../types/types';
+import { Comment } from '../../types/comment';
 import Review from './review';
 
 

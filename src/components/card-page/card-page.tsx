@@ -1,11 +1,9 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Redirect } from 'react-router-dom';
-import {
-  AppRoute,
-  FetchStatus,
-  HumanizedGuitarType
-} from '../../constants/constants';
+import { FetchStatus } from '../../constants/common';
+import { AppRoute } from '../../constants/endpoints';
+import { HumanizedGuitarType } from '../../constants/guitar';
 import { useIdParam } from '../../hooks/use-id-param';
 import { useReactiveRef } from '../../hooks/use-reactive-ref';
 import { setCurrentGuitarStatus } from '../../store/guitars/guitars-actions';

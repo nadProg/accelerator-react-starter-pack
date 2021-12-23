@@ -1,8 +1,9 @@
 import { createAction } from '@reduxjs/toolkit';
-import { ActionType } from '../../constants/constants';
-import { FetchStatusType, Guitar } from '../../types/types';
+import { ActionType } from '../../constants/action';
+import { FetchStatusType } from '../../types/common';
+import { Guitar, GuitarWithComments } from '../../types/guitar';
 
-export const setCatalogGuitars = createAction(ActionType.SetCatalogGuitars, (catalogGuitars: Guitar[] | null) => ({
+export const setCatalogGuitars = createAction(ActionType.SetCatalogGuitars, (catalogGuitars: GuitarWithComments[] | null) => ({
   payload: {
     catalogGuitars,
   },
@@ -14,7 +15,7 @@ export const setCatalogGuitarsStatus = createAction(ActionType.SetCatalogGuitars
   },
 }));
 
-export const setCurrentGuitar = createAction(ActionType.SetCurrentGuitar, (currentGuitar: Guitar | null) => ({
+export const setCurrentGuitar = createAction(ActionType.SetCurrentGuitar, (currentGuitar: GuitarWithComments | null) => ({
   payload: {
     currentGuitar,
   },

@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { ParamsWithId } from '../types/types';
+import { ParamsWithId } from '../types/common';
 
 type useIdParamResult = {
   id?: number,

@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-import { PropsWithChildren } from '../../types/types';
+import { PropsWithChildren } from '../../types/props';
 
 const INFO_SCREEN_STYLES: CSSProperties = {
   position: 'absolute',
