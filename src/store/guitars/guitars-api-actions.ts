@@ -54,11 +54,15 @@ export const getCurrentGuitar =
 export const getGuitarsSimilarToName =
   (name: string): ThunkActionResult =>
     async (dispatch, _getState, api): Promise<void> => {
-      const { data } = await api.get<Guitar[]>(APIRoute.CatalogGuitars(), {
-        params: {
-          [NAME_LIKE_QUERY]: name,
-        },
-      });
+      try {
+        const { data } = await api.get<Guitar[]>(APIRoute.CatalogGuitars(), {
+          params: {
+            [NAME_LIKE_QUERY]: name,
+          },
+        });
 
-      dispatch(setFoundGuitars(data));
+        dispatch(setFoundGuitars(data));
+      } catch {
+        dispatch(setFoundGuitars(null));
+      }
     };
