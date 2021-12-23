@@ -208,4 +208,21 @@ describe('Component: FormSearch', () => {
 
     userEvent.click(screen.getAllByTestId('found-guitar-link')[0]);
   });
+
+
+  it('should handle submit correctly', () => {
+    const mockStore = configureMockStore<State>()(mockState);
+    mockStore.dispatch = jest.fn();
+
+    render(
+      <Provider store={mockStore}>
+        <Router history={mockHistory}>
+          <FormSearch />
+        </Router>
+      </Provider>,
+    );
+
+    userEvent.click(screen.getByTestId('search-input'));
+    userEvent.click(screen.getByTestId('search-submit-button'));
+  });
 });

@@ -1,5 +1,6 @@
 import {
   ChangeEventHandler,
+  FormEventHandler,
   KeyboardEventHandler,
   MouseEventHandler,
   useEffect,
@@ -69,16 +70,22 @@ function FormSearch() {
         setCurrentIndex(getChangeArrayIndex(foundGuitars, 'decrease'));
         break;
       case KeyCode.Enter:
-        if ( currentIndex !== null && foundGuitars && foundGuitars[currentIndex]) {
+        if (
+          currentIndex !== null &&
+          foundGuitars &&
+          foundGuitars[currentIndex]
+        ) {
           history.push(AppRoute.Card(foundGuitars[currentIndex].id));
           itemsRef.current[currentIndex]?.focus();
           resetList();
         }
         break;
       default:
-        return;
+        break;
     }
+  };
 
+  const handleFormSubmit: FormEventHandler<HTMLFormElement> = (evt) => {
     evt.preventDefault();
   };
 
@@ -97,9 +104,17 @@ function FormSearch() {
   }
 
   return (
-    <div className="form-search" onKeyDown={handleFormSearchKeydown} onClick={handleFormSearchClick}>
-      <form className="form-search__form">
-        <button className="form-search__submit" type="submit">
+    <div
+      className="form-search"
+      onKeyDown={handleFormSearchKeydown}
+      onClick={handleFormSearchClick}
+    >
+      <form className="form-search__form" onSubmit={handleFormSubmit}>
+        <button
+          className="form-search__submit"
+          type="submit"
+          data-testid="search-submit-button"
+        >
           <svg
             className="form-search__icon"
             width="14"
@@ -156,4 +171,3 @@ function FormSearch() {
 }
 
 export default FormSearch;
-
