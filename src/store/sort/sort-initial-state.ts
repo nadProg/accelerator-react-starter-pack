@@ -6,7 +6,7 @@ type SortState = {
   order: OrderType
 }
 
-export const initialSortState: SortState = {
+export const sortInitialState: SortState = {
   type: Type.Price,
   order: Order.Ascending,
 };

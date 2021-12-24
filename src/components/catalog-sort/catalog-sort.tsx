@@ -32,6 +32,11 @@ function CatalogSort(): JSX.Element {
   const getOrderTypeButtonTabIndex = (order: OrderType) =>
     isCurrentSortOrder(order) ? INACTIVE_TAB_INDEX : undefined;
 
+  const getSortTypeButtonDisabled = (type: SortType) =>
+    isCurrentSortType(type) ? true : undefined;
+  const getSortOrderButtonDisabled = (order: OrderType) =>
+    isCurrentSortOrder(order) ? true : undefined;
+
   const getSortTypeButtonStyle = (type: SortType) =>
     isCurrentSortType(type) ? FONT_WEIGHT_BOLD : undefined;
   const getSortOrderButtonStyle = (order: OrderType) =>
@@ -79,6 +84,8 @@ function CatalogSort(): JSX.Element {
           onClick={handleSortTypeButtonClick}
           tabIndex={getSortTypeButtonTabIndex(Type.Price)}
           style={getSortTypeButtonStyle(Type.Price)}
+          disabled={getSortTypeButtonDisabled(Type.Price)}
+          data-testid="price-sort-button"
         >
           по цене
         </button>
@@ -89,6 +96,8 @@ function CatalogSort(): JSX.Element {
           onClick={handleSortTypeButtonClick}
           tabIndex={getSortTypeButtonTabIndex(Type.Rating)}
           style={getSortTypeButtonStyle(Type.Rating)}
+          disabled={getSortTypeButtonDisabled(Type.Rating)}
+          data-testid="rating-sort-button"
         >
           по популярности
         </button>
@@ -101,6 +110,8 @@ function CatalogSort(): JSX.Element {
           tabIndex={getOrderTypeButtonTabIndex(Order.Ascending)}
           style={getSortOrderButtonStyle(Order.Ascending)}
           onClick={handleSortOrderButtonClick}
+          disabled={getSortOrderButtonDisabled(Order.Ascending)}
+          data-testid="ascending-order-button"
         >
         </button>
         <button
@@ -110,6 +121,8 @@ function CatalogSort(): JSX.Element {
           tabIndex={getOrderTypeButtonTabIndex(Order.Descending)}
           style={getSortOrderButtonStyle(Order.Descending)}
           onClick={handleSortOrderButtonClick}
+          disabled={getSortOrderButtonDisabled(Order.Descending)}
+          data-testid="descending-order-button"
         >
         </button>
       </div>

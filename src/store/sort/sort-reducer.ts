@@ -1,8 +1,8 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { setSortOrder, SetSortType } from './sort-actions';
-import { initialSortState } from './sort-initial-state';
+import { sortInitialState } from './sort-initial-state';
 
-export const sortReducer = createReducer(initialSortState, (builder) => {
+export const sortReducer = createReducer(sortInitialState, (builder) => {
   builder
     .addCase(SetSortType, (state, action) => {
       state.type = action.payload.type;
