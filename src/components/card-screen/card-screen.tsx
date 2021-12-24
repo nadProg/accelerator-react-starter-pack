@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Redirect } from 'react-router-dom';
 import { FetchStatus } from '../../constants/common';
 import { AppRoute } from '../../constants/endpoints';
-import { HumanizedGuitarType } from '../../constants/guitar';
+import { HumanizedGuitar } from '../../constants/guitar';
 import { useIdParam } from '../../hooks/use-id-param';
 import { useReactiveRef } from '../../hooks/use-reactive-ref';
 import { setCurrentGuitarStatus } from '../../store/guitars/guitars-actions';
@@ -115,7 +115,7 @@ function CardScreen(): JSX.Element {
                 <tr className="tabs__table-row">
                   <td className="tabs__title">Тип:</td>
                   <td className="tabs__value">
-                    {HumanizedGuitarType[guitar.type]}
+                    {HumanizedGuitar[guitar.type]}
                   </td>
                 </tr>
                 <tr className="tabs__table-row">

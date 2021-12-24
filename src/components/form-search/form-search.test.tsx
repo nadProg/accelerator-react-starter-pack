@@ -3,7 +3,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
-import { FetchStatus, KeyCode } from '../../constants/common';
+import { KeyCode } from '../../constants/common';
 import { createMockGuitar } from '../../mock/guitar';
 import { State } from '../../types/store';
 import { createArrayOfObjects } from '../../utils/common';
@@ -14,17 +14,12 @@ import { createMockState } from '../../mock/state';
 
 const FOUND_GUITARS_AMOUNT = 10;
 
-const mockState: State = {
-  ...createMockState(),
+const mockState = createMockState();
+
+const mockFilledState: State = {
+  ...mockState,
   guitars: {
-    catalogGuitars: {
-      data: null,
-      status: FetchStatus.Idle,
-    },
-    currentGuitar: {
-      data: null,
-      status: FetchStatus.Idle,
-    },
+    ...mockState.guitars,
     foundGuitars: {
       data: createArrayOfObjects(createMockGuitar, FOUND_GUITARS_AMOUNT),
     },
@@ -34,14 +29,7 @@ const mockState: State = {
 const mockNullState: State = {
   ...mockState,
   guitars: {
-    catalogGuitars: {
-      data: null,
-      status: FetchStatus.Idle,
-    },
-    currentGuitar: {
-      data: null,
-      status: FetchStatus.Idle,
-    },
+    ...mockState.guitars,
     foundGuitars: {
       data: null,
     },
@@ -51,16 +39,9 @@ const mockNullState: State = {
 const mockEmptyState: State = {
   ...mockState,
   guitars: {
-    catalogGuitars: {
-      data: null,
-      status: FetchStatus.Idle,
-    },
-    currentGuitar: {
-      data: null,
-      status: FetchStatus.Idle,
-    },
+    ...mockState.guitars,
     foundGuitars: {
-      data: null,
+      data: [],
     },
   },
 };
@@ -69,7 +50,7 @@ const mockHistory = createMemoryHistory();
 
 describe('Component: FormSearch', () => {
   it('should render without errors', () => {
-    const mockStore = configureMockStore<State>()(mockState);
+    const mockStore = configureMockStore<State>()(mockFilledState);
     mockStore.dispatch = jest.fn();
 
     render(
@@ -116,7 +97,7 @@ describe('Component: FormSearch', () => {
   });
 
   it('should handle keydown interactions', () => {
-    const mockStore = configureMockStore<State>()(mockState);
+    const mockStore = configureMockStore<State>()(mockFilledState);
     mockStore.dispatch = jest.fn();
 
     render(
@@ -159,7 +140,7 @@ describe('Component: FormSearch', () => {
   });
 
   it('should handle typing interactions', () => {
-    const mockStore = configureMockStore<State>()(mockState);
+    const mockStore = configureMockStore<State>()(mockFilledState);
     mockStore.dispatch = jest.fn();
     const mockText = lorem.word();
 
@@ -178,7 +159,7 @@ describe('Component: FormSearch', () => {
   });
 
   it('should handle window click interaction', () => {
-    const mockStore = configureMockStore<State>()(mockState);
+    const mockStore = configureMockStore<State>()(mockFilledState);
     mockStore.dispatch = jest.fn();
 
     render(
@@ -197,7 +178,7 @@ describe('Component: FormSearch', () => {
   });
 
   it('should handle link click interaction', () => {
-    const mockStore = configureMockStore<State>()(mockState);
+    const mockStore = configureMockStore<State>()(mockFilledState);
     mockStore.dispatch = jest.fn();
 
     render(
@@ -215,7 +196,7 @@ describe('Component: FormSearch', () => {
 
 
   it('should handle submit correctly', () => {
-    const mockStore = configureMockStore<State>()(mockState);
+    const mockStore = configureMockStore<State>()(mockFilledState);
     mockStore.dispatch = jest.fn();
 
     render(

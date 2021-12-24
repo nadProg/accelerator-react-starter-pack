@@ -1,23 +1,16 @@
-import { FetchStatus } from '../constants/common';
-import { Order, Type } from '../constants/sort';
+import { filterInitialState } from '../store/filter/filter-initial-state';
+import { guitarsInitialState } from '../store/guitars/guitars-initial-state';
+import { sortInitialState } from '../store/sort/sort-initial-state';
 import { State } from '../types/store';
 
 export const createMockState = (): State => ({
   guitars: {
-    catalogGuitars: {
-      data: null,
-      status: FetchStatus.Idle,
-    },
-    currentGuitar: {
-      data: null,
-      status: FetchStatus.Idle,
-    },
-    foundGuitars: {
-      data: null,
-    },
+    ...guitarsInitialState,
   },
   sort: {
-    type: Type.Price,
-    order: Order.Ascending,
+    ...sortInitialState,
+  },
+  filter: {
+    ...filterInitialState,
   },
 });

@@ -1,5 +1,5 @@
 import { datatype, lorem } from 'faker';
-import { GuitarType } from '../constants/guitar';
+import { GuitarTypeValue } from '../constants/guitar';
 import { ValuesOf } from '../types/common';
 import { Guitar, GuitarWithComments, StringCountType } from '../types/guitar';
 
@@ -7,7 +7,7 @@ export const createMockGuitar = (): Guitar => ({
   id: datatype.number(),
   name: lorem.words(),
   vendorCode: lorem.word(),
-  type: (lorem.word() as ValuesOf<typeof GuitarType>),
+  type: (lorem.word() as ValuesOf<typeof GuitarTypeValue>),
   description: lorem.text(),
   previewImg: lorem.word(),
   stringCount: (datatype.number() as StringCountType),

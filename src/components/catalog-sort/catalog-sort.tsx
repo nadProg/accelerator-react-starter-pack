@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { CSSProperties, MouseEventHandler } from 'react';
+import { CSSProperties, MouseEventHandler, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FetchStatus } from '../../constants/common';
 import { Order, Type } from '../../constants/sort';
@@ -59,7 +59,6 @@ function CatalogSort(): JSX.Element {
     const button = evt.currentTarget as HTMLButtonElement;
     const newSortType = button.dataset.sortType as SortType;
     dispatch(SetSortType(newSortType));
-    dispatch(setCatalogGuitarsStatus(FetchStatus.Idle));
     button.blur();
   };
 
@@ -67,9 +66,12 @@ function CatalogSort(): JSX.Element {
     const button = evt.currentTarget as HTMLButtonElement;
     const newSortOrder = button.dataset.sortOrder as OrderType;
     dispatch(setSortOrder(newSortOrder));
-    dispatch(setCatalogGuitarsStatus(FetchStatus.Idle));
     button.blur();
   };
+
+  useEffect(() => {
+    dispatch(setCatalogGuitarsStatus(FetchStatus.Idle));
+  }, [sortType, sortOrder]);
 
   return (
     <div className="catalog-sort">

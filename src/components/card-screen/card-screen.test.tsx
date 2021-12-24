@@ -19,16 +19,10 @@ const mockState = createMockState();
 const mockIdleState: State = {
   ...mockState,
   guitars: {
-    catalogGuitars: {
-      data: null,
-      status: FetchStatus.Idle,
-    },
+    ...mockState.guitars,
     currentGuitar: {
       data: null,
       status: FetchStatus.Idle,
-    },
-    foundGuitars: {
-      data: null,
     },
   },
 };
@@ -36,16 +30,10 @@ const mockIdleState: State = {
 const mockLoadingState: State = {
   ...mockState,
   guitars: {
-    catalogGuitars: {
-      data: null,
-      status: FetchStatus.Idle,
-    },
+    ...mockState.guitars,
     currentGuitar: {
       data: null,
       status: FetchStatus.Loading,
-    },
-    foundGuitars: {
-      data: null,
     },
   },
 };
@@ -53,16 +41,10 @@ const mockLoadingState: State = {
 const mockSucceedState: State = {
   ...mockState,
   guitars: {
-    catalogGuitars: {
-      data: null,
-      status: FetchStatus.Idle,
-    },
+    ...mockState.guitars,
     currentGuitar: {
       data: mockGuitar,
       status: FetchStatus.Succeeded,
-    },
-    foundGuitars: {
-      data: null,
     },
   },
 };
@@ -70,16 +52,10 @@ const mockSucceedState: State = {
 const mockFailedState: State = {
   ...mockState,
   guitars: {
-    catalogGuitars: {
-      data: null,
-      status: FetchStatus.Idle,
-    },
+    ...mockState.guitars,
     currentGuitar: {
       data: mockGuitar,
       status: FetchStatus.Failed,
-    },
-    foundGuitars: {
-      data: null,
     },
   },
 };

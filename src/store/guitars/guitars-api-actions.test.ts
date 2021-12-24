@@ -62,7 +62,8 @@ describe('Api-actions: Guitars', () => {
   });
 
   it('should handle failed get catalog guitars request', async () => {
-    const store = createMockStore();
+    const mockState = createMockState();
+    const store = createMockStore(mockState);
     mockAPI.onGet(APIRoute.CatalogGuitars()).reply(400);
 
     await store.dispatch(getCatalogGuitars());

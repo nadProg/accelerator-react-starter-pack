@@ -1,10 +1,11 @@
 import { FetchStatus } from '../../constants/common';
 import { APIRoute } from '../../constants/endpoints';
 import { CATALOG_PAGE_SIZE } from '../../constants/guitar';
-import { Query, COMMENTS, NAME_LIKE_QUERY } from '../../constants/query';
+import { Query, COMMENTS, NAME_LIKE_QUERY, PriceQuery } from '../../constants/query';
 import { Guitar, GuitarWithComments } from '../../types/guitar';
 import { ThunkActionResult } from '../../types/store';
 import {
+  setAllGuitars,
   setCatalogGuitars,
   setCatalogGuitarsStatus,
   setCurrentGuitar,
@@ -17,6 +18,9 @@ export const getCatalogGuitars =
     async (dispatch, _getState, api): Promise<void> => {
       dispatch(setCatalogGuitarsStatus(FetchStatus.Loading));
 
+      const minPrice = _getState().filter.price.min === '' ? undefined : _getState().filter.price.min;
+      const maxPrice = _getState().filter.price.max === '' ? undefined : _getState().filter.price.max;
+
       try {
         const { data } = await api.get<GuitarWithComments[]>(APIRoute.CatalogGuitars(), {
           params: {
@@ -24,6 +28,10 @@ export const getCatalogGuitars =
             [Query.Limit]: CATALOG_PAGE_SIZE,
             [Query.Sort]: _getState().sort.type,
             [Query.Order]: _getState().sort.order,
+            [PriceQuery.Min]: minPrice,
+            [PriceQuery.Max]: maxPrice,
+            type: _getState().filter.types,
+            stringCount: _getState().filter.stringCounts,
           },
         });
 
@@ -66,5 +74,17 @@ export const getGuitarsSimilarToName =
         dispatch(setFoundGuitars(data));
       } catch {
         dispatch(setFoundGuitars(null));
+      }
+    };
+
+export const getAllGuitars =
+  (): ThunkActionResult =>
+    async (dispatch, _getState, api): Promise<void> => {
+      try {
+        const { data } = await api.get<Guitar[]>(APIRoute.CatalogGuitars());
+
+        dispatch(setAllGuitars(data));
+      } catch {
+        dispatch(setAllGuitars(null));
       }
     };

@@ -8,6 +8,9 @@ export type GuitarsState = {
   foundGuitars: {
     data: Guitar[] | null,
   },
+  allGuitars: {
+    data: Guitar[] | null,
+  }
 };
 
 export const guitarsInitialState: GuitarsState = {
@@ -20,6 +23,9 @@ export const guitarsInitialState: GuitarsState = {
     status: FetchStatus.Idle,
   },
   foundGuitars: {
+    data: null,
+  },
+  allGuitars: {
     data: null,
   },
 };

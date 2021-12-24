@@ -11,3 +11,5 @@ export const getCurrentGuitarData = ({ guitars }: State): GuitarWithComments | n
 export const getCurrentGuitarStatus = ({ guitars }: State): FetchStatusType => guitars.currentGuitar.status;
 
 export const getFoundGuitarsData = ({ guitars }: State): Guitar[] | null => guitars.foundGuitars.data;
+
+export const getAllGuitarsData = ({ guitars }: State): Guitar[] | null => guitars.allGuitars.data;

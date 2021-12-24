@@ -3,36 +3,22 @@ import {render} from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
-import { FetchStatus } from '../../constants/common';
 import { State } from '../../types/store';
 import CatalogScreen from './catalog-screen';
 import { createMockState } from '../../mock/state';
+import { createAPI } from '../../services/api';
+import thunk from 'redux-thunk';
+
+const api = createAPI();
+const middlewares = [thunk.withExtraArgument(api)];
 
 const mockState = createMockState();
-
-const mockIdleState: State = {
-  ...mockState,
-  guitars: {
-    catalogGuitars: {
-      data: null,
-      status: FetchStatus.Idle,
-    },
-    currentGuitar: {
-      data: null,
-      status: FetchStatus.Idle,
-    },
-    foundGuitars: {
-      data: null,
-    },
-  },
-};
+const mockStore = configureMockStore<State>(middlewares)(mockState);
 
 const mockHistory = createMemoryHistory();
 
 describe('Component: CatalogScreen', () => {
   it('should render without errors', () => {
-    const mockStore = configureMockStore<State>()(mockIdleState);
-    mockStore.dispatch = jest.fn();
 
     render(
       <Provider store={mockStore}>
@@ -41,7 +27,5 @@ describe('Component: CatalogScreen', () => {
         </Router>
       </Provider>,
     );
-
-    expect(mockStore.dispatch).toHaveBeenCalledTimes(1);
   });
 });

@@ -50,12 +50,12 @@ describe('Component: CatalogSort', () => {
     userEvent.click(screen.getByTestId('ascending-order-button'));
     userEvent.click(screen.getByTestId('ascending-order-button'));
 
-    expect(mockStore.dispatch).toHaveBeenCalledTimes(0);
+    expect(mockStore.dispatch).toHaveBeenCalledTimes(1);
 
     userEvent.click(screen.getByTestId('rating-sort-button'));
     userEvent.click(screen.getByTestId('descending-order-button'));
 
-    expect(mockStore.dispatch).toHaveBeenCalledTimes(4);
+    expect(mockStore.dispatch).toHaveBeenCalledTimes(3);
   });
 
   it('should handle click correctly when rating selected descending', () => {
@@ -83,11 +83,11 @@ describe('Component: CatalogSort', () => {
     userEvent.click(screen.getByTestId('descending-order-button'));
     userEvent.click(screen.getByTestId('descending-order-button'));
 
-    expect(mockStore.dispatch).toHaveBeenCalledTimes(0);
+    expect(mockStore.dispatch).toHaveBeenCalledTimes(1);
 
     userEvent.click(screen.getByTestId('price-sort-button'));
     userEvent.click(screen.getByTestId('ascending-order-button'));
 
-    expect(mockStore.dispatch).toHaveBeenCalledTimes(4);
+    expect(mockStore.dispatch).toHaveBeenCalledTimes(3);
   });
 });

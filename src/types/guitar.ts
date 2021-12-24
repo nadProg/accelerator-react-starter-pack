@@ -1,14 +1,16 @@
-import { GuitarType } from '../constants/guitar';
+import { GuitarTypeValue, STRING_COUNT_VALUES } from '../constants/guitar';
 import { Comment } from './comment';
 import { ValuesOf } from './common';
 
-export type StringCountType = 4 | 6 | 7 | 12;
+export type StringCountType = typeof STRING_COUNT_VALUES[number];
+
+export type GuitarType = ValuesOf<typeof GuitarTypeValue>;
 
 export type Guitar = {
   id: number;
   name: string;
   vendorCode: string;
-  type: ValuesOf<typeof GuitarType>;
+  type: GuitarType;
   description: string;
   previewImg: string;
   stringCount: StringCountType;

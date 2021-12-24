@@ -32,3 +32,9 @@ export const setFoundGuitars = createAction(ActionType.SetFoundGuitars, (foundGu
     foundGuitars,
   },
 }));
+
+export const setAllGuitars = createAction(ActionType.SetAllGuitars, (allGuitars: Guitar[] | null) => ({
+  payload: {
+    allGuitars,
+  },
+}));

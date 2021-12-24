@@ -1,4 +1,4 @@
-import { HumanizedGuitarType } from '../../constants/guitar';
+import { HumanizedGuitar } from '../../constants/guitar';
 import { GuitarWithComments } from '../../types/guitar';
 import { ModalProps } from '../../types/props';
 
@@ -36,7 +36,7 @@ function ModalCartAdd({ product, onClose }: ModalCartAddProps): JSX.Element {
               <p className="modal__product-params modal__product-params--margin-11">
                 Артикул: {product.vendorCode}
               </p>
-              <p className="modal__product-params">{HumanizedGuitarType[product.type]}, {product.stringCount} струнная</p>
+              <p className="modal__product-params">{HumanizedGuitar[product.type]}, {product.stringCount} струнная</p>
               <p className="modal__price-wrapper">
                 <span className="modal__price">Цена:</span>
                 <span className="modal__price">{product.price} ₽</span>
