@@ -1,8 +1,8 @@
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Layout from '../layout/layout';
-import CatalogPage from '../catalog-page/catalog-page';
-import NotFoundPage from '../not-found-page/not-found-page';
-import CardPage from '../card-page/card-page';
+import CatalogScreen from '../catalog-screen/catalog-screen';
+import NotFoundScreen from '../not-found-screen/not-found-screen';
+import CardScreen from '../card-screen/card-screen';
 import { AppRoute } from '../../constants/endpoints';
 
 function App(): JSX.Element {
@@ -16,16 +16,16 @@ function App(): JSX.Element {
           <Redirect to={AppRoute.CatalogPage(1)} />
         </Route>
         <Route path={AppRoute.CatalogPage()} exact>
-          <CatalogPage />
+          <CatalogScreen />
         </Route>
         <Route path={AppRoute.Card()} exact>
-          <CardPage />
+          <CardScreen />
         </Route>
         <Route path={AppRoute.Basket()} exact>
           <Redirect to={AppRoute.NotFound()} />
         </Route>
         <Route path={AppRoute.NotFound()} exact>
-          <NotFoundPage />
+          <NotFoundScreen />
         </Route>
         <Route>
           <Redirect to={AppRoute.NotFound()} />

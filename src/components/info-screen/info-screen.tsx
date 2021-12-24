@@ -3,8 +3,8 @@ import { PropsWithChildren } from '../../types/props';
 
 const INFO_SCREEN_STYLES: CSSProperties = {
   position: 'absolute',
-  top: '10%',
   left: 0,
+  top: 0,
   width: '100%',
   height: '100%',
   display: 'flex',

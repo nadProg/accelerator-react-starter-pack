@@ -8,13 +8,16 @@ import { FetchStatus } from '../../constants/common';
 import { AppRoute } from '../../constants/endpoints';
 import { createMockGuitarWithComments } from '../../mock/guitar';
 import { State } from '../../types/store';
-import CardPage from './card-page';
+import CardScreen from './card-screen';
 import ReactRouter, { Route } from 'react-router';
 import { screen } from '@testing-library/react';
+import { createMockState } from '../../mock/state';
 
 const mockGuitar = createMockGuitarWithComments();
+const mockState = createMockState();
 
 const mockIdleState: State = {
+  ...mockState,
   guitars: {
     catalogGuitars: {
       data: null,
@@ -31,6 +34,7 @@ const mockIdleState: State = {
 };
 
 const mockLoadingState: State = {
+  ...mockState,
   guitars: {
     catalogGuitars: {
       data: null,
@@ -47,6 +51,7 @@ const mockLoadingState: State = {
 };
 
 const mockSucceedState: State = {
+  ...mockState,
   guitars: {
     catalogGuitars: {
       data: null,
@@ -63,6 +68,7 @@ const mockSucceedState: State = {
 };
 
 const mockFailedState: State = {
+  ...mockState,
   guitars: {
     catalogGuitars: {
       data: null,
@@ -82,7 +88,7 @@ const mockHistory = createMemoryHistory();
 
 const mockId = datatype.number();
 
-describe('Component: CardPage', () => {
+describe('Component: CardScreen', () => {
   beforeEach(() => {
     jest
       .spyOn(ReactRouter, 'useParams')
@@ -97,7 +103,7 @@ describe('Component: CardPage', () => {
     render(
       <Provider store={mockStore}>
         <Router history={mockHistory}>
-          <CardPage />
+          <CardScreen />
         </Router>
       </Provider>,
     );
@@ -112,7 +118,7 @@ describe('Component: CardPage', () => {
     render(
       <Provider store={mockStore}>
         <Router history={mockHistory}>
-          <CardPage />
+          <CardScreen />
         </Router>
       </Provider>,
     );
@@ -125,7 +131,7 @@ describe('Component: CardPage', () => {
     render(
       <Provider store={mockStore}>
         <Router history={mockHistory}>
-          <CardPage />
+          <CardScreen />
         </Router>
       </Provider>,
     );
@@ -142,7 +148,7 @@ describe('Component: CardPage', () => {
             <div data-testid="not-found" />
           </Route>
           <Route path={AppRoute.Card()} exact>
-            <CardPage />
+            <CardScreen />
           </Route>
         </Router>
       </Provider>,
@@ -166,7 +172,7 @@ describe('Component: CardPage', () => {
             <div data-testid="not-found" />
           </Route>
           <Route path={AppRoute.Card()} exact>
-            <CardPage />
+            <CardScreen />
           </Route>
         </Router>
       </Provider>,
@@ -195,7 +201,7 @@ describe('Component: CardPage', () => {
             <div data-testid="not-found" />
           </Route>
           <Route path={AppRoute.Card()} exact>
-            <CardPage />
+            <CardScreen />
           </Route>
         </Router>
       </Provider>,

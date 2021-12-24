@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { AppRoute } from '../../constants/endpoints';
 import InfoScreen from '../info-screen/info-screen';
 
-function NotFoundPage(): JSX.Element {
+function NotFoundScreen(): JSX.Element {
   return (
     <InfoScreen>
       <h1>This page does not exist</h1>
@@ -15,4 +15,4 @@ function NotFoundPage(): JSX.Element {
   );
 }
 
-export default NotFoundPage;
+export default NotFoundScreen;

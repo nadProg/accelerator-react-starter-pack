@@ -24,6 +24,7 @@ import {
   setFoundGuitars
 } from './guitars-actions';
 import thunk from 'redux-thunk';
+import { createMockState } from '../../mock/state';
 
 const api = createAPI();
 const mockAPI = new MockAdapter(api);
@@ -46,7 +47,9 @@ const mockFoundGuitars = createArrayOfObjects(createMockGuitar, 10);
 
 describe('Api-actions: Guitars', () => {
   it('should handle succeed get catalog guitars request', async () => {
-    const store = createMockStore();
+    const mockState = createMockState();
+    const store = createMockStore(mockState);
+
     mockAPI.onGet(APIRoute.CatalogGuitars()).reply(200, mockCatalogGuitars);
 
     await store.dispatch(getCatalogGuitars());

@@ -5,8 +5,8 @@ import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import App from './app';
-import { FetchStatus } from '../../constants/common';
 import { State } from '../../types/store';
+import { createMockState } from '../../mock/state';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -17,21 +17,7 @@ jest.mock('react-router-dom', () => ({
   },
 }));
 
-const mockState: State = {
-  guitars: {
-    catalogGuitars: {
-      data: null,
-      status: FetchStatus.Idle,
-    },
-    currentGuitar: {
-      data: null,
-      status: FetchStatus.Idle,
-    },
-    foundGuitars: {
-      data: null,
-    },
-  },
-};
+const mockState = createMockState();
 
 const mockHistory = createMemoryHistory();
 

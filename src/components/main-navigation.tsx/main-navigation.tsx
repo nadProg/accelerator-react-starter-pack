@@ -16,7 +16,6 @@ function MainNavigation() {
               [ACTIVE_CLASS]: pathname.includes(AppRoute.Catalog()),
             })}
             to={AppRoute.Catalog}
-            exact
           >
             Каталог
           </NavLink>
@@ -25,18 +24,16 @@ function MainNavigation() {
           <NavLink
             className="main-nav__link link"
             to="#"
-            exact
           >
-            Каталог
+            Где купить?
           </NavLink>
         </li>
         <li>
           <NavLink
             className="main-nav__link link"
             to="#"
-            exact
           >
-            Каталог
+            О компании
           </NavLink>
         </li>
       </ul>

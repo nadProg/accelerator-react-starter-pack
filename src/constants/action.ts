@@ -4,6 +4,8 @@ export const ActionType = {
   SetCurrentGuitar: 'currentGuitar/setData',
   SetCurrentGuitarStatus: 'currentGuitar/setStatus',
   SetFoundGuitars: 'foundGuitars/setData',
+  SetSortType: 'sort/setType',
+  SetSortOrder: 'sort/setOrder',
 } as const;
 
 export const UNKNOWN_ACTION = {

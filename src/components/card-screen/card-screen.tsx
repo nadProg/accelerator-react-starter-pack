@@ -19,7 +19,7 @@ import {
 import Loader from '../loader/loader';
 import Rating from '../rating/rating';
 
-function CardPage(): JSX.Element {
+function CardScreen(): JSX.Element {
   const { id: guitarId, error } = useIdParam();
 
   const guitar = useSelector(getCurrentGuitarData);
@@ -286,4 +286,4 @@ function CardPage(): JSX.Element {
   );
 }
 
-export default CardPage;
+export default CardScreen;

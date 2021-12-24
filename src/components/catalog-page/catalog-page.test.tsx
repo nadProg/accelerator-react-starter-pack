@@ -9,10 +9,14 @@ import { State } from '../../types/store';
 import { createArrayOfObjects } from '../../utils/common';
 import CatalogPage from './catalog-page';
 import { screen } from '@testing-library/react';
+import { createMockState } from '../../mock/state';
 
 const mockGuitars = createArrayOfObjects(createMockGuitarWithComments, 9);
 
+const mockState = createMockState();
+
 const mockIdleState: State = {
+  ...mockState,
   guitars: {
     catalogGuitars: {
       data: null,
@@ -29,6 +33,7 @@ const mockIdleState: State = {
 };
 
 const mockLoadingState: State = {
+  ...mockState,
   guitars: {
     catalogGuitars: {
       data: null,
@@ -45,6 +50,7 @@ const mockLoadingState: State = {
 };
 
 const mockSucceedState: State = {
+  ...mockState,
   guitars: {
     catalogGuitars: {
       data: mockGuitars,
@@ -61,6 +67,7 @@ const mockSucceedState: State = {
 };
 
 const mockFailedState: State = {
+  ...mockState,
   guitars: {
     catalogGuitars: {
       data: mockGuitars,

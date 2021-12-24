@@ -22,6 +22,8 @@ export const getCatalogGuitars =
           params: {
             [Query.Embed]: COMMENTS,
             [Query.Limit]: CATALOG_PAGE_SIZE,
+            [Query.Sort]: _getState().sort.type,
+            [Query.Order]: _getState().sort.order,
           },
         });
 

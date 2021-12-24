@@ -3,25 +3,11 @@ import {render} from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
-import { FetchStatus } from '../../constants/common';
+import { createMockState } from '../../mock/state';
 import { State } from '../../types/store';
 import Layout from './layout';
 
-const mockState: State = {
-  guitars: {
-    catalogGuitars: {
-      data: null,
-      status: FetchStatus.Idle,
-    },
-    currentGuitar: {
-      data: null,
-      status: FetchStatus.Idle,
-    },
-    foundGuitars: {
-      data: null,
-    },
-  },
-};
+const mockState: State = createMockState();
 
 const mockHistory = createMemoryHistory();
 

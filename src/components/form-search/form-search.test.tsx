@@ -10,8 +10,29 @@ import { createArrayOfObjects } from '../../utils/common';
 import userEvent from '@testing-library/user-event';
 import FormSearch from './form-search';
 import { lorem } from 'faker';
+import { createMockState } from '../../mock/state';
+
+const FOUND_GUITARS_AMOUNT = 10;
+
+const mockState: State = {
+  ...createMockState(),
+  guitars: {
+    catalogGuitars: {
+      data: null,
+      status: FetchStatus.Idle,
+    },
+    currentGuitar: {
+      data: null,
+      status: FetchStatus.Idle,
+    },
+    foundGuitars: {
+      data: createArrayOfObjects(createMockGuitar, FOUND_GUITARS_AMOUNT),
+    },
+  },
+};
 
 const mockNullState: State = {
+  ...mockState,
   guitars: {
     catalogGuitars: {
       data: null,
@@ -28,6 +49,7 @@ const mockNullState: State = {
 };
 
 const mockEmptyState: State = {
+  ...mockState,
   guitars: {
     catalogGuitars: {
       data: null,
@@ -39,24 +61,6 @@ const mockEmptyState: State = {
     },
     foundGuitars: {
       data: null,
-    },
-  },
-};
-
-const FOUND_GUITARS_AMOUNT = 10;
-
-const mockState: State = {
-  guitars: {
-    catalogGuitars: {
-      data: null,
-      status: FetchStatus.Idle,
-    },
-    currentGuitar: {
-      data: null,
-      status: FetchStatus.Idle,
-    },
-    foundGuitars: {
-      data: createArrayOfObjects(createMockGuitar, FOUND_GUITARS_AMOUNT),
     },
   },
 };
