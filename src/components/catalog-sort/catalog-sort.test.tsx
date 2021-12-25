@@ -2,8 +2,11 @@ import { configureMockStore } from '@jedmao/redux-mock-store';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
+import { FetchStatus } from '../../constants/common';
 import { Order, Type } from '../../constants/sort';
 import { createMockState } from '../../mock/state';
+import { setCatalogGuitarsStatus } from '../../store/guitars/guitars-actions';
+import { setSortOrder, SetSortType } from '../../store/sort/sort-actions';
 import { State } from '../../types/store';
 import CatalogSort from './catalog-sort';
 
@@ -50,11 +53,14 @@ describe('Component: CatalogSort', () => {
     userEvent.click(screen.getByTestId('ascending-order-button'));
     userEvent.click(screen.getByTestId('ascending-order-button'));
 
+    expect(mockStore.dispatch).toHaveBeenCalledWith(setCatalogGuitarsStatus(FetchStatus.Idle));
     expect(mockStore.dispatch).toHaveBeenCalledTimes(1);
 
     userEvent.click(screen.getByTestId('rating-sort-button'));
     userEvent.click(screen.getByTestId('descending-order-button'));
 
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetSortType(Type.Rating));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(setSortOrder(Order.Descending));
     expect(mockStore.dispatch).toHaveBeenCalledTimes(3);
   });
 
@@ -83,11 +89,14 @@ describe('Component: CatalogSort', () => {
     userEvent.click(screen.getByTestId('descending-order-button'));
     userEvent.click(screen.getByTestId('descending-order-button'));
 
+    expect(mockStore.dispatch).toHaveBeenCalledWith(setCatalogGuitarsStatus(FetchStatus.Idle));
     expect(mockStore.dispatch).toHaveBeenCalledTimes(1);
 
     userEvent.click(screen.getByTestId('price-sort-button'));
     userEvent.click(screen.getByTestId('ascending-order-button'));
 
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetSortType(Type.Price));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(setSortOrder(Order.Ascending));
     expect(mockStore.dispatch).toHaveBeenCalledTimes(3);
   });
 });

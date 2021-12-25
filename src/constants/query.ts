@@ -1,5 +1,3 @@
-import { getGraterThanOrEqualQuery, getLessThanOrEqualQuery, getLikeQuery } from '../utils/query';
-
 export const COMMENTS = 'comments';
 
 export const Query = {
@@ -13,9 +11,3 @@ export const Query = {
   LessThanOrEqual: '_lte',
 } as const;
 
-export const NAME_LIKE_QUERY = getLikeQuery('name');
-
-export const PriceQuery = {
-  Min: getGraterThanOrEqualQuery('price'),
-  Max: getLessThanOrEqualQuery('price'),
-};

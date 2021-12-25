@@ -85,6 +85,7 @@ describe('Component: CardScreen', () => {
     );
 
     expect(mockStore.dispatch).toHaveBeenCalledTimes(1);
+    expect(mockStore.dispatch).toHaveBeenCalledWith(expect.any(Function));
   });
 
   it('should render during server response', () => {

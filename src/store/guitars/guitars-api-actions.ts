@@ -1,7 +1,9 @@
 import { FetchStatus } from '../../constants/common';
 import { APIRoute } from '../../constants/endpoints';
+import { FilterParameter } from '../../constants/filter';
 import { CATALOG_PAGE_SIZE } from '../../constants/guitar';
-import { Query, COMMENTS, NAME_LIKE_QUERY, PriceQuery } from '../../constants/query';
+import { Query, COMMENTS } from '../../constants/query';
+import { NAME_LIKE_QUERY } from '../../constants/search';
 import { Guitar, GuitarWithComments } from '../../types/guitar';
 import { ThunkActionResult } from '../../types/store';
 import {
@@ -28,10 +30,10 @@ export const getCatalogGuitars =
             [Query.Limit]: CATALOG_PAGE_SIZE,
             [Query.Sort]: _getState().sort.type,
             [Query.Order]: _getState().sort.order,
-            [PriceQuery.Min]: minPrice,
-            [PriceQuery.Max]: maxPrice,
-            type: _getState().filter.types,
-            stringCount: _getState().filter.stringCounts,
+            [FilterParameter.MinPrice]: minPrice,
+            [FilterParameter.MaxPrice]: maxPrice,
+            [FilterParameter.Type]: _getState().filter.types,
+            [FilterParameter.StringCount]: _getState().filter.stringCounts,
           },
         });
 
