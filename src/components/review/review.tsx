@@ -1,4 +1,5 @@
 import { Comment } from '../../types/comment';
+import { formatCommentDate } from '../../utils/date';
 import Rating from '../rating/rating';
 
 type ReviewProps = {
@@ -12,7 +13,7 @@ function Review({ review }: ReviewProps) {
         <h4 className="review__title review__title--author title title--lesser">
           {review.userName}
         </h4>
-        <span className="review__date">12 декабря</span>
+        <span className="review__date">{formatCommentDate(review.createAt)}</span>
       </div>
       <div className="rate review__rating-panel" aria-hidden="true">
         <span className="visually-hidden">Рейтинг:</span>

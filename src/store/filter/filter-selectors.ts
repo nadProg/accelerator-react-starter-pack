@@ -17,8 +17,6 @@ export const getFilterStringCounts = ({ filter }: State): StringCountType[] =>
 export const getFilterPriceLimits = createSelector(
   [getAllGuitarsData],
   (guitars): { min: number | ''; max: number | '' } => {
-    console.log('Filter selector');
-
     if (!guitars || !guitars.length) {
       return {
         min: '',
