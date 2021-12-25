@@ -1,3 +1,5 @@
+import { NavLink } from 'react-router-dom';
+import { AppRoute } from '../../constants/endpoints';
 import CatalogFilter from '../catalog-filter/catalog-filter';
 import CatalogPage from '../catalog-page/catalog-page';
 import CatalogSort from '../catalog-sort/catalog-sort';
@@ -8,9 +10,9 @@ function CatalogScreen(): JSX.Element {
       <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
       <ul className="breadcrumbs page-content__breadcrumbs">
         <li className="breadcrumbs__item">
-          <a className="link" href="./main.html">
+          <NavLink className="link" to={AppRoute.Root()}>
             Главная
-          </a>
+          </NavLink>
         </li>
         <li className="breadcrumbs__item">
           <a className="link">Каталог</a>
