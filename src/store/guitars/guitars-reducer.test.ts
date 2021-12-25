@@ -2,7 +2,7 @@ import { UNKNOWN_ACTION } from '../../constants/action';
 import { FetchStatus } from '../../constants/common';
 import { createMockGuitar, createMockGuitarWithComments } from '../../mock/guitar';
 import { createArrayOfObjects } from '../../utils/common';
-import { setCatalogGuitars, setCatalogGuitarsStatus, setCurrentGuitar, setCurrentGuitarStatus, setFoundGuitars } from './guitars-actions';
+import { setAllGuitars, setCatalogGuitars, setCatalogGuitarsStatus, setCurrentGuitar, setCurrentGuitarStatus, setFoundGuitars } from './guitars-actions';
 import { guitarsInitialState } from './guitars-initial-state';
 import { guitarsReducer } from './guitars-reducer';
 
@@ -67,6 +67,17 @@ describe('Reducer: Guitar', () => {
         ...guitarsInitialState,
         foundGuitars: {
           ...guitarsInitialState.foundGuitars,
+          data: mockFoundGuitars,
+        },
+      });
+  });
+
+  it('should set all guitars data', () => {
+    expect(guitarsReducer(guitarsInitialState, setAllGuitars(mockFoundGuitars)))
+      .toEqual({
+        ...guitarsInitialState,
+        allGuitars: {
+          ...guitarsInitialState.allGuitars,
           data: mockFoundGuitars,
         },
       });

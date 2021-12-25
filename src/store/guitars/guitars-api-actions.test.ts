@@ -11,12 +11,14 @@ import {
 } from '../../mock/guitar';
 import { createArrayOfObjects } from '../../utils/common';
 import {
+  getAllGuitars,
   getCatalogGuitars,
   getCurrentGuitar,
   getGuitarsSimilarToName
 } from './guitars-api-actions';
 import { FetchStatus } from '../../constants/common';
 import {
+  setAllGuitars,
   setCatalogGuitars,
   setCatalogGuitarsStatus,
   setCurrentGuitar,
@@ -115,5 +117,23 @@ describe('Api-actions: Guitars', () => {
     await store.dispatch(getGuitarsSimilarToName(mockGuitarName));
 
     expect(store.getActions()).toEqual([setFoundGuitars(null)]);
+  });
+
+  it('should handle succeed get all guitars request', async () => {
+    const store = createMockStore();
+    mockAPI.onGet(APIRoute.CatalogGuitars()).reply(200, mockFoundGuitars);
+
+    await store.dispatch(getAllGuitars());
+
+    expect(store.getActions()).toEqual([setAllGuitars(mockFoundGuitars)]);
+  });
+
+  it('should handle failed get all guitars request', async () => {
+    const store = createMockStore();
+    mockAPI.onGet(APIRoute.CatalogGuitars()).reply(400);
+
+    await store.dispatch(getAllGuitars());
+
+    expect(store.getActions()).toEqual([setAllGuitars(null)]);
   });
 });
