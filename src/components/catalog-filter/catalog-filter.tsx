@@ -1,7 +1,8 @@
-import { ChangeEventHandler, useEffect, useMemo } from 'react';
+import { debounce } from 'lodash';
+import { ChangeEventHandler, FocusEventHandler, KeyboardEventHandler, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import { FetchStatus } from '../../constants/common';
+import { DEBOUNCE_TIME, FetchStatus, KeyCode } from '../../constants/common';
 import { FilterParameter } from '../../constants/filter';
 import {
   GuitarTypeValue,
@@ -43,23 +44,85 @@ function CatalogFilter(): JSX.Element {
 
   const dispatch = useDispatch();
 
+  const fixPrices = () => {
+    if (priceLimits.min !== undefined) {
+      if (minPrice !== '' && minPrice < priceLimits.min) {
+        dispatch(SetFilterMinPrice(priceLimits.min));
+      }
+
+      if (maxPrice !== '' && maxPrice < priceLimits.min) {
+        dispatch(SetFilterMaxPrice(priceLimits.min));
+      }
+    }
+
+    if (priceLimits.max !== undefined) {
+      if (minPrice !== '' && minPrice > priceLimits.max) {
+        dispatch(SetFilterMinPrice(priceLimits.max));
+      }
+
+      if (maxPrice !== '' && maxPrice > priceLimits.max) {
+        dispatch(SetFilterMaxPrice(priceLimits.max));
+      }
+    }
+  };
+
+  const fixMinPrice = (newValue: string) => {
+    if (newValue === '') {
+      return;
+    }
+
+    const currentValue = Number(newValue);
+
+    if (maxPrice && currentValue > maxPrice) {
+      dispatch(SetFilterMinPrice(maxPrice));
+    }
+
+    fixPrices();
+  };
+
+  const fixMaxPrice = (newValue: string) => {
+    if (newValue === '') {
+      return;
+    }
+
+    const currentValue = Number(newValue);
+
+    if (minPrice && currentValue < minPrice) {
+      dispatch(SetFilterMaxPrice(minPrice));
+    }
+
+    fixPrices();
+  };
+
+  const handleMinPriceKeydown: KeyboardEventHandler<HTMLInputElement> = (evt) => {
+    const { code } = evt;
+    if (code === KeyCode.Enter || code === KeyCode.NumpadEnter) {
+      fixMinPrice((evt.target as HTMLInputElement).value);
+    }
+  };
+
+  const handleMaxPriceKeydown: KeyboardEventHandler<HTMLInputElement> = (evt) => {
+    const { code } = evt;
+    if (code === KeyCode.Enter || code === KeyCode.NumpadEnter) {
+      fixMaxPrice((evt.target as HTMLInputElement).value);
+    }
+  };
+
+  const handleMinPriceBlur: FocusEventHandler<HTMLInputElement> = (evt) => {
+    fixMinPrice(evt.target.value);
+  };
+
+  const handleMaxPriceBlur: FocusEventHandler<HTMLInputElement> = (evt) => {
+    fixMaxPrice(evt.target.value);
+  };
+
   const handleMinPriceChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
     if (evt.target.value === '') {
       dispatch(SetFilterMinPrice(''));
       return;
     }
 
-    const currentPrice = Number(evt.target.value);
-
-    let newPrice: number;
-
-    if (maxPrice) {
-      newPrice = currentPrice > maxPrice ? maxPrice : currentPrice;
-    } else {
-      newPrice = currentPrice;
-    }
-
-    dispatch(SetFilterMinPrice(newPrice));
+    dispatch(SetFilterMinPrice(Number(evt.target.value)));
   };
 
   const handleMaxPriceChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
@@ -68,16 +131,7 @@ function CatalogFilter(): JSX.Element {
       return;
     }
 
-    const currentPrice = Number(evt.target.value);
-
-    let newPrice: number;
-
-    if (minPrice) {
-      newPrice = currentPrice < minPrice ? minPrice : currentPrice;
-    } else {
-      newPrice = currentPrice;
-    }
-    dispatch(SetFilterMaxPrice(newPrice));
+    dispatch(SetFilterMaxPrice(Number(evt.target.value)));
   };
 
   const handleTypeChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
@@ -102,7 +156,13 @@ function CatalogFilter(): JSX.Element {
     dispatch(RemoveFilterStringCount(stringCount));
   };
 
-  const availableStringCounts = useMemo(() => getAvailableStringCounts(types), [types]);
+  const fetchCatalogGuitars = () => dispatch(setCatalogGuitarsStatus(FetchStatus.Idle));
+  const fetchCatalogGuitarsDebounced = useMemo(() => debounce(fetchCatalogGuitars, DEBOUNCE_TIME), []);
+
+  const availableStringCounts = useMemo(
+    () => getAvailableStringCounts(types),
+    [types],
+  );
 
   useEffect(() => {
     if (!allGuitars) {
@@ -110,8 +170,13 @@ function CatalogFilter(): JSX.Element {
     }
   }, [allGuitars]);
 
+
   useEffect(() => {
-    dispatch(setCatalogGuitarsStatus(FetchStatus.Idle));
+    fixPrices();
+  }, [priceLimits]);
+
+  useEffect(() => {
+    fetchCatalogGuitarsDebounced();
 
     const search = new URLSearchParams();
 
@@ -165,10 +230,14 @@ function CatalogFilter(): JSX.Element {
     if (queryStringCounts.length) {
       queryStringCounts.forEach((stringCount) => {
         if (stringCount !== '') {
-          dispatch(AddFilterStringCount(Number(stringCount) as StringCountType));
+          dispatch(
+            AddFilterStringCount(Number(stringCount) as StringCountType),
+          );
         }
       });
     }
+
+    return () => fetchCatalogGuitarsDebounced.cancel();
   }, []);
 
   return (
@@ -185,9 +254,11 @@ function CatalogFilter(): JSX.Element {
               placeholder={String(priceLimits.min)}
               id="priceMin"
               name="от"
-              min={0}
-              max={priceLimits.min}
+              min={priceLimits.min}
+              max={priceLimits.max}
               onChange={handleMinPriceChange}
+              onKeyDown={handleMinPriceKeydown}
+              onBlur={handleMinPriceBlur}
               data-testid="min-price-input"
             />
           </div>
@@ -199,9 +270,11 @@ function CatalogFilter(): JSX.Element {
               placeholder={String(priceLimits.max)}
               id="priceMax"
               name="до"
-              min={0}
+              min={priceLimits.min}
               max={priceLimits.max}
               onChange={handleMaxPriceChange}
+              onKeyDown={handleMaxPriceKeydown}
+              onBlur={handleMaxPriceBlur}
               data-testid="max-price-input"
             />
           </div>
@@ -223,7 +296,9 @@ function CatalogFilter(): JSX.Element {
               checked={types.includes(guitarType)}
               onChange={handleTypeChange}
             />
-            <label htmlFor={guitarType} data-testid={`${guitarType}-checkbox`}>{HumanizedGuitars[guitarType]}</label>
+            <label htmlFor={guitarType} data-testid={`${guitarType}-checkbox`}>
+              {HumanizedGuitars[guitarType]}
+            </label>
           </div>
         ))}
       </fieldset>
@@ -252,7 +327,9 @@ function CatalogFilter(): JSX.Element {
                 onChange={handleStringCountChange}
                 disabled={isDisabled}
               />
-              <label htmlFor={id} data-testid={`${id}-checkbox`}>{stringCount}</label>
+              <label htmlFor={id} data-testid={`${id}-checkbox`}>
+                {stringCount}
+              </label>
             </div>
           );
         })}

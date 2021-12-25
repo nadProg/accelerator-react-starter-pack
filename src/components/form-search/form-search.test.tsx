@@ -3,7 +3,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
-import { KeyCode } from '../../constants/common';
+import { asyncDelay, DEBOUNCE_TIME, KeyCode } from '../../constants/common';
 import { createMockGuitar } from '../../mock/guitar';
 import { State } from '../../types/store';
 import { createArrayOfObjects } from '../../utils/common';
@@ -139,7 +139,7 @@ describe('Component: FormSearch', () => {
     });
   });
 
-  it('should handle typing interactions', () => {
+  it('should handle typing interactions', async () => {
     const mockStore = configureMockStore<State>()(mockFilledState);
     mockStore.dispatch = jest.fn();
     const mockText = lorem.word();
@@ -155,7 +155,14 @@ describe('Component: FormSearch', () => {
     userEvent.click(screen.getByTestId('search-input'));
 
     userEvent.type(screen.getByTestId('search-input'), mockText);
-    expect(mockStore.dispatch).toBeCalledTimes(mockText.length);
+
+    await act(async () => {
+      await asyncDelay(DEBOUNCE_TIME);
+      await asyncDelay(DEBOUNCE_TIME);
+    });
+
+    expect(mockStore.dispatch).toBeCalledTimes(1);
+    expect(mockStore.dispatch).toHaveBeenCalledWith(expect.any(Function));
   });
 
   it('should handle window click interaction', () => {

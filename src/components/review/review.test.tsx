@@ -1,18 +1,9 @@
 import {render} from '@testing-library/react';
-import { Comment } from '../../types/comment';
+import { createMockComment } from '../../mock/comment';
 import Review from './review';
 
 
-const mockReview: Comment = {
-  id: '',
-  userName: '',
-  advantage: '',
-  disadvantage: '',
-  comment: '',
-  rating: 5,
-  createAt: '',
-  guitarId: 2,
-};
+const mockReview = createMockComment();
 
 describe('Component: Review', () => {
   it('should render without errors', () => {

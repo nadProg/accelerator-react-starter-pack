@@ -1,9 +1,9 @@
-import { Comment } from '../../types/comment';
+import { CommentGet } from '../../types/comment';
 import { formatCommentDate } from '../../utils/date';
 import Rating from '../rating/rating';
 
 type ReviewProps = {
-  review: Comment;
+  review: CommentGet;
 };
 
 function Review({ review }: ReviewProps) {

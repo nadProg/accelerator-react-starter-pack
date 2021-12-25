@@ -1,5 +1,5 @@
 import { configureMockStore } from '@jedmao/redux-mock-store';
-import { render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { createMockState } from '../../mock/state';
@@ -21,6 +21,7 @@ import {
 import { AppRoute } from '../../constants/endpoints';
 import { createArrayOfObjects } from '../../utils/common';
 import { createMockGuitar } from '../../mock/guitar';
+import { asyncDelay, DEBOUNCE_TIME, KeyCode } from '../../constants/common';
 
 const mockHistory = createMemoryHistory();
 
@@ -77,7 +78,194 @@ describe('Component: CatalogFilter', () => {
     ).toBeInTheDocument();
   });
 
-  it('should handle handle select checkboxes when no guitar types selected', () => {
+  it('should handle price inputs', async () => {
+    const mockStore = configureMockStore<State>(middlewares)({
+      ...mockState,
+      filter: {
+        ...mockState.filter,
+        types: [GuitarTypeValue.Ukulele],
+        stringCounts: [...STRING_COUNT_VALUES],
+      },
+    });
+
+    mockStore.dispatch = jest.fn();
+
+    render(
+      <Provider store={mockStore}>
+        <Router history={mockHistory}>
+          <CatalogFilter />
+        </Router>
+      </Provider>,
+    );
+
+    userEvent.type(screen.getByTestId('min-price-input'), '123');
+    fireEvent.keyDown(screen.getByTestId('min-price-input'), {
+      code: KeyCode.NumpadEnter,
+    });
+    userEvent.click(screen.getByTestId('max-price-input'));
+
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(1));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(2));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(3));
+
+    userEvent.type(screen.getByTestId('max-price-input'), '456');
+    fireEvent.keyDown(screen.getByTestId('max-price-input'), {
+      code: KeyCode.NumpadEnter,
+    });
+    userEvent.click(screen.getByTestId('min-price-input'));
+
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(4));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(5));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(6));
+
+    await act(async () => {
+      await asyncDelay(DEBOUNCE_TIME);
+    });
+  });
+
+  it('should handle max price', async () => {
+    const mockMinPrice = 1000;
+    const mockStore = configureMockStore<State>(middlewares)({
+      ...mockState,
+      filter: {
+        ...mockState.filter,
+        price: {
+          min: mockMinPrice,
+        },
+      },
+    });
+
+    mockStore.dispatch = jest.fn();
+
+    render(
+      <Provider store={mockStore}>
+        <Router history={mockHistory}>
+          <CatalogFilter />
+        </Router>
+      </Provider>,
+    );
+
+    userEvent.type(screen.getByTestId('max-price-input'), '1');
+    fireEvent.keyDown(screen.getByTestId('max-price-input'), {
+      code: KeyCode.NumpadEnter,
+    });
+
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(1));
+
+    await act(async () => {
+      await asyncDelay(DEBOUNCE_TIME);
+    });
+  });
+
+  it('should handle empty input', async () => {
+    const mockStore = configureMockStore<State>(middlewares)({
+      ...mockState,
+      filter: {
+        ...mockState.filter,
+        price: {
+          max: 1,
+          min: 2,
+        },
+      },
+    });
+
+    mockStore.dispatch = jest.fn();
+
+    render(
+      <Provider store={mockStore}>
+        <Router history={mockHistory}>
+          <CatalogFilter />
+        </Router>
+      </Provider>,
+    );
+
+    userEvent.type(screen.getByTestId('min-price-input'), '{backspace}');
+    userEvent.type(screen.getByTestId('max-price-input'), '{backspace}');
+
+    await act(async () => {
+      await asyncDelay(DEBOUNCE_TIME);
+    });
+
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(''));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(''));
+  });
+
+  it('should render correctly when empty all guitars', () => {
+    mockHistory.push(AppRoute.CatalogPage());
+    const mockStore = configureMockStore<State>(middlewares)({
+      ...mockState,
+      guitars: {
+        ...mockState.guitars,
+        allGuitars: {
+          data: [],
+        },
+      },
+    });
+
+    render(
+      <Provider store={mockStore}>
+        <Router history={mockHistory}>
+          <CatalogFilter />
+        </Router>
+      </Provider>,
+    );
+
+    expect(screen.getByTestId('min-price-input')).toHaveAttribute(
+      'placeholder',
+      '',
+    );
+    expect(screen.getByTestId('max-price-input')).toHaveAttribute(
+      'placeholder',
+      '',
+    );
+  });
+
+  it('should render correctly when all guitars are loaded', () => {
+    mockHistory.push(AppRoute.CatalogPage());
+    const mockStore = configureMockStore<State>(middlewares)({
+      ...mockState,
+      guitars: {
+        ...mockState.guitars,
+        allGuitars: {
+          data: createArrayOfObjects(createMockGuitar, 10),
+        },
+      },
+      filter: {
+        ...mockState.filter,
+        price: {
+          min: -1,
+          max: -1,
+        },
+      },
+    });
+    mockStore.dispatch = jest.fn();
+
+    render(
+      <Provider store={mockStore}>
+        <Router history={mockHistory}>
+          <CatalogFilter />
+        </Router>
+      </Provider>,
+    );
+
+    expect(screen.getByTestId('min-price-input')).not.toHaveAttribute(
+      'placeholder',
+      '',
+    );
+    expect(screen.getByTestId('max-price-input')).not.toHaveAttribute(
+      'placeholder',
+      '',
+    );
+
+    expect(mockStore.dispatch).toHaveBeenCalledWith(
+      SetFilterMinPrice(expect.any(Number)),
+    );
+    expect(mockStore.dispatch).toHaveBeenCalledWith(
+      SetFilterMaxPrice(expect.any(Number)),
+    );
+  });
+
+  it('should handle handle select checkboxes when no guitar types selected', async () => {
     const mockStore = configureMockStore<State>(middlewares)(mockState);
 
     mockStore.dispatch = jest.fn();
@@ -117,21 +305,25 @@ describe('Component: CatalogFilter', () => {
       screen.getByTestId(`${STRING_COUNT_VALUES[3]}-strings-checkbox`),
     );
 
-    expect(mockStore.dispatch).not.toHaveBeenCalledWith(
+    expect(mockStore.dispatch).toHaveBeenCalledWith(
       AddFilterStringCount(STRING_COUNT_VALUES[0]),
     );
-    expect(mockStore.dispatch).not.toHaveBeenCalledWith(
+    expect(mockStore.dispatch).toHaveBeenCalledWith(
       AddFilterStringCount(STRING_COUNT_VALUES[1]),
     );
-    expect(mockStore.dispatch).not.toHaveBeenCalledWith(
+    expect(mockStore.dispatch).toHaveBeenCalledWith(
       AddFilterStringCount(STRING_COUNT_VALUES[2]),
     );
-    expect(mockStore.dispatch).not.toHaveBeenCalledWith(
+    expect(mockStore.dispatch).toHaveBeenCalledWith(
       AddFilterStringCount(STRING_COUNT_VALUES[3]),
     );
+
+    await act(async () => {
+      await asyncDelay(DEBOUNCE_TIME);
+    });
   });
 
-  it('should handle handle select stringCounts checkboxes when all guitar types selected', () => {
+  it('should handle handle select stringCounts checkboxes when all guitar types selected', async () => {
     const mockStore = configureMockStore<State>(middlewares)({
       ...mockState,
       filter: {
@@ -176,9 +368,13 @@ describe('Component: CatalogFilter', () => {
     expect(mockStore.dispatch).toHaveBeenCalledWith(
       AddFilterStringCount(STRING_COUNT_VALUES[3]),
     );
+
+    await act(async () => {
+      await asyncDelay(DEBOUNCE_TIME);
+    });
   });
 
-  it('should handle deselect checkboxes when all checkoxes are selected', () => {
+  it('should handle deselect checkboxes when all checkoxes are selected', async () => {
     const mockStore = configureMockStore<State>(middlewares)({
       ...mockState,
       filter: {
@@ -237,9 +433,13 @@ describe('Component: CatalogFilter', () => {
     expect(mockStore.dispatch).toHaveBeenCalledWith(
       RemoveFilterStringCount(STRING_COUNT_VALUES[3]),
     );
+
+    await act(async () => {
+      await asyncDelay(DEBOUNCE_TIME);
+    });
   });
 
-  it('should update stringCounts when guitar types is changed', () => {
+  it('should update stringCounts when guitar types is changed', async () => {
     const mockStore = configureMockStore<State>(middlewares)({
       ...mockState,
       filter: {
@@ -268,185 +468,9 @@ describe('Component: CatalogFilter', () => {
     expect(mockStore.dispatch).toHaveBeenCalledWith(
       RemoveFilterStringCount(STRING_COUNT_VALUES[3]),
     );
-  });
 
-  it('should handle price inputs', () => {
-    const mockStore = configureMockStore<State>(middlewares)({
-      ...mockState,
-      filter: {
-        ...mockState.filter,
-        types: [GuitarTypeValue.Ukulele],
-        stringCounts: [...STRING_COUNT_VALUES],
-      },
+    await act(async () => {
+      await asyncDelay(DEBOUNCE_TIME);
     });
-
-    mockStore.dispatch = jest.fn();
-
-    render(
-      <Provider store={mockStore}>
-        <Router history={mockHistory}>
-          <CatalogFilter />
-        </Router>
-      </Provider>,
-    );
-
-    userEvent.type(screen.getByTestId('min-price-input'), '123');
-
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(1));
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(2));
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(3));
-
-    userEvent.type(screen.getByTestId('max-price-input'), '456');
-
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(4));
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(5));
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(6));
-  });
-
-  it('should handle incorrect max price input', () => {
-    const mockMinPrice = 1000;
-    const mockStore = configureMockStore<State>(middlewares)({
-      ...mockState,
-      filter: {
-        ...mockState.filter,
-        price: {
-          min: mockMinPrice,
-        },
-      },
-    });
-
-    mockStore.dispatch = jest.fn();
-
-    render(
-      <Provider store={mockStore}>
-        <Router history={mockHistory}>
-          <CatalogFilter />
-        </Router>
-      </Provider>,
-    );
-
-    userEvent.type(screen.getByTestId('max-price-input'), '1');
-
-    expect(mockStore.dispatch).toHaveBeenCalledWith(
-      SetFilterMaxPrice(mockMinPrice),
-    );
-  });
-
-  it('should handle incorrect min price input', () => {
-    const mockMaxPrice = 1;
-    const mockStore = configureMockStore<State>(middlewares)({
-      ...mockState,
-      filter: {
-        ...mockState.filter,
-        price: {
-          max: mockMaxPrice,
-        },
-      },
-    });
-
-    mockStore.dispatch = jest.fn();
-
-    render(
-      <Provider store={mockStore}>
-        <Router history={mockHistory}>
-          <CatalogFilter />
-        </Router>
-      </Provider>,
-    );
-
-    userEvent.type(screen.getByTestId('min-price-input'), '9');
-
-    expect(mockStore.dispatch).toHaveBeenCalledWith(
-      SetFilterMinPrice(mockMaxPrice),
-    );
-  });
-
-  it('should handle empty input', () => {
-    const mockStore = configureMockStore<State>(middlewares)({
-      ...mockState,
-      filter: {
-        ...mockState.filter,
-        price: {
-          max: 1,
-          min: 2,
-        },
-      },
-    });
-
-    mockStore.dispatch = jest.fn();
-
-    render(
-      <Provider store={mockStore}>
-        <Router history={mockHistory}>
-          <CatalogFilter />
-        </Router>
-      </Provider>,
-    );
-
-    userEvent.type(screen.getByTestId('min-price-input'), '{backspace}');
-    userEvent.type(screen.getByTestId('max-price-input'), '{backspace}');
-
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(''));
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(''));
-  });
-
-  it('should render correctly when empty all guitars', () => {
-    mockHistory.push(AppRoute.CatalogPage());
-    const mockStore = configureMockStore<State>(middlewares)({
-      ...mockState,
-      guitars: {
-        ...mockState.guitars,
-        allGuitars: {
-          data: [],
-        },
-      },
-    });
-
-    render(
-      <Provider store={mockStore}>
-        <Router history={mockHistory}>
-          <CatalogFilter />
-        </Router>
-      </Provider>,
-    );
-
-    expect(screen.getByTestId('min-price-input')).toHaveAttribute(
-      'placeholder',
-      '',
-    );
-    expect(screen.getByTestId('max-price-input')).toHaveAttribute(
-      'placeholder',
-      '',
-    );
-  });
-
-  it('should render correctly when all guitars are loaded', () => {
-    mockHistory.push(AppRoute.CatalogPage());
-    const mockStore = configureMockStore<State>(middlewares)({
-      ...mockState,
-      guitars: {
-        ...mockState.guitars,
-        allGuitars: {
-          data: createArrayOfObjects(createMockGuitar, 10),
-        },
-      },
-    });
-
-    render(
-      <Provider store={mockStore}>
-        <Router history={mockHistory}>
-          <CatalogFilter />
-        </Router>
-      </Provider>,
-    );
-
-    expect(screen.getByTestId('min-price-input')).not.toHaveAttribute(
-      'placeholder',
-      '',
-    );
-    expect(screen.getByTestId('max-price-input')).not.toHaveAttribute(
-      'placeholder',
-      '',
-    );
   });
 });

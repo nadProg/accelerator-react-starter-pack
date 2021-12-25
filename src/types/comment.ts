@@ -1,4 +1,4 @@
-export type Comment = {
+export type CommentGet = {
   id: string;
   userName: string;
   advantage: string;
