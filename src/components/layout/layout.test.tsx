@@ -15,7 +15,7 @@ const mockStore = configureMockStore<State>()(mockState);
 
 mockStore.dispatch = jest.fn();
 
-describe('Component: MainNavigation', () => {
+describe('Component: Layout', () => {
   it('should render without errors', () => {
     render(
       <Provider store={mockStore}>

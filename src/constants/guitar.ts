@@ -1,3 +1,5 @@
+import { GuitarType } from '../types/guitar';
+
 export const STRING_COUNT_VALUES = [4 , 6 , 7 , 12] as const;
 
 export const GuitarTypeValue = {
@@ -6,13 +8,17 @@ export const GuitarTypeValue = {
   Ukulele :'ukulele',
 } as const;
 
-export const HumanizedGuitar = {
+export const HumanizedGuitar: {
+  [key in GuitarType]: string
+} = {
   [GuitarTypeValue.Acoustic]: 'Акустическая гитара',
   [GuitarTypeValue.Electric]: 'Электрогитара',
   [GuitarTypeValue.Ukulele]: 'Укулеле',
 } as const;
 
-export const HumanizedGuitars = {
+export const HumanizedGuitars: {
+  [key in GuitarType]: string
+} = {
   [GuitarTypeValue.Acoustic]: 'Акустические гитары',
   [GuitarTypeValue.Electric]: 'Электрогитары',
   [GuitarTypeValue.Ukulele]: 'Укулеле',

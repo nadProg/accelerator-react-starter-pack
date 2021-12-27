@@ -19,9 +19,9 @@ import {
   SetFilterMinPrice
 } from '../../store/filter/filter-actions';
 import { AppRoute } from '../../constants/endpoints';
-import { createArrayOfObjects } from '../../utils/common';
+import { asyncDelay, createArrayOfObjects } from '../../utils/common';
 import { createMockGuitar } from '../../mock/guitar';
-import { asyncDelay, DEBOUNCE_TIME, KeyCode } from '../../constants/common';
+import { DEBOUNCE_TIME, KeyCode } from '../../constants/common';
 
 const mockHistory = createMemoryHistory();
 

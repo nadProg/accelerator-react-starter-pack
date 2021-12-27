@@ -1,5 +1,6 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import { asyncDelay, DEBOUNCE_TIME } from '../constants/common';
+import { DEBOUNCE_TIME } from '../constants/common';
+import { asyncDelay } from '../utils/common';
 import { useDebounce } from './use-debounce';
 
 

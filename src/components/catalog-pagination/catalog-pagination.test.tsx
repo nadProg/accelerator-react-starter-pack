@@ -8,8 +8,8 @@ import { Route, Router } from 'react-router-dom';
 import { State } from '../../types/store';
 import { createMockState } from '../../mock/state';
 import CatalogPagination from './catalog-pagination';
-import { asyncDelay, DEBOUNCE_TIME, FetchStatus } from '../../constants/common';
-import { createArrayOfObjects } from '../../utils/common';
+import { DEBOUNCE_TIME, FetchStatus } from '../../constants/common';
+import { asyncDelay, createArrayOfObjects } from '../../utils/common';
 import { createMockGuitarWithComments } from '../../mock/guitar';
 import { CATALOG_PAGE_SIZE } from '../../constants/pagination';
 import { AppRoute } from '../../constants/endpoints';
@@ -22,7 +22,7 @@ const mockState = createMockState();
 
 const mockHistory = createMemoryHistory();
 
-const mockMaxPage = 12;
+const mockMaxPage = 7;
 const mockTotalAmount = CATALOG_PAGE_SIZE * mockMaxPage;
 const mockCurrentPage = 5;
 
@@ -48,7 +48,7 @@ describe('Component: CatalogPagination', () => {
     mockHistory.push(AppRoute.CatalogPage(mockCurrentPage));
   });
 
-  it('should render without errors', () => {
+  it('should render correctly with prev and next buttons', () => {
 
 
     render(
@@ -66,6 +66,55 @@ describe('Component: CatalogPagination', () => {
     expect(screen.getByTestId(`${mockCurrentPage - 1}-page-link`)).toBeInTheDocument();
     expect(screen.getByTestId(`${mockCurrentPage}-page-link`)).toBeInTheDocument();
     expect(screen.getByTestId(`${mockCurrentPage + 1}-page-link`)).toBeInTheDocument();
+    expect(screen.queryByTestId(`${mockCurrentPage - 2}-page-link`)).not.toBeInTheDocument();
+    expect(screen.queryByTestId(`${mockCurrentPage + 2}-page-link`)).not.toBeInTheDocument();
+  });
+
+
+  it('should render correctly without prev button', () => {
+    mockHistory.push(AppRoute.CatalogPage(1));
+
+    render(
+      <Provider store={mockStore}>
+        <Router history={mockHistory}>
+          <Route path={AppRoute.CatalogPage()} exact>
+            <CatalogPagination />
+          </Route>
+        </Router>
+      </Provider>,
+    );
+
+    expect(screen.getByTestId('next-page-link')).toBeInTheDocument();
+    expect(screen.getByTestId('1-page-link')).toBeInTheDocument();
+    expect(screen.getByTestId('2-page-link')).toBeInTheDocument();
+    expect(screen.getByTestId('3-page-link')).toBeInTheDocument();
+    expect(screen.queryByTestId('4-page-link')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('5-page-link')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('6-page-link')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('prev-page-link')).not.toBeInTheDocument();
+  });
+
+  it('should render correctly without next button', () => {
+    mockHistory.push(AppRoute.CatalogPage(7));
+
+    render(
+      <Provider store={mockStore}>
+        <Router history={mockHistory}>
+          <Route path={AppRoute.CatalogPage()} exact>
+            <CatalogPagination />
+          </Route>
+        </Router>
+      </Provider>,
+    );
+
+    expect(screen.getByTestId('prev-page-link')).toBeInTheDocument();
+    expect(screen.queryByTestId('next-page-link')).not.toBeInTheDocument();
+    expect(screen.getByTestId('7-page-link')).toBeInTheDocument();
+    expect(screen.queryByTestId('5-page-link')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('6-page-link')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('8-page-link')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('9-page-link')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('6-page-link')).not.toBeInTheDocument();
   });
 
   it('should handle link click', async () => {

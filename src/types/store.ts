@@ -24,7 +24,7 @@ import { rootReducer } from '../store/root-reducer';
 
 export type State = ReturnType<typeof rootReducer>;
 
-export type Action =
+export type ActionType =
   | ReturnType<typeof setCatalogGuitars>
   | ReturnType<typeof setCatalogGuitarsStatus>
   | ReturnType<typeof setCurrentGuitar>
@@ -44,5 +44,5 @@ export type ThunkActionResult<R = Promise<void>> = ThunkAction<
   R,
   State,
   AxiosInstance,
-  Action
+  ActionType
 >;

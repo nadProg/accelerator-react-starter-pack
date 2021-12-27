@@ -30,7 +30,7 @@ function ProductCard({ product }: ProductCardProps): JSX.Element {
           <div className="rate product-card__rate" aria-hidden="true">
             <span className="visually-hidden">Рейтинг:</span>
             <Rating value={product.rating} />
-            <span className="rate__count">{product.comments?.length || 0}</span>
+            <span className="rate__count">{product.comments.length}</span>
             <span className="rate__message"></span>
           </div>
           <p className="product-card__title">{product.name}</p>

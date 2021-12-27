@@ -1,7 +1,7 @@
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import { createAPI } from '../../services/api';
-import { Action, State } from '../../types/store';
+import { ActionType, State } from '../../types/store';
 import MockAdapter from 'axios-mock-adapter';
 import { APIRoute } from '../../constants/endpoints';
 import { datatype, lorem } from 'faker';
@@ -36,8 +36,8 @@ const middlewares = [thunk.withExtraArgument(api)];
 
 const createMockStore = configureMockStore<
   State,
-  Action,
-  ThunkDispatch<State, typeof api, Action>
+  ActionType,
+  ThunkDispatch<State, typeof api, ActionType>
 >(middlewares);
 
 const mockGuitarName = lorem.word();
@@ -53,6 +53,34 @@ describe('Api-actions: Guitars', () => {
   it('should handle succeed get catalog guitars request', async () => {
     const mockState = createMockState();
     const store = createMockStore(mockState);
+    const mockTotalCount = datatype.number();
+
+    mockAPI.onGet(APIRoute.CatalogGuitars()).reply(200, mockCatalogGuitars, {
+      [TOTAL_COUNT_HEADER]: mockTotalCount,
+    });
+
+    await store.dispatch(getCatalogGuitars());
+
+    expect(store.getActions()).toEqual([
+      setCatalogGuitarsStatus(FetchStatus.Loading),
+      setPaginationMaxPage(Math.ceil(mockTotalCount / CATALOG_PAGE_SIZE)),
+      setCatalogGuitars(mockCatalogGuitars),
+      setCatalogGuitarsStatus(FetchStatus.Succeeded),
+    ]);
+  });
+
+  it('should handle succeed get catalog guitars request when max and min price are set', async () => {
+    const mockState = createMockState();
+    const store = createMockStore({
+      ...mockState,
+      filter: {
+        ...mockState.filter,
+        price: {
+          min: datatype.number(),
+          max: datatype.number(),
+        },
+      },
+    });
     const mockTotalCount = datatype.number();
 
     mockAPI.onGet(APIRoute.CatalogGuitars()).reply(200, mockCatalogGuitars, {

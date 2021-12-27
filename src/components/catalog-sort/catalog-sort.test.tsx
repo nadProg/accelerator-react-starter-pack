@@ -2,12 +2,13 @@ import { configureMockStore } from '@jedmao/redux-mock-store';
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
-import { asyncDelay, DEBOUNCE_TIME, FetchStatus } from '../../constants/common';
+import { DEBOUNCE_TIME, FetchStatus } from '../../constants/common';
 import { SortOrder, SortTypeValue } from '../../constants/sort';
 import { createMockState } from '../../mock/state';
 import { setCatalogGuitarsStatus } from '../../store/guitars/guitars-actions';
 import { setSortOrder, SetSortType } from '../../store/sort/sort-actions';
 import { State } from '../../types/store';
+import { asyncDelay } from '../../utils/common';
 import CatalogSort from './catalog-sort';
 
 const mockState = createMockState();

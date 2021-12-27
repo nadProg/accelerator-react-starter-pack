@@ -5,7 +5,7 @@ import NotFoundScreen from './not-found-screen';
 
 const mockHistory = createMemoryHistory();
 
-describe('Component: NotFoundPage', () => {
+describe('Component: NotFoundScreen', () => {
   it('should render without errors', () => {
     render(
       <Router history={mockHistory}>

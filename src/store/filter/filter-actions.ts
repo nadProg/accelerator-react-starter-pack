@@ -1,9 +1,9 @@
 import { createAction } from '@reduxjs/toolkit';
-import { ActionType } from '../../constants/action';
+import { Action } from '../../constants/action';
 import { GuitarType, StringCountType } from '../../types/guitar';
 
 export const SetFilterMinPrice = createAction(
-  ActionType.SetFilterMinPrice,
+  Action.SetFilterMinPrice,
   (minPrice: number | '') => ({
     payload: {
       minPrice,
@@ -12,7 +12,7 @@ export const SetFilterMinPrice = createAction(
 );
 
 export const SetFilterMaxPrice = createAction(
-  ActionType.SetFilterMaxPrice,
+  Action.SetFilterMaxPrice,
   (maxPrice: number | '') => ({
     payload: {
       maxPrice,
@@ -21,7 +21,7 @@ export const SetFilterMaxPrice = createAction(
 );
 
 export const AddFilterGuitarType = createAction(
-  ActionType.AddFilterGuitarType,
+  Action.AddFilterGuitarType,
   (guitarType: GuitarType) => ({
     payload: {
       guitarType,
@@ -30,7 +30,7 @@ export const AddFilterGuitarType = createAction(
 );
 
 export const RemoveFilterGuitarType = createAction(
-  ActionType.RemoveFilterGuitarType,
+  Action.RemoveFilterGuitarType,
   (guitarType: GuitarType) => ({
     payload: {
       guitarType,
@@ -39,7 +39,7 @@ export const RemoveFilterGuitarType = createAction(
 );
 
 export const AddFilterStringCount = createAction(
-  ActionType.AddFilterStringCount,
+  Action.AddFilterStringCount,
   (stringCount: StringCountType) => ({
     payload: {
       stringCount,
@@ -48,7 +48,7 @@ export const AddFilterStringCount = createAction(
 );
 
 export const RemoveFilterStringCount = createAction(
-  ActionType.RemoveFilterStringCount,
+  Action.RemoveFilterStringCount,
   (stringCount: StringCountType) => ({
     payload: {
       stringCount,

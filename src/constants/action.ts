@@ -1,4 +1,4 @@
-export const ActionType = {
+export const Action = {
   SetCatalogGuitars: 'catalogGuitars/setData',
   SetCatalogGuitarsStatus: 'catalogGuitars/setStatus',
   SetCurrentGuitar: 'currentGuitar/setData',

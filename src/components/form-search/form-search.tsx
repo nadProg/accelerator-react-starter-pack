@@ -9,7 +9,7 @@ import {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
-import { ACTIVE_COLOR, KeyCode } from '../../constants/common';
+import { ACTIVE_COLOR, Direction, KeyCode } from '../../constants/common';
 import { AppRoute } from '../../constants/endpoints';
 import { SEARCH_LIST_LENGTH } from '../../constants/search';
 import { useDebounce } from '../../hooks/use-debounce';
@@ -68,10 +68,10 @@ function FormSearch() {
   const handleFormSearchKeydown: KeyboardEventHandler = (evt) => {
     switch (evt.code) {
       case KeyCode.ArrowDown:
-        setCurrentIndex(getChangeArrayIndex(foundGuitars, 'increase'));
+        setCurrentIndex(getChangeArrayIndex(foundGuitars, Direction.Increase));
         break;
       case KeyCode.ArrowUp:
-        setCurrentIndex(getChangeArrayIndex(foundGuitars, 'decrease'));
+        setCurrentIndex(getChangeArrayIndex(foundGuitars, Direction.Decrease));
         break;
       case KeyCode.Enter:
         if (

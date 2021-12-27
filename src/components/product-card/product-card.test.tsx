@@ -10,7 +10,7 @@ const mockProduct = createMockGuitarWithComments();
 
 const mockHistory = createMemoryHistory();
 
-describe('Component: Socials', () => {
+describe('Component: ProductCard', () => {
   it('should render without errors', () => {
     render(
       <Router history={mockHistory}>
