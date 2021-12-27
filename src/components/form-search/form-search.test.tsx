@@ -158,7 +158,6 @@ describe('Component: FormSearch', () => {
 
     await act(async () => {
       await asyncDelay(DEBOUNCE_TIME);
-      await asyncDelay(DEBOUNCE_TIME);
     });
 
     expect(mockStore.dispatch).toBeCalledTimes(1);

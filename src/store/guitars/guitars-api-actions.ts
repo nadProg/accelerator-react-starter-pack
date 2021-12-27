@@ -1,7 +1,7 @@
+import { CATALOG_PAGE_SIZE, TOTAL_COUNT_HEADER } from '../../constants/pagination';
 import { FetchStatus } from '../../constants/common';
 import { APIRoute } from '../../constants/endpoints';
 import { FilterParameter } from '../../constants/filter';
-import { CATALOG_PAGE_SIZE } from '../../constants/guitar';
 import { Query, COMMENTS } from '../../constants/query';
 import { NAME_LIKE_QUERY } from '../../constants/search';
 import { Guitar, GuitarWithComments } from '../../types/guitar';
@@ -14,6 +14,7 @@ import {
   setCurrentGuitarStatus,
   setFoundGuitars
 } from './guitars-actions';
+import { setPaginationMaxPage } from '../pagination/pagination-actions';
 
 export const getCatalogGuitars =
   (): ThunkActionResult =>
@@ -24,10 +25,11 @@ export const getCatalogGuitars =
       const maxPrice = _getState().filter.price.max === '' ? undefined : _getState().filter.price.max;
 
       try {
-        const { data } = await api.get<GuitarWithComments[]>(APIRoute.CatalogGuitars(), {
+        const response = await api.get<GuitarWithComments[]>(APIRoute.CatalogGuitars(), {
           params: {
             [Query.Embed]: COMMENTS,
             [Query.Limit]: CATALOG_PAGE_SIZE,
+            [Query.Start]: (_getState().pagination.currentPage - 1) * CATALOG_PAGE_SIZE,
             [Query.Sort]: _getState().sort.type,
             [Query.Order]: _getState().sort.order,
             [FilterParameter.MinPrice]: minPrice,
@@ -37,7 +39,10 @@ export const getCatalogGuitars =
           },
         });
 
-        dispatch(setCatalogGuitars(data));
+        const maxPage = Math.ceil(response.headers[TOTAL_COUNT_HEADER] / CATALOG_PAGE_SIZE);
+        dispatch(setPaginationMaxPage(maxPage));
+
+        dispatch(setCatalogGuitars(response.data));
         dispatch(setCatalogGuitarsStatus(FetchStatus.Succeeded));
       } catch (error) {
         dispatch(setCatalogGuitarsStatus(FetchStatus.Failed));

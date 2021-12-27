@@ -1,19 +1,18 @@
-import { debounce } from 'lodash';
 import {
   ChangeEventHandler,
   FormEventHandler,
   KeyboardEventHandler,
   MouseEventHandler,
   useEffect,
-  useMemo,
   useRef,
   useState
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
-import { ACTIVE_COLOR, DEBOUNCE_TIME, KeyCode } from '../../constants/common';
+import { ACTIVE_COLOR, KeyCode } from '../../constants/common';
 import { AppRoute } from '../../constants/endpoints';
-import { SEARCH_LIST_LENGTH } from '../../constants/guitar';
+import { SEARCH_LIST_LENGTH } from '../../constants/search';
+import { useDebounce } from '../../hooks/use-debounce';
 import { getGuitarsSimilarToName } from '../../store/guitars/guitars-api-actions';
 import { getFoundGuitarsData } from '../../store/guitars/guitars-selectors';
 import { getChangeArrayIndex } from '../../utils/common';
@@ -52,14 +51,8 @@ function FormSearch() {
     return () => window.removeEventListener('click', handleWindowClick);
   });
 
-  useEffect(() => () => fetchSimilarGuitarDebounced.cancel(), []);
-
-  const fetchSimilarGuitars = (value: string) =>
-    dispatch(getGuitarsSimilarToName(value));
-  const fetchSimilarGuitarDebounced = useMemo(
-    () => debounce(fetchSimilarGuitars, DEBOUNCE_TIME),
-    [],
-  );
+  const fetchSimilarGuitarDebounced = useDebounce((value: string) =>
+    dispatch(getGuitarsSimilarToName(value)));
 
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
     const { value } = evt.target;

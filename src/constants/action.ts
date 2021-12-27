@@ -13,6 +13,8 @@ export const ActionType = {
   RemoveFilterGuitarType: 'filter/removeGuitarType',
   AddFilterStringCount: 'filter/addStringCount',
   RemoveFilterStringCount: 'filter/removeStringCount',
+  SetPaginationCurrentPage: 'pagination/setCurrentPage',
+  SetPaginationMaxPage: 'pagination/setMaxPage',
 } as const;
 
 export const UNKNOWN_ACTION = {

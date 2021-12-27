@@ -1,9 +1,9 @@
-export const Order = {
+export const SortOrder = {
   Ascending: 'asc',
   Descending: 'desc',
 } as const;
 
-export const Type = {
+export const SortTypeValue = {
   Price: 'price',
   Rating: 'rating',
 } as const;

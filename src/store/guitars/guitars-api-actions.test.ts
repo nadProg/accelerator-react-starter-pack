@@ -27,6 +27,8 @@ import {
 } from './guitars-actions';
 import thunk from 'redux-thunk';
 import { createMockState } from '../../mock/state';
+import { setPaginationMaxPage } from '../pagination/pagination-actions';
+import { CATALOG_PAGE_SIZE, TOTAL_COUNT_HEADER } from '../../constants/pagination';
 
 const api = createAPI();
 const mockAPI = new MockAdapter(api);
@@ -51,13 +53,17 @@ describe('Api-actions: Guitars', () => {
   it('should handle succeed get catalog guitars request', async () => {
     const mockState = createMockState();
     const store = createMockStore(mockState);
+    const mockTotalCount = datatype.number();
 
-    mockAPI.onGet(APIRoute.CatalogGuitars()).reply(200, mockCatalogGuitars);
+    mockAPI.onGet(APIRoute.CatalogGuitars()).reply(200, mockCatalogGuitars, {
+      [TOTAL_COUNT_HEADER]: mockTotalCount,
+    });
 
     await store.dispatch(getCatalogGuitars());
 
     expect(store.getActions()).toEqual([
       setCatalogGuitarsStatus(FetchStatus.Loading),
+      setPaginationMaxPage(Math.ceil(mockTotalCount / CATALOG_PAGE_SIZE)),
       setCatalogGuitars(mockCatalogGuitars),
       setCatalogGuitarsStatus(FetchStatus.Succeeded),
     ]);

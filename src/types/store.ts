@@ -1,6 +1,13 @@
 import { ThunkAction } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import { AddFilterGuitarType, AddFilterStringCount, RemoveFilterGuitarType, RemoveFilterStringCount, SetFilterMaxPrice, SetFilterMinPrice } from '../store/filter/filter-actions';
+import {
+  AddFilterGuitarType,
+  AddFilterStringCount,
+  RemoveFilterGuitarType,
+  RemoveFilterStringCount,
+  SetFilterMaxPrice,
+  SetFilterMinPrice
+} from '../store/filter/filter-actions';
 import {
   setAllGuitars,
   setCatalogGuitars,
@@ -9,6 +16,10 @@ import {
   setCurrentGuitarStatus,
   setFoundGuitars
 } from '../store/guitars/guitars-actions';
+import {
+  setPaginationCurrentPage,
+  setPaginationMaxPage
+} from '../store/pagination/pagination-actions';
 import { rootReducer } from '../store/root-reducer';
 
 export type State = ReturnType<typeof rootReducer>;
@@ -25,7 +36,9 @@ export type Action =
   | ReturnType<typeof AddFilterGuitarType>
   | ReturnType<typeof RemoveFilterGuitarType>
   | ReturnType<typeof AddFilterStringCount>
-  | ReturnType<typeof RemoveFilterStringCount>;
+  | ReturnType<typeof RemoveFilterStringCount>
+  | ReturnType<typeof setPaginationCurrentPage>
+  | ReturnType<typeof setPaginationMaxPage>;
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<
   R,

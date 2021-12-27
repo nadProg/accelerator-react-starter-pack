@@ -6,5 +6,3 @@ export const isFetchIdle = (status: FetchStatusType): boolean => status === Fetc
 export const isFetchNotReady = (status: FetchStatusType): boolean => status === FetchStatus.Idle || status === FetchStatus.Loading;
 
 export const isFetchError = (status: FetchStatusType): boolean => status === FetchStatus.Failed;
-
-export const isFetchSuccess = (status: FetchStatusType): boolean => status === FetchStatus.Succeeded;

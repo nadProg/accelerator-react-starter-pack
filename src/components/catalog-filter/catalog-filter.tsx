@@ -1,14 +1,15 @@
-import { debounce } from 'lodash';
 import { ChangeEventHandler, FocusEventHandler, KeyboardEventHandler, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import { DEBOUNCE_TIME, FetchStatus, KeyCode } from '../../constants/common';
+import { FetchStatus, KeyCode } from '../../constants/common';
+import { AppRoute } from '../../constants/endpoints';
 import { FilterParameter } from '../../constants/filter';
 import {
   GuitarTypeValue,
   HumanizedGuitars,
   STRING_COUNT_VALUES
 } from '../../constants/guitar';
+import { useDebounce } from '../../hooks/use-debounce';
 import {
   AddFilterGuitarType,
   AddFilterStringCount,
@@ -156,8 +157,7 @@ function CatalogFilter(): JSX.Element {
     dispatch(RemoveFilterStringCount(stringCount));
   };
 
-  const fetchCatalogGuitars = () => dispatch(setCatalogGuitarsStatus(FetchStatus.Idle));
-  const fetchCatalogGuitarsDebounced = useMemo(() => debounce(fetchCatalogGuitars, DEBOUNCE_TIME), []);
+  const fetchCatalogGuitarsDebounced = useDebounce(() => dispatch(setCatalogGuitarsStatus(FetchStatus.Idle)));
 
   const availableStringCounts = useMemo(
     () => getAvailableStringCounts(types),
@@ -200,7 +200,7 @@ function CatalogFilter(): JSX.Element {
       });
     }
 
-    history.push(`${location.pathname}?${search.toString()}`);
+    history.push(`${AppRoute.CatalogPage(1)}?${search.toString()}`);
   }, [types, minPrice, maxPrice, stringCounts]);
 
   useEffect(() => {
@@ -236,8 +236,6 @@ function CatalogFilter(): JSX.Element {
         }
       });
     }
-
-    return () => fetchCatalogGuitarsDebounced.cancel();
   }, []);
 
   return (

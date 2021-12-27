@@ -17,7 +17,3 @@ export const HumanizedGuitars = {
   [GuitarTypeValue.Electric]: 'Электрогитары',
   [GuitarTypeValue.Ukulele]: 'Укулеле',
 } as const;
-
-export const CATALOG_PAGE_SIZE = 9;
-
-export const SEARCH_LIST_LENGTH = 4;

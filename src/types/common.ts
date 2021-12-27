@@ -15,3 +15,8 @@ export type ParamsWithId = {
   [key: string]: string;
   id: string;
 };
+
+export type ParamsWithPage = {
+  [key: string]: string;
+  page: string;
+};

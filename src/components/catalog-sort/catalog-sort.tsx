@@ -2,7 +2,8 @@ import classNames from 'classnames';
 import { CSSProperties, MouseEventHandler, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FetchStatus } from '../../constants/common';
-import { Order, Type } from '../../constants/sort';
+import { SortOrder, SortTypeValue } from '../../constants/sort';
+import { useDebounce } from '../../hooks/use-debounce';
 import { setCatalogGuitarsStatus } from '../../store/guitars/guitars-actions';
 import { setSortOrder, SetSortType } from '../../store/sort/sort-actions';
 import { getSortOrder, getSortType } from '../../store/sort/sort-selectors';
@@ -60,6 +61,10 @@ function CatalogSort(): JSX.Element {
     const newSortType = button.dataset.sortType as SortType;
     dispatch(SetSortType(newSortType));
     button.blur();
+
+    if (!sortOrder) {
+      dispatch(setSortOrder(SortOrder.Ascending));
+    }
   };
 
   const handleSortOrderButtonClick: MouseEventHandler = (evt) => {
@@ -67,10 +72,16 @@ function CatalogSort(): JSX.Element {
     const newSortOrder = button.dataset.sortOrder as OrderType;
     dispatch(setSortOrder(newSortOrder));
     button.blur();
+
+    if (!sortType) {
+      dispatch(SetSortType(SortTypeValue.Price));
+    }
   };
 
+  const fetchCatalogGuitarsDebounced = useDebounce(() => dispatch(setCatalogGuitarsStatus(FetchStatus.Idle)));
+
   useEffect(() => {
-    dispatch(setCatalogGuitarsStatus(FetchStatus.Idle));
+    fetchCatalogGuitarsDebounced();
   }, [sortType, sortOrder]);
 
   return (
@@ -80,25 +91,25 @@ function CatalogSort(): JSX.Element {
       </h2>
       <div className="catalog-sort__type">
         <button
-          className={getSortTypeButtonClassName(Type.Price)}
+          className={getSortTypeButtonClassName(SortTypeValue.Price)}
           aria-label="по цене"
-          data-sort-type={Type.Price}
+          data-sort-type={SortTypeValue.Price}
           onClick={handleSortTypeButtonClick}
-          tabIndex={getSortTypeButtonTabIndex(Type.Price)}
-          style={getSortTypeButtonStyle(Type.Price)}
-          disabled={getSortTypeButtonDisabled(Type.Price)}
+          tabIndex={getSortTypeButtonTabIndex(SortTypeValue.Price)}
+          style={getSortTypeButtonStyle(SortTypeValue.Price)}
+          disabled={getSortTypeButtonDisabled(SortTypeValue.Price)}
           data-testid="price-sort-button"
         >
           по цене
         </button>
         <button
-          className={getSortTypeButtonClassName(Type.Rating)}
+          className={getSortTypeButtonClassName(SortTypeValue.Rating)}
           aria-label="по популярности"
-          data-sort-type={Type.Rating}
+          data-sort-type={SortTypeValue.Rating}
           onClick={handleSortTypeButtonClick}
-          tabIndex={getSortTypeButtonTabIndex(Type.Rating)}
-          style={getSortTypeButtonStyle(Type.Rating)}
-          disabled={getSortTypeButtonDisabled(Type.Rating)}
+          tabIndex={getSortTypeButtonTabIndex(SortTypeValue.Rating)}
+          style={getSortTypeButtonStyle(SortTypeValue.Rating)}
+          disabled={getSortTypeButtonDisabled(SortTypeValue.Rating)}
           data-testid="rating-sort-button"
         >
           по популярности
@@ -106,24 +117,24 @@ function CatalogSort(): JSX.Element {
       </div>
       <div className="catalog-sort__order">
         <button
-          className={getSortOrderUpButtonClassName(Order.Ascending)}
+          className={getSortOrderUpButtonClassName(SortOrder.Ascending)}
           aria-label="По возрастанию"
-          data-sort-order={Order.Ascending}
-          tabIndex={getOrderTypeButtonTabIndex(Order.Ascending)}
-          style={getSortOrderButtonStyle(Order.Ascending)}
+          data-sort-order={SortOrder.Ascending}
+          tabIndex={getOrderTypeButtonTabIndex(SortOrder.Ascending)}
+          style={getSortOrderButtonStyle(SortOrder.Ascending)}
           onClick={handleSortOrderButtonClick}
-          disabled={getSortOrderButtonDisabled(Order.Ascending)}
+          disabled={getSortOrderButtonDisabled(SortOrder.Ascending)}
           data-testid="ascending-order-button"
         >
         </button>
         <button
-          className={getSortOrderDownButtonClassName(Order.Descending)}
+          className={getSortOrderDownButtonClassName(SortOrder.Descending)}
           aria-label="По убыванию"
-          data-sort-order={Order.Descending}
-          tabIndex={getOrderTypeButtonTabIndex(Order.Descending)}
-          style={getSortOrderButtonStyle(Order.Descending)}
+          data-sort-order={SortOrder.Descending}
+          tabIndex={getOrderTypeButtonTabIndex(SortOrder.Descending)}
+          style={getSortOrderButtonStyle(SortOrder.Descending)}
           onClick={handleSortOrderButtonClick}
-          disabled={getSortOrderButtonDisabled(Order.Descending)}
+          disabled={getSortOrderButtonDisabled(SortOrder.Descending)}
           data-testid="descending-order-button"
         >
         </button>

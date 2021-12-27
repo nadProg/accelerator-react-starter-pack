@@ -1,11 +1,11 @@
 import { UNKNOWN_ACTION } from '../../constants/action';
-import { Order, Type } from '../../constants/sort';
+import { SortOrder, SortTypeValue } from '../../constants/sort';
 import { setSortOrder, SetSortType } from './sort-actions';
 import { sortInitialState } from './sort-initial-state';
 import { sortReducer } from './sort-reducer';
 
-const mockType = Type.Rating;
-const mockOrder = Order.Descending;
+const mockType = SortTypeValue.Rating;
+const mockOrder = SortOrder.Descending;
 
 describe('Reducer: Sort', () => {
   it('without additional parameters should return initial state', () => {
