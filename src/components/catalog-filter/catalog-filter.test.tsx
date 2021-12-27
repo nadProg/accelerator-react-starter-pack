@@ -123,6 +123,41 @@ describe('Component: CatalogFilter', () => {
     });
   });
 
+  it('should prevent negative price input', async () => {
+    const mockStore = configureMockStore<State>(middlewares)(mockState);
+
+    mockStore.dispatch = jest.fn();
+
+    render(
+      <Provider store={mockStore}>
+        <Router history={mockHistory}>
+          <CatalogFilter />
+        </Router>
+      </Provider>,
+    );
+
+    userEvent.click(screen.getByTestId('min-price-input'));
+    fireEvent.keyDown(screen.getByTestId('min-price-input'), {
+      code: KeyCode.Minus,
+    });
+    userEvent.type(screen.getByTestId('min-price-input'), '5');
+
+    userEvent.click(screen.getByTestId('max-price-input'));
+    fireEvent.keyDown(screen.getByTestId('max-price-input'), {
+      code: KeyCode.NumpadSubtract,
+    });
+    userEvent.type(screen.getByTestId('max-price-input'), '5');
+
+    expect(mockStore.dispatch).not.toHaveBeenCalledWith(SetFilterMinPrice(-5));
+    expect(mockStore.dispatch).not.toHaveBeenCalledWith(SetFilterMaxPrice(-5));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(5));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(5));
+
+    await act(async () => {
+      await asyncDelay(DEBOUNCE_TIME);
+    });
+  });
+
   it('should handle max price', async () => {
     const mockMinPrice = 1000;
     const mockStore = configureMockStore<State>(middlewares)({

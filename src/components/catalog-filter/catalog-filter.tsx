@@ -97,6 +97,12 @@ function CatalogFilter(): JSX.Element {
 
   const handleMinPriceKeydown: KeyboardEventHandler<HTMLInputElement> = (evt) => {
     const { code } = evt;
+
+    if (code === KeyCode.Minus || code === KeyCode.NumpadSubtract) {
+      evt.preventDefault();
+      return;
+    }
+
     if (code === KeyCode.Enter || code === KeyCode.NumpadEnter) {
       fixMinPrice((evt.target as HTMLInputElement).value);
     }
@@ -104,6 +110,12 @@ function CatalogFilter(): JSX.Element {
 
   const handleMaxPriceKeydown: KeyboardEventHandler<HTMLInputElement> = (evt) => {
     const { code } = evt;
+
+    if (code === KeyCode.Minus || code === KeyCode.NumpadSubtract) {
+      evt.preventDefault();
+      return;
+    }
+
     if (code === KeyCode.Enter || code === KeyCode.NumpadEnter) {
       fixMaxPrice((evt.target as HTMLInputElement).value);
     }
