@@ -1,7 +1,7 @@
 
 import { act, render
 } from '@testing-library/react';
-import { configureMockStore } from '@jedmao/redux-mock-store';
+import { configureMockStore, MockStore } from '@jedmao/redux-mock-store';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Route, Router } from 'react-router-dom';
@@ -26,31 +26,31 @@ const mockMaxPage = 7;
 const mockTotalAmount = CATALOG_PAGE_SIZE * mockMaxPage;
 const mockCurrentPage = 5;
 
-const mockStore = configureMockStore<State>()({
-  ...mockState,
-  guitars: {
-    ...mockState.guitars,
-    catalogGuitars: {
-      data: createArrayOfObjects(createMockGuitarWithComments, mockTotalAmount),
-      status: FetchStatus.Succeeded,
-    },
-  },
-  pagination: {
-    currentPage: mockCurrentPage,
-    maxPage: mockMaxPage,
-  },
-});
-
-mockStore.dispatch = jest.fn();
+let mockStore: MockStore<State>;
 
 describe('Component: CatalogPagination', () => {
   beforeEach(() => {
     mockHistory.push(AppRoute.CatalogPage(mockCurrentPage));
+
+    mockStore = configureMockStore<State>()({
+      ...mockState,
+      guitars: {
+        ...mockState.guitars,
+        catalogGuitars: {
+          data: createArrayOfObjects(createMockGuitarWithComments, mockTotalAmount),
+          status: FetchStatus.Succeeded,
+        },
+      },
+      pagination: {
+        currentPage: mockCurrentPage,
+        maxPage: mockMaxPage,
+      },
+    });
+
+    mockStore.dispatch = jest.fn();
   });
 
   it('should render correctly with prev and next buttons', () => {
-
-
     render(
       <Provider store={mockStore}>
         <Router history={mockHistory}>

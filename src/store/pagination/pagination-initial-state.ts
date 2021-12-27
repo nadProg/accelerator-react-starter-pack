@@ -1,4 +1,4 @@
-import { CATALOG_MIN_PAGE, CATALOG_PAGINATION_SPAN } from '../../constants/pagination';
+import { CATALOG_MIN_PAGE } from '../../constants/pagination';
 
 type PaginationState = {
   currentPage: number,
@@ -7,5 +7,5 @@ type PaginationState = {
 
 export const paginationInitialState: PaginationState = {
   currentPage: CATALOG_MIN_PAGE,
-  maxPage: CATALOG_PAGINATION_SPAN * 4,
+  maxPage: CATALOG_MIN_PAGE,
 };

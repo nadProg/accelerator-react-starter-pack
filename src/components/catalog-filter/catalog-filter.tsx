@@ -28,6 +28,7 @@ import {
 import { setCatalogGuitarsStatus } from '../../store/guitars/guitars-actions';
 import { getAllGuitars } from '../../store/guitars/guitars-api-actions';
 import { getAllGuitarsData } from '../../store/guitars/guitars-selectors';
+import { getPaginationCurrentPage, getPaginationMaxPage, getPaginationMinPage } from '../../store/pagination/pagination-selectors';
 import { GuitarType, StringCountType } from '../../types/guitar';
 import { getAvailableStringCounts } from '../../utils/filter';
 
@@ -40,6 +41,10 @@ function CatalogFilter(): JSX.Element {
   const types = useSelector(getFilterTypes);
   const stringCounts = useSelector(getFilterStringCounts);
   const priceLimits = useSelector(getFilterPriceLimits);
+
+  const currentPage = useSelector(getPaginationCurrentPage);
+  const maxPage = useSelector(getPaginationMaxPage);
+  const minPage = useSelector(getPaginationMinPage);
 
   const allGuitars = useSelector(getAllGuitarsData);
 
@@ -212,8 +217,14 @@ function CatalogFilter(): JSX.Element {
       });
     }
 
-    history.push(`${AppRoute.CatalogPage(1)}?${search.toString()}`);
+    history.push(`${location.pathname}?${search.toString()}`);
   }, [types, minPrice, maxPrice, stringCounts]);
+
+  useEffect(() => {
+    if (currentPage > maxPage) {
+      history.push(`${AppRoute.CatalogPage(Math.max(maxPage, minPage))}${location.search}`);
+    }
+  }, [currentPage, maxPage]);
 
   useEffect(() => {
     const search = new URLSearchParams(location.search);

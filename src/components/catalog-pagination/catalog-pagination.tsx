@@ -11,7 +11,7 @@ import {
 import { useDebounce } from '../../hooks/use-debounce';
 import { usePageNumberParam } from '../../hooks/use-page-number-param';
 import { setCatalogGuitarsStatus } from '../../store/guitars/guitars-actions';
-import { setPaginationCurrentPage } from '../../store/pagination/pagination-actions';
+import { setPaginationCurrentPage, setPaginationMaxPage } from '../../store/pagination/pagination-actions';
 import {
   getPaginationMaxPage,
   getPaginationMinPage
@@ -31,6 +31,10 @@ function CatalogPagination(): JSX.Element {
 
   const getPagePathWithSearchParams = (pageNumber: number) =>
     `${AppRoute.CatalogPage(pageNumber)}${search}`;
+
+  useEffect(() => {
+    dispatch(setPaginationMaxPage(currentPageNumber));
+  }, []);
 
   useEffect(() => {
     dispatch(setPaginationCurrentPage(currentPageNumber));

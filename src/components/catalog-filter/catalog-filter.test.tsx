@@ -78,6 +78,60 @@ describe('Component: CatalogFilter', () => {
     ).toBeInTheDocument();
   });
 
+  it('should render correctly when redirect is needed', () => {
+    const mockStore = configureMockStore<State>(middlewares)({
+      ...mockState,
+      pagination: {
+        ...mockState.pagination,
+        currentPage: 10,
+        maxPage: 1,
+      },
+    });
+
+    render(
+      <Provider store={mockStore}>
+        <Router history={mockHistory}>
+          <CatalogFilter />
+        </Router>
+      </Provider>,
+    );
+
+    expect(screen.getByTestId('min-price-input')).toBeInTheDocument();
+    expect(screen.getByTestId('max-price-input')).toBeInTheDocument();
+
+    expect(screen.getByTestId('min-price-input')).toHaveAttribute(
+      'placeholder',
+      '',
+    );
+    expect(screen.getByTestId('max-price-input')).toHaveAttribute(
+      'placeholder',
+      '',
+    );
+
+    expect(
+      screen.getByTestId(`${GuitarTypeValue.Acoustic}-checkbox`),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId(`${GuitarTypeValue.Electric}-checkbox`),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId(`${GuitarTypeValue.Ukulele}-checkbox`),
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByTestId(`${STRING_COUNT_VALUES[0]}-strings-checkbox`),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId(`${STRING_COUNT_VALUES[1]}-strings-checkbox`),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId(`${STRING_COUNT_VALUES[2]}-strings-checkbox`),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId(`${STRING_COUNT_VALUES[3]}-strings-checkbox`),
+    ).toBeInTheDocument();
+  });
+
   it('should handle price inputs', async () => {
     const mockStore = configureMockStore<State>(middlewares)({
       ...mockState,
