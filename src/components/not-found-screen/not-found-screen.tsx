@@ -7,7 +7,7 @@ function NotFoundScreen(): JSX.Element {
     <InfoScreen>
       <h1>This page does not exist</h1>
       <p>
-        <NavLink to={AppRoute.Root()} style={{color: 'inherit', textDecoration: 'none'}}>
+        <NavLink to={AppRoute.Root()}>
           Go to main page
         </NavLink>
       </p>

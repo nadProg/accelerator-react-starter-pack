@@ -1,17 +1,10 @@
-import { CSSProperties } from 'react';
 import InfoScreen from '../info-screen/info-screen';
-
-const LOADER_STYLES: CSSProperties = {
-  margin: 'auto',
-  background: 'transparent',
-  display: 'block',
-  shapeRendering: 'auto',
-};
+import styles from './loader.module.css';
 
 function Loader(): JSX.Element {
   return (
     <InfoScreen>
-      <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" style={LOADER_STYLES} width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" className={styles.loader} width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
         <rect x="15" y="30" width="10" height="40" fill="#222222">
           <animate attributeName="opacity" dur="1s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.5;1" keySplines="0.5 0 0.5 1;0.5 0 0.5 1" values="1;0.2;1" begin="-0.6"></animate>
         </rect>

@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import {
   ChangeEventHandler,
   FormEventHandler,
@@ -9,13 +10,14 @@ import {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
-import { ACTIVE_COLOR, Direction, KeyCode } from '../../constants/common';
+import { Direction, KeyCode } from '../../constants/common';
 import { AppRoute } from '../../constants/endpoints';
 import { SEARCH_LIST_LENGTH } from '../../constants/search';
 import { useDebounce } from '../../hooks/use-debounce';
 import { getGuitarsSimilarToName } from '../../store/guitars/guitars-api-actions';
 import { getFoundGuitarsData } from '../../store/guitars/guitars-selectors';
 import { getChangeArrayIndex } from '../../utils/common';
+import styles from './form-search.module.css';
 
 function FormSearch() {
   const history = useHistory();
@@ -146,22 +148,22 @@ function FormSearch() {
       </form>
       {isFocused && foundGuitars && !!foundGuitars.length && (
         <ul
-          className="form-search__select-list"
-          style={{ zIndex: 1, transition: 'transform 300ms', translate: '' }}
+          className={classNames('form-search__select-list', styles.list)}
           ref={listRef}
         >
           {foundGuitars?.map((guitar, index) => (
             <li
               key={guitar.id}
               ref={(node) => (itemsRef.current[index] = node)}
-              className="form-search__select-item"
-              style={{ color: currentIndex === index ? ACTIVE_COLOR : '' }}
+              className={classNames('form-search__select-item', {
+                [styles.itemActive]: currentIndex === index,
+              })}
               tabIndex={0}
               onClick={handleItemLinkClick}
             >
               <NavLink
                 to={AppRoute.Card(guitar.id)}
-                style={{ font: 'inherit', color: 'inherit' }}
+                className={styles.link}
                 data-testid="found-guitar-link"
               >
                 {guitar.name}

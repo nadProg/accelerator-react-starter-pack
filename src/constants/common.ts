@@ -21,6 +21,4 @@ export const FetchStatus = {
   Failed: 'FAILED',
 } as const;
 
-export const ACTIVE_COLOR = 'orange';
-
 export const DEBOUNCE_TIME = 300;

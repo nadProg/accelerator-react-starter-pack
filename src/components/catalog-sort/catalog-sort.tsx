@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { CSSProperties, MouseEventHandler, useEffect } from 'react';
+import { MouseEventHandler, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FetchStatus } from '../../constants/common';
 import { SortOrder, SortTypeValue } from '../../constants/sort';
@@ -8,14 +8,7 @@ import { setCatalogGuitarsStatus } from '../../store/guitars/guitars-actions';
 import { setSortOrder, SetSortType } from '../../store/sort/sort-actions';
 import { getSortOrder, getSortType } from '../../store/sort/sort-selectors';
 import { OrderType, SortType } from '../../types/sort';
-
-const FONT_WEIGHT_BOLD: CSSProperties = {
-  fontWeight: 700,
-};
-
-const SEMI_TRANSPARENT: CSSProperties = {
-  opacity: 0.5,
-};
+import styles from './catalog-sort.module.css';
 
 const INACTIVE_TAB_INDEX = -1;
 
@@ -38,22 +31,20 @@ function CatalogSort(): JSX.Element {
   const getSortOrderButtonDisabled = (order: OrderType) =>
     isCurrentSortOrder(order) ? true : undefined;
 
-  const getSortTypeButtonStyle = (type: SortType) =>
-    isCurrentSortType(type) ? FONT_WEIGHT_BOLD : undefined;
-  const getSortOrderButtonStyle = (order: OrderType) =>
-    isCurrentSortOrder(order) ? undefined : SEMI_TRANSPARENT;
-
   const getSortTypeButtonClassName = (type: SortType) =>
     classNames('catalog-sort__type-button', {
       'catalog-sort__type-button--active': isCurrentSortType(type),
+      [styles.fontBold]: isCurrentSortType(type),
     });
   const getSortOrderUpButtonClassName = (order: OrderType) =>
     classNames('catalog-sort__order-button', 'catalog-sort__order-button--up', {
       'catalog-sort__order-button--active': isCurrentSortOrder(order),
+      [styles.semiTransparent]: !isCurrentSortOrder(order),
     });
   const getSortOrderDownButtonClassName = (order: OrderType) =>
     classNames('catalog-sort__order-button', 'catalog-sort__order-button--down', {
       'catalog-sort__order-button--active': isCurrentSortOrder(order),
+      [styles.semiTransparent]: !isCurrentSortOrder(order),
     });
 
   const handleSortTypeButtonClick: MouseEventHandler = (evt) => {
@@ -86,7 +77,7 @@ function CatalogSort(): JSX.Element {
 
   return (
     <div className="catalog-sort">
-      <h2 className="catalog-sort__title" style={FONT_WEIGHT_BOLD}>
+      <h2 className={classNames('catalog-sort__title', styles.fontBold)}>
         Сортировать:
       </h2>
       <div className="catalog-sort__type">
@@ -96,7 +87,6 @@ function CatalogSort(): JSX.Element {
           data-sort-type={SortTypeValue.Price}
           onClick={handleSortTypeButtonClick}
           tabIndex={getSortTypeButtonTabIndex(SortTypeValue.Price)}
-          style={getSortTypeButtonStyle(SortTypeValue.Price)}
           disabled={getSortTypeButtonDisabled(SortTypeValue.Price)}
           data-testid="price-sort-button"
         >
@@ -108,7 +98,6 @@ function CatalogSort(): JSX.Element {
           data-sort-type={SortTypeValue.Rating}
           onClick={handleSortTypeButtonClick}
           tabIndex={getSortTypeButtonTabIndex(SortTypeValue.Rating)}
-          style={getSortTypeButtonStyle(SortTypeValue.Rating)}
           disabled={getSortTypeButtonDisabled(SortTypeValue.Rating)}
           data-testid="rating-sort-button"
         >
@@ -121,7 +110,6 @@ function CatalogSort(): JSX.Element {
           aria-label="По возрастанию"
           data-sort-order={SortOrder.Ascending}
           tabIndex={getOrderTypeButtonTabIndex(SortOrder.Ascending)}
-          style={getSortOrderButtonStyle(SortOrder.Ascending)}
           onClick={handleSortOrderButtonClick}
           disabled={getSortOrderButtonDisabled(SortOrder.Ascending)}
           data-testid="ascending-order-button"
@@ -132,7 +120,6 @@ function CatalogSort(): JSX.Element {
           aria-label="По убыванию"
           data-sort-order={SortOrder.Descending}
           tabIndex={getOrderTypeButtonTabIndex(SortOrder.Descending)}
-          style={getSortOrderButtonStyle(SortOrder.Descending)}
           onClick={handleSortOrderButtonClick}
           disabled={getSortOrderButtonDisabled(SortOrder.Descending)}
           data-testid="descending-order-button"
