@@ -2,7 +2,7 @@ export const CATALOG_MIN_PAGE = 1;
 
 export const CATALOG_PAGE_SIZE = 9;
 
-export const CATALOG_PAGINATION_STEP = 3;
+export const CATALOG_PAGINATION_STEP = 1;
 
 export const CATALOG_PAGINATION_SPAN = 3;
 

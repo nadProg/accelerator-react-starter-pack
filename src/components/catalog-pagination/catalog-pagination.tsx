@@ -11,7 +11,10 @@ import {
 import { useDebounce } from '../../hooks/use-debounce';
 import { usePageNumberParam } from '../../hooks/use-page-number-param';
 import { setCatalogGuitarsStatus } from '../../store/guitars/guitars-actions';
-import { setPaginationCurrentPage, setPaginationMaxPage } from '../../store/pagination/pagination-actions';
+import {
+  setPaginationCurrentPage,
+  setPaginationMaxPage
+} from '../../store/pagination/pagination-actions';
 import {
   getPaginationMaxPage,
   getPaginationMinPage
@@ -47,19 +50,20 @@ function CatalogPagination(): JSX.Element {
     1;
 
   const isPrevButtonVisible =
-    startPage - CATALOG_PAGINATION_STEP >= minPageNumber;
+    currentPageNumber - CATALOG_PAGINATION_STEP >= minPageNumber;
   const isNextButtonVisible =
-    startPage + CATALOG_PAGINATION_STEP <= maxPageNumber;
+    currentPageNumber + CATALOG_PAGINATION_STEP <= maxPageNumber;
 
   return (
     <div className="pagination page-content__pagination">
+      ы
       <ul className="pagination__list">
         {isPrevButtonVisible && (
           <li className="pagination__page pagination__page--prev" id="prev">
             <NavLink
               className="link pagination__page-link"
               to={getPagePathWithSearchParams(
-                startPage - CATALOG_PAGINATION_STEP,
+                currentPageNumber - CATALOG_PAGINATION_STEP,
               )}
               data-testid="prev-page-link"
             >
@@ -98,7 +102,7 @@ function CatalogPagination(): JSX.Element {
             <NavLink
               className="link pagination__page-link"
               to={getPagePathWithSearchParams(
-                startPage + CATALOG_PAGINATION_STEP,
+                currentPageNumber + CATALOG_PAGINATION_STEP,
               )}
               data-testid="next-page-link"
             >
