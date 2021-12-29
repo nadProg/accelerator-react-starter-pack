@@ -5,6 +5,7 @@ import {
   KeyboardEventHandler,
   MouseEventHandler,
   useEffect,
+  useMemo,
   useRef,
   useState
 } from 'react';
@@ -17,6 +18,7 @@ import { useDebounce } from '../../hooks/use-debounce';
 import { getGuitarsSimilarToName } from '../../store/guitars/guitars-api-actions';
 import { getFoundGuitarsData } from '../../store/guitars/guitars-selectors';
 import { getChangeArrayIndex } from '../../utils/common';
+import { sortByNameLike } from '../../utils/guitar';
 import styles from './form-search.module.css';
 
 function FormSearch() {
@@ -54,7 +56,8 @@ function FormSearch() {
   });
 
   const fetchSimilarGuitarDebounced = useDebounce((value: string) =>
-    dispatch(getGuitarsSimilarToName(value)));
+    dispatch(getGuitarsSimilarToName(value)),
+  );
 
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
     const { value } = evt.target;
@@ -109,6 +112,11 @@ function FormSearch() {
     }
   }
 
+  const sortedGuitars = useMemo(
+    () => (foundGuitars ? sortByNameLike(foundGuitars, inputValue) : foundGuitars),
+    [foundGuitars],
+  );
+
   return (
     <div
       className="form-search"
@@ -151,7 +159,7 @@ function FormSearch() {
           className={classNames('form-search__select-list', styles.list)}
           ref={listRef}
         >
-          {foundGuitars?.map((guitar, index) => (
+          {sortedGuitars?.map((guitar, index) => (
             <li
               key={guitar.id}
               ref={(node) => (itemsRef.current[index] = node)}
