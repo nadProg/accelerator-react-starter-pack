@@ -56,7 +56,6 @@ function CatalogPagination(): JSX.Element {
 
   return (
     <div className="pagination page-content__pagination">
-      ы
       <ul className="pagination__list">
         {isPrevButtonVisible && (
           <li className="pagination__page pagination__page--prev" id="prev">

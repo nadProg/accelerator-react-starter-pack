@@ -1,4 +1,4 @@
-import { ChangeEventHandler, FocusEventHandler, KeyboardEventHandler, useEffect, useMemo } from 'react';
+import { ChangeEventHandler, FocusEventHandler, KeyboardEventHandler, useEffect, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { FetchStatus, KeyCode } from '../../constants/common';
@@ -36,6 +36,9 @@ function CatalogFilter(): JSX.Element {
   const location = useLocation();
   const history = useHistory();
 
+  const minPriceInputRef = useRef<HTMLInputElement>(null);
+  const maxPriceInputRef = useRef<HTMLInputElement>(null);
+
   const minPrice = useSelector(getFilterMinPrice);
   const maxPrice = useSelector(getFilterMaxPrice);
   const types = useSelector(getFilterTypes);
@@ -50,54 +53,46 @@ function CatalogFilter(): JSX.Element {
 
   const dispatch = useDispatch();
 
-  const fixPrices = () => {
+  const fixMinPrice = (newValue: string) => {
+    const currentValue = Number(newValue);
+
+    if (maxPrice && currentValue > maxPrice) {
+      dispatch(SetFilterMinPrice(maxPrice));
+      return;
+    }
+
     if (priceLimits.min !== undefined) {
-      if (minPrice !== '' && minPrice < priceLimits.min) {
+      if (currentValue < priceLimits.min) {
         dispatch(SetFilterMinPrice(priceLimits.min));
       }
+    }
 
-      if (maxPrice !== '' && maxPrice < priceLimits.min) {
+    if (priceLimits.max !== undefined) {
+      if (currentValue > priceLimits.max) {
+        dispatch(SetFilterMinPrice(priceLimits.max));
+      }
+    }
+  };
+
+  const fixMaxPrice = (newValue: string) => {
+    const currentValue = Number(newValue);
+
+    if (minPrice && currentValue < minPrice) {
+      dispatch(SetFilterMaxPrice(minPrice));
+      return;
+    }
+
+    if (priceLimits.min !== undefined) {
+      if (currentValue < priceLimits.min) {
         dispatch(SetFilterMaxPrice(priceLimits.min));
       }
     }
 
     if (priceLimits.max !== undefined) {
-      if (minPrice !== '' && minPrice > priceLimits.max) {
-        dispatch(SetFilterMinPrice(priceLimits.max));
-      }
-
-      if (maxPrice !== '' && maxPrice > priceLimits.max) {
+      if (currentValue > priceLimits.max) {
         dispatch(SetFilterMaxPrice(priceLimits.max));
       }
     }
-  };
-
-  const fixMinPrice = (newValue: string) => {
-    if (newValue === '') {
-      return;
-    }
-
-    const currentValue = Number(newValue);
-
-    if (maxPrice && currentValue > maxPrice) {
-      dispatch(SetFilterMinPrice(maxPrice));
-    }
-
-    fixPrices();
-  };
-
-  const fixMaxPrice = (newValue: string) => {
-    if (newValue === '') {
-      return;
-    }
-
-    const currentValue = Number(newValue);
-
-    if (minPrice && currentValue < minPrice) {
-      dispatch(SetFilterMaxPrice(minPrice));
-    }
-
-    fixPrices();
   };
 
   const handleMinPriceKeydown: KeyboardEventHandler<HTMLInputElement> = (evt) => {
@@ -109,6 +104,13 @@ function CatalogFilter(): JSX.Element {
     }
 
     if (code === KeyCode.Enter || code === KeyCode.NumpadEnter) {
+      if ((evt.target as HTMLInputElement).value === '') {
+        dispatch(SetFilterMinPrice(''));
+        return;
+      }
+
+      dispatch(SetFilterMinPrice(Number((evt.target as HTMLInputElement).value)));
+
       fixMinPrice((evt.target as HTMLInputElement).value);
     }
   };
@@ -122,34 +124,37 @@ function CatalogFilter(): JSX.Element {
     }
 
     if (code === KeyCode.Enter || code === KeyCode.NumpadEnter) {
+      if ((evt.target as HTMLInputElement).value === '') {
+        dispatch(SetFilterMaxPrice(''));
+        return;
+      }
+
+      dispatch(SetFilterMaxPrice(Number((evt.target as HTMLInputElement).value)));
+
       fixMaxPrice((evt.target as HTMLInputElement).value);
     }
   };
 
   const handleMinPriceBlur: FocusEventHandler<HTMLInputElement> = (evt) => {
-    fixMinPrice(evt.target.value);
-  };
-
-  const handleMaxPriceBlur: FocusEventHandler<HTMLInputElement> = (evt) => {
-    fixMaxPrice(evt.target.value);
-  };
-
-  const handleMinPriceChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
     if (evt.target.value === '') {
       dispatch(SetFilterMinPrice(''));
       return;
     }
 
     dispatch(SetFilterMinPrice(Number(evt.target.value)));
+
+    fixMinPrice(evt.target.value);
   };
 
-  const handleMaxPriceChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
+  const handleMaxPriceBlur: FocusEventHandler<HTMLInputElement> = (evt) => {
     if (evt.target.value === '') {
       dispatch(SetFilterMaxPrice(''));
       return;
     }
 
     dispatch(SetFilterMaxPrice(Number(evt.target.value)));
+
+    fixMaxPrice(evt.target.value);
   };
 
   const handleTypeChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
@@ -189,7 +194,25 @@ function CatalogFilter(): JSX.Element {
 
 
   useEffect(() => {
-    fixPrices();
+    if (priceLimits.min !== undefined) {
+      if (minPrice !== '' && minPrice < priceLimits.min) {
+        dispatch(SetFilterMinPrice(priceLimits.min));
+      }
+
+      if (maxPrice !== '' && maxPrice < priceLimits.min) {
+        dispatch(SetFilterMaxPrice(priceLimits.min));
+      }
+    }
+
+    if (priceLimits.max !== undefined) {
+      if (minPrice !== '' && minPrice > priceLimits.max) {
+        dispatch(SetFilterMinPrice(priceLimits.max));
+      }
+
+      if (maxPrice !== '' && maxPrice > priceLimits.max) {
+        dispatch(SetFilterMaxPrice(priceLimits.max));
+      }
+    }
   }, [priceLimits]);
 
   useEffect(() => {
@@ -219,6 +242,16 @@ function CatalogFilter(): JSX.Element {
 
     history.push(`${location.pathname}?${search.toString()}`);
   }, [types, minPrice, maxPrice, stringCounts]);
+
+  useEffect(() => {
+    if (minPrice && minPriceInputRef.current) {
+      minPriceInputRef.current.value = String(minPrice);
+    }
+
+    if (maxPrice && maxPriceInputRef.current) {
+      maxPriceInputRef.current.value = String(maxPrice);
+    }
+  });
 
   useEffect(() => {
     if (currentPage > maxPage) {
@@ -270,14 +303,13 @@ function CatalogFilter(): JSX.Element {
           <div className="form-input">
             <label className="visually-hidden">Минимальная цена</label>
             <input
-              value={minPrice}
+              ref={minPriceInputRef}
               type="number"
               placeholder={String(priceLimits.min)}
               id="priceMin"
               name="от"
               min={priceLimits.min}
               max={priceLimits.max}
-              onChange={handleMinPriceChange}
               onKeyDown={handleMinPriceKeydown}
               onBlur={handleMinPriceBlur}
               data-testid="min-price-input"
@@ -286,14 +318,13 @@ function CatalogFilter(): JSX.Element {
           <div className="form-input">
             <label className="visually-hidden">Максимальная цена</label>
             <input
-              value={maxPrice}
+              ref={maxPriceInputRef}
               type="number"
               placeholder={String(priceLimits.max)}
               id="priceMax"
               name="до"
               min={priceLimits.min}
               max={priceLimits.max}
-              onChange={handleMaxPriceChange}
               onKeyDown={handleMaxPriceKeydown}
               onBlur={handleMaxPriceBlur}
               data-testid="max-price-input"

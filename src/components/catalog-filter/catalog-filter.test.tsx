@@ -154,23 +154,27 @@ describe('Component: CatalogFilter', () => {
 
     userEvent.type(screen.getByTestId('min-price-input'), '123');
     fireEvent.keyDown(screen.getByTestId('min-price-input'), {
-      code: KeyCode.NumpadEnter,
+      code: KeyCode.Enter,
     });
+
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(123));
+
+    userEvent.type(screen.getByTestId('min-price-input'), '456');
     userEvent.click(screen.getByTestId('max-price-input'));
 
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(1));
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(2));
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(3));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(123456));
 
-    userEvent.type(screen.getByTestId('max-price-input'), '456');
+    userEvent.type(screen.getByTestId('max-price-input'), '123');
     fireEvent.keyDown(screen.getByTestId('max-price-input'), {
       code: KeyCode.NumpadEnter,
     });
+
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(123));
+
+    userEvent.type(screen.getByTestId('max-price-input'), '456');
     userEvent.click(screen.getByTestId('min-price-input'));
 
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(4));
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(5));
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(6));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(123456));
 
     await act(async () => {
       await asyncDelay(DEBOUNCE_TIME);
@@ -195,12 +199,18 @@ describe('Component: CatalogFilter', () => {
       code: KeyCode.Minus,
     });
     userEvent.type(screen.getByTestId('min-price-input'), '5');
+    fireEvent.keyDown(screen.getByTestId('min-price-input'), {
+      code: KeyCode.Enter,
+    });
 
     userEvent.click(screen.getByTestId('max-price-input'));
     fireEvent.keyDown(screen.getByTestId('max-price-input'), {
       code: KeyCode.NumpadSubtract,
     });
     userEvent.type(screen.getByTestId('max-price-input'), '5');
+    fireEvent.keyDown(screen.getByTestId('max-price-input'), {
+      code: KeyCode.Enter,
+    });
 
     expect(mockStore.dispatch).not.toHaveBeenCalledWith(SetFilterMinPrice(-5));
     expect(mockStore.dispatch).not.toHaveBeenCalledWith(SetFilterMaxPrice(-5));
@@ -212,7 +222,7 @@ describe('Component: CatalogFilter', () => {
     });
   });
 
-  it('should handle max price', async () => {
+  it('should handle max price input less than current min price', async () => {
     const mockMinPrice = 1000;
     const mockStore = configureMockStore<State>(middlewares)({
       ...mockState,
@@ -239,7 +249,104 @@ describe('Component: CatalogFilter', () => {
       code: KeyCode.NumpadEnter,
     });
 
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(1));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(mockMinPrice));
+
+    await act(async () => {
+      await asyncDelay(DEBOUNCE_TIME);
+    });
+  });
+
+  it('should handle min price input more than current max price', async () => {
+    const mockMaxPrice = 1000;
+    const mockStore = configureMockStore<State>(middlewares)({
+      ...mockState,
+      filter: {
+        ...mockState.filter,
+        price: {
+          max: mockMaxPrice,
+        },
+      },
+    });
+
+    mockStore.dispatch = jest.fn();
+
+    render(
+      <Provider store={mockStore}>
+        <Router history={mockHistory}>
+          <CatalogFilter />
+        </Router>
+      </Provider>,
+    );
+
+    userEvent.type(screen.getByTestId('min-price-input'), '100000');
+    fireEvent.keyDown(screen.getByTestId('min-price-input'), {
+      code: KeyCode.NumpadEnter,
+    });
+
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(mockMaxPrice));
+
+    await act(async () => {
+      await asyncDelay(DEBOUNCE_TIME);
+    });
+  });
+
+  it('should handle price input with price limits', async () => {
+    const mockLimit = 1000;
+    const mockStore = configureMockStore<State>(middlewares)({
+      ...mockState,
+      guitars: {
+        ...mockState.guitars,
+        allGuitars: {
+          data: [
+            {
+              ...createMockGuitar(),
+              price: mockLimit,
+            },
+          ],
+        },
+      },
+    });
+
+    mockStore.dispatch = jest.fn();
+
+    render(
+      <Provider store={mockStore}>
+        <Router history={mockHistory}>
+          <CatalogFilter />
+        </Router>
+      </Provider>,
+    );
+
+    userEvent.type(screen.getByTestId('min-price-input'), String(mockLimit - 1));
+    fireEvent.keyDown(screen.getByTestId('min-price-input'), {
+      code: KeyCode.NumpadEnter,
+    });
+
+
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(mockLimit));
+
+    userEvent.clear(screen.getByTestId('min-price-input'));
+    userEvent.type(screen.getByTestId('min-price-input'), String(mockLimit + 1));
+    fireEvent.keyDown(screen.getByTestId('min-price-input'), {
+      code: KeyCode.NumpadEnter,
+    });
+
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(mockLimit));
+
+    userEvent.type(screen.getByTestId('max-price-input'), String(mockLimit + 1));
+    fireEvent.keyDown(screen.getByTestId('max-price-input'), {
+      code: KeyCode.NumpadEnter,
+    });
+
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(mockLimit));
+
+    userEvent.clear(screen.getByTestId('max-price-input'));
+    userEvent.type(screen.getByTestId('max-price-input'), String(mockLimit - 1));
+    fireEvent.keyDown(screen.getByTestId('max-price-input'), {
+      code: KeyCode.NumpadEnter,
+    });
+
+    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(mockLimit));
 
     await act(async () => {
       await asyncDelay(DEBOUNCE_TIME);
@@ -269,7 +376,16 @@ describe('Component: CatalogFilter', () => {
     );
 
     userEvent.type(screen.getByTestId('min-price-input'), '{backspace}');
+    fireEvent.keyDown(screen.getByTestId('min-price-input'), {
+      code: KeyCode.Enter,
+    });
+    userEvent.click(screen.getByTestId('max-price-input'));
+
     userEvent.type(screen.getByTestId('max-price-input'), '{backspace}');
+    fireEvent.keyDown(screen.getByTestId('max-price-input'), {
+      code: KeyCode.Enter,
+    });
+    userEvent.click(screen.getByTestId('min-price-input'));
 
     await act(async () => {
       await asyncDelay(DEBOUNCE_TIME);
@@ -463,7 +579,7 @@ describe('Component: CatalogFilter', () => {
     });
   });
 
-  it('should handle deselect checkboxes when all checkoxes are selected', async () => {
+  it('should handle deselect checkboxes when all checkboxes are selected', async () => {
     const mockStore = configureMockStore<State>(middlewares)({
       ...mockState,
       filter: {
