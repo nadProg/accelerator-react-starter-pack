@@ -1,4 +1,4 @@
-import { GuitarTypeValue, STRING_COUNT_VALUES } from '../constants/guitar';
+import { GuitarTab, GuitarTypeValue, STRING_COUNT_VALUES } from '../constants/guitar';
 import { CommentGet } from './comment';
 import { ValuesOf } from './common';
 
@@ -21,3 +21,5 @@ export type Guitar = {
 export type GuitarWithComments = Guitar & {
   comments: CommentGet[];
 }
+
+export type GuitarTabType =  ValuesOf<typeof GuitarTab>;

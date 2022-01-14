@@ -23,3 +23,8 @@ export const HumanizedGuitars: {
   [GuitarTypeValue.Electric]: 'Электрогитары',
   [GuitarTypeValue.Ukulele]: 'Укулеле',
 } as const;
+
+export const GuitarTab = {
+  Characteristics: 'characteristics',
+  Description: 'description',
+} as const;

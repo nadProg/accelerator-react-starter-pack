@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import classNames from 'classnames';
+import { MouseEventHandler, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Redirect } from 'react-router-dom';
 import { COMMENTS_PAGE_SIZE } from '../../constants/comment';
 import { FetchStatus } from '../../constants/common';
 import { AppRoute } from '../../constants/endpoints';
-import { HumanizedGuitar } from '../../constants/guitar';
+import { GuitarTab, HumanizedGuitar } from '../../constants/guitar';
 import { useIdParam } from '../../hooks/use-id-param';
 import { useReactiveRef } from '../../hooks/use-reactive-ref';
 import { setCurrentGuitarStatus } from '../../store/guitars/guitars-actions';
@@ -13,10 +14,8 @@ import {
   getCurrentGuitarData,
   getCurrentGuitarStatus
 } from '../../store/guitars/guitars-selectors';
-import {
-  isFetchError,
-  isFetchNotReady
-} from '../../utils/fetched-data';
+import { GuitarTabType } from '../../types/guitar';
+import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
 import { formatPrice } from '../../utils/guitar';
 import Loader from '../loader/loader';
 import Rating from '../rating/rating';
@@ -24,6 +23,9 @@ import Review from '../review/review';
 
 function CardScreen(): JSX.Element {
   const { id: guitarId, error } = useIdParam();
+  const [currentTab, setCurrentTab] = useState<GuitarTabType>(
+    GuitarTab.Characteristics,
+  );
 
   const guitar = useSelector(getCurrentGuitarData);
   const guitarStatus = useSelector(getCurrentGuitarStatus);
@@ -62,9 +64,39 @@ function CardScreen(): JSX.Element {
     return <Redirect to={AppRoute.NotFound()} />;
   }
 
+  const handleTabClick: MouseEventHandler<HTMLAnchorElement> = (evt) => {
+    evt.preventDefault();
+    const [, hash] = (evt.target as HTMLAnchorElement).href.split('#');
+    setCurrentTab(hash as GuitarTabType);
+  };
+
+  const guitarTabContent = {
+    [GuitarTab.Characteristics]: () => (
+      <table className="tabs__table">
+        <tbody>
+          <tr className="tabs__table-row">
+            <td className="tabs__title">Артикул:</td>
+            <td className="tabs__value">{guitar.vendorCode}</td>
+          </tr>
+          <tr className="tabs__table-row">
+            <td className="tabs__title">Тип:</td>
+            <td className="tabs__value">{HumanizedGuitar[guitar.type]}</td>
+          </tr>
+          <tr className="tabs__table-row">
+            <td className="tabs__title">Количество струн:</td>
+            <td className="tabs__value">{guitar.stringCount} струнная</td>
+          </tr>
+        </tbody>
+      </table>
+    ),
+    [GuitarTab.Description]: () => (
+      <p className="tabs__product-description">{guitar.description}</p>
+    ),
+  };
+
   return (
     <>
-      <h1 className="page-content__title title title--bigger">Товар</h1>
+      <h1 className="page-content__title title title--bigger">{guitar.name}</h1>
       <ul className="breadcrumbs page-content__breadcrumbs">
         <li className="breadcrumbs__item">
           <NavLink className="link" to={AppRoute.Root()}>
@@ -77,7 +109,7 @@ function CardScreen(): JSX.Element {
           </NavLink>
         </li>
         <li className="breadcrumbs__item">
-          <a className="link">Товар</a>
+          <a className="link">{guitar.name}</a>
         </li>
       </ul>
       <div className="product-container">
@@ -97,40 +129,58 @@ function CardScreen(): JSX.Element {
             <Rating value={guitar.rating} />
           </div>
           <div className="tabs">
-            <a
-              className="button button--medium tabs__button"
+            {Object.values(GuitarTab).map((guitarTab) => (
+              <a
+                key={guitarTab}
+                className={classNames(
+                  'button',
+                  'button--medium',
+                  'tabs__button',
+                  {
+                    'button--black-border':
+                      currentTab !== guitarTab,
+                  },
+                )}
+                href={`#${guitarTab}`}
+                onClick={(evt) => {
+                  evt.preventDefault();
+                  setCurrentTab(guitarTab);
+                }}
+              >
+                {guitarTab}
+              </a>
+            ))}
+            {/* <a
+              className={classNames(
+                'button',
+                'button--medium',
+                'tabs__button',
+                {
+                  'button--black-border':
+                    currentTab !== GuitarTab.Characteristics,
+                },
+              )}
               href="#characteristics"
+              onClick={handleTabClick}
             >
               Характеристики
             </a>
             <a
-              className="button button--black-border button--medium tabs__button"
+              className={classNames(
+                'button',
+                'button--medium',
+                'tabs__button',
+                {
+                  'button--black-border': currentTab !== GuitarTab.Description,
+                },
+              )}
               href="#description"
+              onClick={handleTabClick}
             >
               Описание
-            </a>
-            <div className="tabs__content" id="characteristics">
-              <table className="tabs__table">
-                <tbody>
-                  <tr className="tabs__table-row">
-                    <td className="tabs__title">Артикул:</td>
-                    <td className="tabs__value">{guitar.vendorCode}</td>
-                  </tr>
-                  <tr className="tabs__table-row">
-                    <td className="tabs__title">Тип:</td>
-                    <td className="tabs__value">
-                      {HumanizedGuitar[guitar.type]}
-                    </td>
-                  </tr>
-                  <tr className="tabs__table-row">
-                    <td className="tabs__title">Количество струн:</td>
-                    <td className="tabs__value">{guitar.stringCount} струнная</td>
-                  </tr>
-                </tbody>
-              </table>
-              <p className="tabs__product-description hidden">
-                {guitar.description}
-              </p>
+            </a> */}
+            <div className="tabs__content" id={currentTab}>
+              {guitarTabContent[currentTab]()}
             </div>
           </div>
         </div>
@@ -158,7 +208,9 @@ function CardScreen(): JSX.Element {
           Оставить отзыв
         </a>
 
-        {guitar.comments.slice(0, COMMENTS_PAGE_SIZE).map((comment) => <Review key={comment.id} review={comment} />)}
+        {guitar.comments.slice(0, COMMENTS_PAGE_SIZE).map((comment) => (
+          <Review key={comment.id} review={comment} />
+        ))}
 
         <button className="button button--medium reviews__more-button">
           Показать еще отзывы
