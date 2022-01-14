@@ -26,18 +26,18 @@ describe('Component: ProductCard', () => {
       </Router>,
     );
 
-    expect(screen.queryByTestId('modal')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('modal-cart-add')).not.toBeInTheDocument();
 
     userEvent.click(screen.getByTestId('button-add-to-cart'));
-    expect(screen.getByTestId('modal')).toBeInTheDocument();
+    expect(screen.getByTestId('modal-cart-add')).toBeInTheDocument();
 
     userEvent.click(screen.getByTestId('modal-overlay'));
-    expect(screen.queryByTestId('modal')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('modal-cart-add')).not.toBeInTheDocument();
 
     userEvent.click(screen.getByTestId('button-add-to-cart'));
-    expect(screen.getByTestId('modal')).toBeInTheDocument();
+    expect(screen.getByTestId('modal-cart-add')).toBeInTheDocument();
 
     userEvent.click(screen.getByTestId('modal-button-close'));
-    expect(screen.queryByTestId('modal')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('modal-cart-add')).not.toBeInTheDocument();
   });
 });

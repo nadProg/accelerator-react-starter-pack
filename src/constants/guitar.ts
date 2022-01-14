@@ -1,4 +1,4 @@
-import { GuitarType } from '../types/guitar';
+import { GuitarTabType, GuitarType } from '../types/guitar';
 
 export const STRING_COUNT_VALUES = [4 , 6 , 7 , 12] as const;
 
@@ -27,4 +27,11 @@ export const HumanizedGuitars: {
 export const GuitarTab = {
   Characteristics: 'characteristics',
   Description: 'description',
+} as const;
+
+export const HumanizedGuitarTab: {
+  [key in GuitarTabType]: string
+} = {
+  [GuitarTab.Characteristics]: 'Характеристики',
+  [GuitarTab.Description]: 'Описание',
 } as const;

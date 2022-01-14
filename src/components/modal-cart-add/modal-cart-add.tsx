@@ -8,13 +8,13 @@ type ModalCartAddProps = ModalProps & {
 
 function ModalCartAdd({ product, onClose }: ModalCartAddProps): JSX.Element {
   return (
-    <div className="modal is-active modal-for-ui-kit" data-testid="modal">
+    <div className="modal is-active modal-for-ui-kit" data-testid="modal-cart-add">
       <div className="modal__wrapper">
         <div
           className="modal__overlay"
           data-close-modal
-          onClick={onClose}
           data-testid="modal-overlay"
+          onClick={onClose}
         >
         </div>
         <div className="modal__content">

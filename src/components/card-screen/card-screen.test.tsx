@@ -12,6 +12,7 @@ import CardScreen from './card-screen';
 import ReactRouter, { Route } from 'react-router';
 import { screen } from '@testing-library/react';
 import { createMockState } from '../../mock/state';
+import userEvent from '@testing-library/user-event';
 
 const mockGuitar = createMockGuitarWithComments();
 const mockState = createMockState();
@@ -185,5 +186,121 @@ describe('Component: CardScreen', () => {
     );
 
     expect(screen.getByTestId('not-found')).toBeInTheDocument();
+  });
+
+  it('should handle open/close add-to-card modal', () => {
+    const mockStore = configureMockStore<State>()(mockSucceedState);
+    mockStore.dispatch = jest.fn();
+
+    render(
+      <Provider store={mockStore}>
+        <Router history={mockHistory}>
+          <CardScreen />
+        </Router>
+      </Provider>,
+    );
+
+    expect(screen.queryByTestId('modal-cart-add')).not.toBeInTheDocument();
+
+    userEvent.click(screen.getByTestId('button-add-to-cart'));
+    expect(screen.getByTestId('modal-cart-add')).toBeInTheDocument();
+
+    userEvent.click(screen.getByTestId('modal-overlay'));
+    expect(screen.queryByTestId('modal-cart-add')).not.toBeInTheDocument();
+
+    userEvent.click(screen.getByTestId('button-add-to-cart'));
+    expect(screen.getByTestId('modal-cart-add')).toBeInTheDocument();
+
+    userEvent.click(screen.getByTestId('modal-button-close'));
+    expect(screen.queryByTestId('modal-cart-add')).not.toBeInTheDocument();
+  });
+
+  it('should handle open/close review-form modal', () => {
+    const mockStore = configureMockStore<State>()(mockSucceedState);
+    mockStore.dispatch = jest.fn();
+
+    render(
+      <Provider store={mockStore}>
+        <Router history={mockHistory}>
+          <CardScreen />
+        </Router>
+      </Provider>,
+    );
+
+    expect(screen.queryByTestId('modal-review-form')).not.toBeInTheDocument();
+
+    userEvent.click(screen.getByTestId('button-add-review'));
+    expect(screen.getByTestId('modal-review-form')).toBeInTheDocument();
+
+    userEvent.click(screen.getByTestId('modal-overlay'));
+    expect(screen.queryByTestId('modal-review-form')).not.toBeInTheDocument();
+
+    userEvent.click(screen.getByTestId('button-add-review'));
+    expect(screen.getByTestId('modal-review-form')).toBeInTheDocument();
+
+    userEvent.click(screen.getByTestId('modal-button-close'));
+    expect(screen.queryByTestId('modal-review-form')).not.toBeInTheDocument();
+  });
+
+  it('should handle success modal open after success new review submit', () => {
+    const mockStore = configureMockStore<State>()(mockSucceedState);
+    mockStore.dispatch = jest.fn();
+
+    render(
+      <Provider store={mockStore}>
+        <Router history={mockHistory}>
+          <CardScreen />
+        </Router>
+      </Provider>,
+    );
+
+    expect(screen.queryByTestId('modal-review-form')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('modal-success-review')).not.toBeInTheDocument();
+
+    userEvent.click(screen.getByTestId('button-add-review'));
+    expect(screen.getByTestId('modal-review-form')).toBeInTheDocument();
+    expect(screen.queryByTestId('modal-success-review')).not.toBeInTheDocument();
+
+    userEvent.click(screen.getByTestId('submit-new-review'));
+    expect(screen.queryByTestId('modal-review-form')).not.toBeInTheDocument();
+    expect(screen.getByTestId('modal-success-review')).toBeInTheDocument();
+
+    userEvent.click(screen.getByTestId('modal-button-close'));
+    expect(screen.queryByTestId('modal-success-review')).not.toBeInTheDocument();
+  });
+
+  it('should handle guitar tab switching', () => {
+    const mockStore = configureMockStore<State>()(mockSucceedState);
+    mockStore.dispatch = jest.fn();
+
+    render(
+      <Provider store={mockStore}>
+        <Router history={mockHistory}>
+          <CardScreen />
+        </Router>
+      </Provider>,
+    );
+
+    expect(screen.getByTestId('characteristics-tab-control')).toBeInTheDocument();
+    expect(screen.getByTestId('description-tab-control')).toBeInTheDocument();
+
+    expect(screen.getByTestId('characteristics-tab-content')).toBeInTheDocument();
+    expect(screen.queryByTestId('description-tab-content')).not.toBeInTheDocument();
+
+    userEvent.click(screen.getByTestId('characteristics-tab-control'));
+    expect(screen.getByTestId('characteristics-tab-content')).toBeInTheDocument();
+    expect(screen.queryByTestId('description-tab-content')).not.toBeInTheDocument();
+
+    userEvent.click(screen.getByTestId('description-tab-control'));
+    expect(screen.queryByTestId('characteristics-tab-content')).not.toBeInTheDocument();
+    expect(screen.getByTestId('description-tab-content')).toBeInTheDocument();
+
+    userEvent.click(screen.getByTestId('description-tab-control'));
+    expect(screen.queryByTestId('characteristics-tab-content')).not.toBeInTheDocument();
+    expect(screen.getByTestId('description-tab-content')).toBeInTheDocument();
+
+    userEvent.click(screen.getByTestId('characteristics-tab-control'));
+    expect(screen.getByTestId('characteristics-tab-content')).toBeInTheDocument();
+    expect(screen.queryByTestId('description-tab-content')).not.toBeInTheDocument();
   });
 });

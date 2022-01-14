@@ -5,7 +5,11 @@ import { NavLink, Redirect } from 'react-router-dom';
 import { COMMENTS_PAGE_SIZE } from '../../constants/comment';
 import { FetchStatus } from '../../constants/common';
 import { AppRoute } from '../../constants/endpoints';
-import { GuitarTab, HumanizedGuitar } from '../../constants/guitar';
+import {
+  GuitarTab,
+  HumanizedGuitar,
+  HumanizedGuitarTab
+} from '../../constants/guitar';
 import { useIdParam } from '../../hooks/use-id-param';
 import { useReactiveRef } from '../../hooks/use-reactive-ref';
 import { setCurrentGuitarStatus } from '../../store/guitars/guitars-actions';
@@ -18,11 +22,20 @@ import { GuitarTabType } from '../../types/guitar';
 import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
 import { formatPrice } from '../../utils/guitar';
 import Loader from '../loader/loader';
+import ModalCartAdd from '../modal-cart-add/modal-cart-add';
+import ModalReviewForm from '../modal-review-form/modal-review-form';
 import Rating from '../rating/rating';
 import Review from '../review/review';
+import SuccessReviewModal from '../success-review-modal/success-review-modal';
 
 function CardScreen(): JSX.Element {
   const { id: guitarId, error } = useIdParam();
+
+  const [isCardModalOpen, setIsCardModalOpen] = useState(false);
+  const [isReviewFormModalOpen, setIsReviewFormModalOpen] = useState(false);
+  const [isSuccessReviewModalOpen, setIsSuccessReviewModalOpen] =
+    useState(false);
+
   const [currentTab, setCurrentTab] = useState<GuitarTabType>(
     GuitarTab.Characteristics,
   );
@@ -64,12 +77,6 @@ function CardScreen(): JSX.Element {
     return <Redirect to={AppRoute.NotFound()} />;
   }
 
-  const handleTabClick: MouseEventHandler<HTMLAnchorElement> = (evt) => {
-    evt.preventDefault();
-    const [, hash] = (evt.target as HTMLAnchorElement).href.split('#');
-    setCurrentTab(hash as GuitarTabType);
-  };
-
   const guitarTabContent = {
     [GuitarTab.Characteristics]: () => (
       <table className="tabs__table">
@@ -94,9 +101,45 @@ function CardScreen(): JSX.Element {
     ),
   };
 
+  const handleAddToCartLink: MouseEventHandler = (evt) => {
+    evt.preventDefault();
+    setIsCardModalOpen(true);
+  };
+
+  const handleAddReviewLink: MouseEventHandler = (evt) => {
+    evt.preventDefault();
+    setIsReviewFormModalOpen(true);
+  };
+
   return (
     <>
+      {isCardModalOpen && (
+        <ModalCartAdd
+          product={guitar}
+          onClose={() => setIsCardModalOpen(false)}
+        />
+      )}
+
+      {isReviewFormModalOpen && (
+        <ModalReviewForm
+          onClose={() => setIsReviewFormModalOpen(false)}
+          onSuccessSubmitting={() => {
+            setIsReviewFormModalOpen(false);
+            setIsSuccessReviewModalOpen(true);
+          }}
+        />
+      )}
+
+      {isSuccessReviewModalOpen && (
+        <SuccessReviewModal
+          onClose={() => {
+            setIsSuccessReviewModalOpen(false);
+          }}
+        />
+      )}
+
       <h1 className="page-content__title title title--bigger">{guitar.name}</h1>
+
       <ul className="breadcrumbs page-content__breadcrumbs">
         <li className="breadcrumbs__item">
           <NavLink className="link" to={AppRoute.Root()}>
@@ -112,6 +155,7 @@ function CardScreen(): JSX.Element {
           <a className="link">{guitar.name}</a>
         </li>
       </ul>
+
       <div className="product-container">
         <img
           className="product-container__img"
@@ -120,6 +164,7 @@ function CardScreen(): JSX.Element {
           height="235"
           alt={guitar.name}
         />
+
         <div className="product-container__info-wrapper">
           <h2 className="product-container__title title title--big title--uppercase">
             {guitar.name}
@@ -127,7 +172,9 @@ function CardScreen(): JSX.Element {
           <div className="rate product-container__rating" aria-hidden="true">
             <span className="visually-hidden">Рейтинг:</span>
             <Rating value={guitar.rating} />
+            <span className="rate__count">{guitar.comments.length}</span>
           </div>
+
           <div className="tabs">
             {Object.values(GuitarTab).map((guitarTab) => (
               <a
@@ -137,8 +184,7 @@ function CardScreen(): JSX.Element {
                   'button--medium',
                   'tabs__button',
                   {
-                    'button--black-border':
-                      currentTab !== guitarTab,
+                    'button--black-border': currentTab !== guitarTab,
                   },
                 )}
                 href={`#${guitarTab}`}
@@ -146,44 +192,17 @@ function CardScreen(): JSX.Element {
                   evt.preventDefault();
                   setCurrentTab(guitarTab);
                 }}
+                data-testid={`${guitarTab}-tab-control`}
               >
-                {guitarTab}
+                {HumanizedGuitarTab[guitarTab]}
               </a>
             ))}
-            {/* <a
-              className={classNames(
-                'button',
-                'button--medium',
-                'tabs__button',
-                {
-                  'button--black-border':
-                    currentTab !== GuitarTab.Characteristics,
-                },
-              )}
-              href="#characteristics"
-              onClick={handleTabClick}
-            >
-              Характеристики
-            </a>
-            <a
-              className={classNames(
-                'button',
-                'button--medium',
-                'tabs__button',
-                {
-                  'button--black-border': currentTab !== GuitarTab.Description,
-                },
-              )}
-              href="#description"
-              onClick={handleTabClick}
-            >
-              Описание
-            </a> */}
-            <div className="tabs__content" id={currentTab}>
+            <div className="tabs__content" id={currentTab} data-testid={`${currentTab}-tab-content`}>
               {guitarTabContent[currentTab]()}
             </div>
           </div>
         </div>
+
         <div className="product-container__price-wrapper">
           <p className="product-container__price-info product-container__price-info--title">
             Цена:
@@ -194,16 +213,21 @@ function CardScreen(): JSX.Element {
           <a
             className="button button--red button--big product-container__button"
             href="#"
+            onClick={handleAddToCartLink}
+            data-testid="button-add-to-cart"
           >
             Добавить в корзину
           </a>
         </div>
       </div>
+
       <section className="reviews">
         <h3 className="reviews__title title title--bigger">Отзывы</h3>
         <a
           className="button button--red-border button--big reviews__sumbit-button"
           href="#"
+          onClick={handleAddReviewLink}
+          data-testid="button-add-review"
         >
           Оставить отзыв
         </a>
@@ -217,6 +241,7 @@ function CardScreen(): JSX.Element {
         </button>
         <a
           className="button button--up button--red-border button--big reviews__up-button"
+          style={{ zIndex: 1 }}
           href="#header"
         >
           Наверх

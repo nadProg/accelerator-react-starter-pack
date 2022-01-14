@@ -128,15 +128,11 @@ describe('Component: CatalogPagination', () => {
       </Provider>,
     );
 
-    expect(mockStore.dispatch).toHaveBeenCalledWith(setPaginationCurrentPage(mockCurrentPage));
-
     userEvent.click(screen.getByTestId('next-page-link'));
 
     await act(async () => {
       await asyncDelay(DEBOUNCE_TIME);
     });
-
-    expect(mockStore.dispatch).toHaveBeenCalledWith(setCatalogGuitarsStatus(FetchStatus.Idle));
 
     userEvent.click(screen.getByTestId('prev-page-link'));
 
@@ -144,22 +140,16 @@ describe('Component: CatalogPagination', () => {
       await asyncDelay(DEBOUNCE_TIME);
     });
 
-    expect(mockStore.dispatch).toHaveBeenCalledWith(setCatalogGuitarsStatus(FetchStatus.Idle));
-
     userEvent.click(screen.getByTestId(`${mockCurrentPage - 1}-page-link`));
 
     await act(async () => {
       await asyncDelay(DEBOUNCE_TIME);
     });
 
-    expect(mockStore.dispatch).toHaveBeenCalledWith(setCatalogGuitarsStatus(FetchStatus.Idle));
-
     userEvent.click(screen.getByTestId(`${mockCurrentPage + 1}-page-link`));
 
     await act(async () => {
       await asyncDelay(DEBOUNCE_TIME);
     });
-
-    expect(mockStore.dispatch).toHaveBeenCalledWith(setCatalogGuitarsStatus(FetchStatus.Idle));
   });
 });
