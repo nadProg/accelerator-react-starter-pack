@@ -2,6 +2,7 @@ import { MouseEventHandler, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AppRoute } from '../../constants/endpoints';
 import { GuitarWithComments } from '../../types/guitar';
+import { formatPrice } from '../../utils/guitar';
 import ModalCartAdd from '../modal-cart-add/modal-cart-add';
 import Rating from '../rating/rating';
 
@@ -36,7 +37,7 @@ function ProductCard({ product }: ProductCardProps): JSX.Element {
           <p className="product-card__title">{product.name}</p>
           <p className="product-card__price">
             <span className="visually-hidden">Цена:</span>
-            {product.price} ₽
+            {formatPrice(product.price)} ₽
           </p>
         </div>
         <div className="product-card__buttons">

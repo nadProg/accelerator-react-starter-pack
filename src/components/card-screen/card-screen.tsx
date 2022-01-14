@@ -17,6 +17,7 @@ import {
   isFetchError,
   isFetchNotReady
 } from '../../utils/fetched-data';
+import { formatPrice } from '../../utils/guitar';
 import Loader from '../loader/loader';
 import Rating from '../rating/rating';
 import Review from '../review/review';
@@ -138,7 +139,7 @@ function CardScreen(): JSX.Element {
             Цена:
           </p>
           <p className="product-container__price-info product-container__price-info--value">
-            {guitar.price} ₽
+            {formatPrice(guitar.price)} ₽
           </p>
           <a
             className="button button--red button--big product-container__button"

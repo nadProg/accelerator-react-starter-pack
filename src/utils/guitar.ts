@@ -1,3 +1,4 @@
+import { RUSSIAN_LOCALE } from '../constants/common';
 import { Guitar } from '../types/guitar';
 
 const createNameLikeComparingCallback =
@@ -19,3 +20,5 @@ export const sortByNameLike = <T extends Guitar>(
     [...guitars].sort(
       createNameLikeComparingCallback(nameLike.toLocaleLowerCase()),
     );
+
+export const formatPrice = (price: number) => new Intl.NumberFormat(RUSSIAN_LOCALE).format(price);
