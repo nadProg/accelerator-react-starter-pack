@@ -1,6 +1,5 @@
 import { FormEventHandler, useRef } from 'react';
-import { useFocusLoop } from '../../hooks/use-focus-loop';
-import { useScrollBlock } from '../../hooks/use-scroll-block';
+import { useModal } from '../../hooks/use-modal';
 import { ModalProps } from '../../types/props';
 
 type ModalReviewFormProps = ModalProps & {
@@ -12,10 +11,7 @@ function ModalReviewForm({
   onSuccessSubmitting,
 }: ModalReviewFormProps): JSX.Element {
   const rootRef = useRef<HTMLDivElement>(null);
-
-  useScrollBlock();
-  useFocusLoop(rootRef);
-
+  useModal(rootRef, onClose);
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (evt) => {
     evt.preventDefault();

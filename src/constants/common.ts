@@ -12,6 +12,7 @@ export const KeyCode = {
   NumpadEnter: 'NumpadEnter',
   Minus: 'Minus',
   NumpadSubtract: 'NumpadSubtract',
+  Escape: 'Escape',
 } as const;
 
 export const FetchStatus = {

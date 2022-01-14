@@ -1,13 +1,10 @@
 import { useRef } from 'react';
-import { useFocusLoop } from '../../hooks/use-focus-loop';
-import { useScrollBlock } from '../../hooks/use-scroll-block';
+import { useModal } from '../../hooks/use-modal';
 import { ModalProps } from '../../types/props';
 
 function ModalSuccessReview({ onClose }: ModalProps): JSX.Element {
   const rootRef = useRef<HTMLDivElement>(null);
-
-  useScrollBlock();
-  useFocusLoop(rootRef);
+  useModal(rootRef, onClose);
 
   return (
     <div

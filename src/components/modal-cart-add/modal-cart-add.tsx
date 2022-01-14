@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { HumanizedGuitar } from '../../constants/guitar';
-import { useFocusLoop } from '../../hooks/use-focus-loop';
-import { useScrollBlock } from '../../hooks/use-scroll-block';
+import { useModal } from '../../hooks/use-modal';
 import { GuitarWithComments } from '../../types/guitar';
 import { ModalProps } from '../../types/props';
 
@@ -11,9 +10,7 @@ type ModalCartAddProps = ModalProps & {
 
 function ModalCartAdd({ product, onClose }: ModalCartAddProps): JSX.Element {
   const rootRef = useRef<HTMLDivElement>(null);
-
-  useScrollBlock();
-  useFocusLoop(rootRef);
+  useModal(rootRef, onClose);
 
   return (
     <div
