@@ -1,8 +1,17 @@
+import { useRef } from 'react';
+import { useFocusLoop } from '../../hooks/use-focus-loop';
+import { useScrollBlock } from '../../hooks/use-scroll-block';
 import { ModalProps } from '../../types/props';
 
-function SuccessReviewModal({ onClose }: ModalProps): JSX.Element {
+function ModalSuccessReview({ onClose }: ModalProps): JSX.Element {
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useScrollBlock();
+  useFocusLoop(rootRef);
+
   return (
     <div
+      ref={rootRef}
       className="modal is-active modal--success"
       data-testid="modal-success-review"
     >
@@ -26,6 +35,7 @@ function SuccessReviewModal({ onClose }: ModalProps): JSX.Element {
           <div className="modal__button-container modal__button-container--review">
             <button
               className="button button--small modal__button modal__button--review"
+              data-testid="success-button-confirm"
               onClick={onClose}
             >
               К покупкам!
@@ -47,4 +57,4 @@ function SuccessReviewModal({ onClose }: ModalProps): JSX.Element {
   );
 }
 
-export default SuccessReviewModal;
+export default ModalSuccessReview;

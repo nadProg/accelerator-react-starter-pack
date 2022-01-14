@@ -26,7 +26,7 @@ import ModalCartAdd from '../modal-cart-add/modal-cart-add';
 import ModalReviewForm from '../modal-review-form/modal-review-form';
 import Rating from '../rating/rating';
 import Review from '../review/review';
-import SuccessReviewModal from '../success-review-modal/success-review-modal';
+import ModalSuccessReview from '../modal-success-review/modal-success-review';
 
 function CardScreen(): JSX.Element {
   const { id: guitarId, error } = useIdParam();
@@ -131,7 +131,7 @@ function CardScreen(): JSX.Element {
       )}
 
       {isSuccessReviewModalOpen && (
-        <SuccessReviewModal
+        <ModalSuccessReview
           onClose={() => {
             setIsSuccessReviewModalOpen(false);
           }}

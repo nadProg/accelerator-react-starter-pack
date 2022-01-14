@@ -1,4 +1,7 @@
+import { useRef } from 'react';
 import { HumanizedGuitar } from '../../constants/guitar';
+import { useFocusLoop } from '../../hooks/use-focus-loop';
+import { useScrollBlock } from '../../hooks/use-scroll-block';
 import { GuitarWithComments } from '../../types/guitar';
 import { ModalProps } from '../../types/props';
 
@@ -7,8 +10,17 @@ type ModalCartAddProps = ModalProps & {
 };
 
 function ModalCartAdd({ product, onClose }: ModalCartAddProps): JSX.Element {
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useScrollBlock();
+  useFocusLoop(rootRef);
+
   return (
-    <div className="modal is-active modal-for-ui-kit" data-testid="modal-cart-add">
+    <div
+      ref={rootRef}
+      className="modal is-active modal-for-ui-kit"
+      data-testid="modal-cart-add"
+    >
       <div className="modal__wrapper">
         <div
           className="modal__overlay"
@@ -36,7 +48,9 @@ function ModalCartAdd({ product, onClose }: ModalCartAddProps): JSX.Element {
               <p className="modal__product-params modal__product-params--margin-11">
                 Артикул: {product.vendorCode}
               </p>
-              <p className="modal__product-params">{HumanizedGuitar[product.type]}, {product.stringCount} струнная</p>
+              <p className="modal__product-params">
+                {HumanizedGuitar[product.type]}, {product.stringCount} струнная
+              </p>
               <p className="modal__price-wrapper">
                 <span className="modal__price">Цена:</span>
                 <span className="modal__price">{product.price} ₽</span>

@@ -15,8 +15,6 @@ import { CATALOG_PAGE_SIZE } from '../../constants/pagination';
 import { AppRoute } from '../../constants/endpoints';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { setCatalogGuitarsStatus } from '../../store/guitars/guitars-actions';
-import { setPaginationCurrentPage } from '../../store/pagination/pagination-actions';
 
 const mockState = createMockState();
 
