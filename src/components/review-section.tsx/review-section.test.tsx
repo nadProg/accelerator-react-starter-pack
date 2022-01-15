@@ -1,5 +1,4 @@
 import { act, render } from '@testing-library/react';
-import { datatype } from 'faker';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { configureMockStore } from '@jedmao/redux-mock-store';
@@ -13,7 +12,7 @@ import { createMockGuitarWithComments } from '../../mock/guitar';
 import { FetchStatus } from '../../constants/common';
 import { asyncDelay } from '../../utils/common';
 
-const mockGuitar = createMockGuitarWithComments(datatype.number());
+const mockGuitar = createMockGuitarWithComments();
 
 const api = createAPI();
 const middlewares = [thunk.withExtraArgument(api)];

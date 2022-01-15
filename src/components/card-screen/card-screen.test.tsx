@@ -14,7 +14,7 @@ import { screen } from '@testing-library/react';
 import { createMockState } from '../../mock/state';
 import userEvent from '@testing-library/user-event';
 
-const mockGuitar = createMockGuitarWithComments(datatype.number());
+const mockGuitar = createMockGuitarWithComments();
 const mockState = createMockState();
 
 const mockIdleState: State = {
