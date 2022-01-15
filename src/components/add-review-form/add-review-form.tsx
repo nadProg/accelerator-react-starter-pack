@@ -5,6 +5,7 @@ import {
   useEffect,
   useState
 } from 'react';
+import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { AddReviewFormField, INITIAL_FORM_ERRORS, INITIAL_FORM_FIELDS, RATING_OPTIONS } from '../../constants/add-review-form';
 import { FetchStatus } from '../../constants/common';
@@ -33,10 +34,18 @@ function AddReviewForm({
   const newCommentFetchStatus = useSelector(getNewCommentStatus);
 
   useEffect(() => {
-    if (newCommentFetchStatus === FetchStatus.Succeeded) {
-      onSuccessSubmitting();
-    }
+    switch (newCommentFetchStatus) {
+      case FetchStatus.Succeeded:
+        onSuccessSubmitting();
+        break;
 
+      case FetchStatus.Loading:
+        toast.error('Не удалось отправить отзыв');
+        break;
+
+      default:
+        break;
+    }
     return () => {
       dispatch(setNewCommentStatus(FetchStatus.Idle));
     };
@@ -83,6 +92,8 @@ function AddReviewForm({
 
   const isUserNameErrorShown = isFormDirty && formErrors.userName;
   const isRatingErrorShown = isFormDirty && formErrors.rating;
+
+  const isSubmitting = newCommentFetchStatus === FetchStatus.Loading;
 
   return (
     <form className="form-review" onSubmit={handleSubmit}>
@@ -178,8 +189,9 @@ function AddReviewForm({
         className="button button--medium-20 form-review__button"
         type="submit"
         data-testid="submit-new-review"
+        disabled={isSubmitting}
       >
-        Отправить отзыв
+        {isSubmitting ? 'Отправка отзыва...' : 'Отправить отзыв'}
       </button>
     </form>
   );

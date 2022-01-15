@@ -7,6 +7,7 @@ import { createAPI } from './services/api';
 import { Router as BrowserRouter } from 'react-router-dom';
 import App from './components/app/app';
 import browserHistory from './browser-history';
+import { Toaster } from 'react-hot-toast';
 
 const api = createAPI();
 
@@ -26,6 +27,7 @@ ReactDOM.render(
     <Provider store={store}>
       <BrowserRouter history={browserHistory}>
         <App />
+        <Toaster position="top-right" />
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,
