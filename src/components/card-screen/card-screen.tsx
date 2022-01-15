@@ -23,7 +23,7 @@ import { formatPrice, getRating } from '../../utils/guitar';
 import Loader from '../loader/loader';
 import ModalCartAdd from '../modal-cart-add/modal-cart-add';
 import Rating from '../rating/rating';
-import ReviewSection from '../review-section.tsx/review-section';
+import ReviewSection from '../review-section/review-section';
 
 function CardScreen(): JSX.Element {
   const { id: guitarId, error } = useIdParam();
