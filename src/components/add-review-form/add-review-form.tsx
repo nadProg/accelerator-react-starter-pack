@@ -39,17 +39,18 @@ function AddReviewForm({
         onSuccessSubmitting();
         break;
 
-      case FetchStatus.Loading:
+      case FetchStatus.Failed:
         toast.error('Не удалось отправить отзыв');
         break;
 
       default:
         break;
     }
-    return () => {
-      dispatch(setNewCommentStatus(FetchStatus.Idle));
-    };
   }, [newCommentFetchStatus]);
+
+  useEffect(() =>  () => {
+    dispatch(setNewCommentStatus(FetchStatus.Idle));
+  }, []);
 
   const handleInputChange: ChangeEventHandler<
     HTMLInputElement | HTMLTextAreaElement
@@ -86,8 +87,6 @@ function AddReviewForm({
     }
 
     dispatch(postComment(formFields));
-
-    // onSuccessSubmitting();
   };
 
   const isUserNameErrorShown = isFormDirty && formErrors.userName;
@@ -191,7 +190,7 @@ function AddReviewForm({
         data-testid="submit-new-review"
         disabled={isSubmitting}
       >
-        {isSubmitting ? 'Отправка отзыва...' : 'Отправить отзыв'}
+        {isSubmitting ? 'Отправка...' : 'Отправить отзыв'}
       </button>
     </form>
   );

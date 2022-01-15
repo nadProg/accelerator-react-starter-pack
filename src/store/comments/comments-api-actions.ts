@@ -11,9 +11,9 @@ export const postComment =
       dispatch(setNewCommentStatus(FetchStatus.Loading));
 
       try {
-        const { data } = await api.post<CommentGet>(APIRoute.Comment(), postData);
+        const { data: newComment } = await api.post<CommentGet>(APIRoute.Comment(), postData);
 
-        dispatch(addCommentToCurrentGuitar(data));
+        dispatch(addCommentToCurrentGuitar(newComment));
         dispatch(setNewCommentStatus(FetchStatus.Succeeded));
       } catch (error) {
         dispatch(setNewCommentStatus(FetchStatus.Failed));

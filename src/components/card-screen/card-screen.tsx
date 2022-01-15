@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { MouseEventHandler, useEffect, useState } from 'react';
+import { MouseEventHandler, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Redirect } from 'react-router-dom';
 import { FetchStatus } from '../../constants/common';
@@ -19,7 +19,7 @@ import {
 } from '../../store/guitars/guitars-selectors';
 import { GuitarTabType } from '../../types/guitar';
 import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
-import { formatPrice } from '../../utils/guitar';
+import { formatPrice, getRating } from '../../utils/guitar';
 import Loader from '../loader/loader';
 import ModalCartAdd from '../modal-cart-add/modal-cart-add';
 import Rating from '../rating/rating';
@@ -58,6 +58,8 @@ function CardScreen(): JSX.Element {
       dispatch(getCurrentGuitar(guitarId));
     }
   }, [guitar?.id, guitarId]);
+
+  const rating = useMemo(() => getRating(guitar), [guitar]);
 
   if (error || isFetchError(guitarStatus)) {
     return <Redirect to={AppRoute.NotFound()} />;
@@ -142,7 +144,7 @@ function CardScreen(): JSX.Element {
           </h2>
           <div className="rate product-container__rating" aria-hidden="true">
             <span className="visually-hidden">Рейтинг:</span>
-            <Rating value={guitar.rating} />
+            <Rating value={rating} />
             <span className="rate__count">{guitar.comments.length}</span>
           </div>
 
