@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import { MouseEventHandler, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Redirect } from 'react-router-dom';
-import { COMMENTS_PAGE_SIZE } from '../../constants/comment';
 import { FetchStatus } from '../../constants/common';
 import { AppRoute } from '../../constants/endpoints';
 import {
@@ -23,18 +22,13 @@ import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
 import { formatPrice } from '../../utils/guitar';
 import Loader from '../loader/loader';
 import ModalCartAdd from '../modal-cart-add/modal-cart-add';
-import ModalReviewForm from '../modal-review-form/modal-review-form';
 import Rating from '../rating/rating';
-import Review from '../review/review';
-import ModalSuccessReview from '../modal-success-review/modal-success-review';
+import ReviewSection from '../review-section.tsx/review-section';
 
 function CardScreen(): JSX.Element {
   const { id: guitarId, error } = useIdParam();
 
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
-  const [isReviewFormModalOpen, setIsReviewFormModalOpen] = useState(false);
-  const [isSuccessReviewModalOpen, setIsSuccessReviewModalOpen] =
-    useState(false);
 
   const [currentTab, setCurrentTab] = useState<GuitarTabType>(
     GuitarTab.Characteristics,
@@ -106,35 +100,12 @@ function CardScreen(): JSX.Element {
     setIsCardModalOpen(true);
   };
 
-  const handleAddReviewLink: MouseEventHandler = (evt) => {
-    evt.preventDefault();
-    setIsReviewFormModalOpen(true);
-  };
-
   return (
     <>
       {isCardModalOpen && (
         <ModalCartAdd
           product={guitar}
           onClose={() => setIsCardModalOpen(false)}
-        />
-      )}
-
-      {isReviewFormModalOpen && (
-        <ModalReviewForm
-          onClose={() => setIsReviewFormModalOpen(false)}
-          onSuccessSubmitting={() => {
-            setIsReviewFormModalOpen(false);
-            setIsSuccessReviewModalOpen(true);
-          }}
-        />
-      )}
-
-      {isSuccessReviewModalOpen && (
-        <ModalSuccessReview
-          onClose={() => {
-            setIsSuccessReviewModalOpen(false);
-          }}
         />
       )}
 
@@ -221,32 +192,7 @@ function CardScreen(): JSX.Element {
         </div>
       </div>
 
-      <section className="reviews">
-        <h3 className="reviews__title title title--bigger">Отзывы</h3>
-        <a
-          className="button button--red-border button--big reviews__sumbit-button"
-          href="#"
-          onClick={handleAddReviewLink}
-          data-testid="button-add-review"
-        >
-          Оставить отзыв
-        </a>
-
-        {guitar.comments.slice(0, COMMENTS_PAGE_SIZE).map((comment) => (
-          <Review key={comment.id} review={comment} />
-        ))}
-
-        <button className="button button--medium reviews__more-button">
-          Показать еще отзывы
-        </button>
-        <a
-          className="button button--up button--red-border button--big reviews__up-button"
-          style={{ zIndex: 1 }}
-          href="#header"
-        >
-          Наверх
-        </a>
-      </section>
+      <ReviewSection reviews={guitar.comments} />
     </>
   );
 }

@@ -27,7 +27,7 @@ describe('Hook: useEscape', () => {
 
     expect(mockHandleEscape).not.toHaveBeenCalled();
 
-    renderHook(() => {
+    const { unmount } = renderHook(() => {
       useEscape(mockHandleEscape);
     });
 
@@ -41,6 +41,18 @@ describe('Hook: useEscape', () => {
 
     fireEvent.keyDown(document.body, {
       code: KeyCode.Enter,
+    });
+
+    fireEvent.keyDown(document.body, {
+      code: KeyCode.Enter,
+    });
+
+    expect(mockHandleEscape).toHaveBeenCalledTimes(2);
+
+    unmount();
+
+    fireEvent.keyDown(document.body, {
+      code: KeyCode.Escape,
     });
 
     fireEvent.keyDown(document.body, {
