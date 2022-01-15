@@ -2,6 +2,7 @@ import { MouseEventHandler, useMemo, useState } from 'react';
 import { COMMENTS_PAGE_SIZE } from '../../constants/comment';
 import { CommentGet } from '../../types/comment';
 import { sortByDate } from '../../utils/comment';
+import AddReviewForm from '../add-review-form/add-review-form';
 import ModalReviewForm from '../modal-review-form/modal-review-form';
 import ModalSuccessReview from '../modal-success-review/modal-success-review';
 import Review from '../review/review';
@@ -32,13 +33,14 @@ function ReviewSection({ reviews }: ReviewSectionProps): JSX.Element {
   return (
     <>
       {isReviewFormModalOpen && (
-        <ModalReviewForm
-          onClose={() => setIsReviewFormModalOpen(false)}
-          onSuccessSubmitting={() => {
-            setIsReviewFormModalOpen(false);
-            setIsSuccessReviewModalOpen(true);
-          }}
-        />
+        <ModalReviewForm onClose={() => setIsReviewFormModalOpen(false)}>
+          <AddReviewForm
+            onSuccessSubmitting={() => {
+              setIsReviewFormModalOpen(false);
+              setIsSuccessReviewModalOpen(true);
+            }}
+          />
+        </ModalReviewForm>
       )}
 
       {isSuccessReviewModalOpen && (
@@ -65,7 +67,10 @@ function ReviewSection({ reviews }: ReviewSectionProps): JSX.Element {
         ))}
 
         {isMore && (
-          <button className="button button--medium reviews__more-button" onClick={() => increasePage()}>
+          <button
+            className="button button--medium reviews__more-button"
+            onClick={() => increasePage()}
+          >
             Показать еще отзывы
           </button>
         )}
