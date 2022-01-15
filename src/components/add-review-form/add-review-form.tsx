@@ -2,9 +2,15 @@ import {
   ChangeEventHandler,
   FormEventHandler,
   Fragment,
+  useEffect,
   useState
 } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { AddReviewFormField, INITIAL_FORM_ERRORS, INITIAL_FORM_FIELDS, RATING_OPTIONS } from '../../constants/add-review-form';
+import { FetchStatus } from '../../constants/common';
+import { setNewCommentStatus } from '../../store/comments/comments-actions';
+import { postComment } from '../../store/comments/comments-api-actions';
+import { getNewCommentStatus } from '../../store/comments/comments-selector';
 import { Guitar } from '../../types/guitar';
 
 type AddReviewFormProps = {
@@ -22,6 +28,19 @@ function AddReviewForm({
     ...INITIAL_FORM_FIELDS,
     guitarId,
   });
+
+  const dispatch = useDispatch();
+  const newCommentFetchStatus = useSelector(getNewCommentStatus);
+
+  useEffect(() => {
+    if (newCommentFetchStatus === FetchStatus.Succeeded) {
+      onSuccessSubmitting();
+    }
+
+    return () => {
+      dispatch(setNewCommentStatus(FetchStatus.Idle));
+    };
+  }, [newCommentFetchStatus]);
 
   const handleInputChange: ChangeEventHandler<
     HTMLInputElement | HTMLTextAreaElement
@@ -57,7 +76,9 @@ function AddReviewForm({
       return;
     }
 
-    onSuccessSubmitting();
+    dispatch(postComment(formFields));
+
+    // onSuccessSubmitting();
   };
 
   const isUserNameErrorShown = isFormDirty && formErrors.userName;

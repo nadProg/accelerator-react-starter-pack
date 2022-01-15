@@ -1,3 +1,4 @@
+import { commentsInitialState } from '../store/comments/comments-initial-state';
 import { filterInitialState } from '../store/filter/filter-initial-state';
 import { guitarsInitialState } from '../store/guitars/guitars-initial-state';
 import { paginationInitialState } from '../store/pagination/pagination-initial-state';
@@ -16,5 +17,8 @@ export const createMockState = (): State => ({
   },
   pagination: {
     ...paginationInitialState,
+  },
+  comments: {
+    ...commentsInitialState,
   },
 });

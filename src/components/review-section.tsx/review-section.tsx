@@ -23,17 +23,25 @@ function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
     setIsReviewFormModalOpen(true);
   };
 
-  const sortedReviews = useMemo(() => sortByDate(guitar.comments), [guitar.comments]);
+  const sortedReviews = useMemo(
+    () => sortByDate(guitar.comments),
+    [guitar.comments],
+  );
 
   const [currentPage, setCurrentPage] = useState(INITIAL_PAGE);
   const increasePage = () => setCurrentPage((prevPage) => prevPage + 1);
   const isMore = sortedReviews.length > currentPage * COMMENTS_PAGE_SIZE;
   const shownReviews = sortedReviews.slice(0, currentPage * COMMENTS_PAGE_SIZE);
 
+  const withReviews = Boolean(guitar.comments.length);
+
   return (
     <>
       {isReviewFormModalOpen && (
-        <ModalReviewForm title={guitar.name} onClose={() => setIsReviewFormModalOpen(false)}>
+        <ModalReviewForm
+          title={guitar.name}
+          onClose={() => setIsReviewFormModalOpen(false)}
+        >
           <AddReviewForm
             guitarId={guitar.id}
             onSuccessSubmitting={() => {
@@ -53,12 +61,16 @@ function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
       )}
 
       <section className="reviews">
-        <h3 className="reviews__title title title--bigger">Отзывы</h3>
+        {withReviews && (
+          <h3 className="reviews__title title title--bigger">Отзывы</h3>
+        )}
+
         <a
           className="button button--red-border button--big reviews__sumbit-button"
           href="#"
           onClick={handleAddReviewLink}
           data-testid="button-add-review"
+          style={{ zIndex: 1 }}
         >
           Оставить отзыв
         </a>
@@ -76,13 +88,15 @@ function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
           </button>
         )}
 
-        <a
-          className="button button--up button--red-border button--big reviews__up-button"
-          style={{ zIndex: 1 }}
-          href="#header"
-        >
-          Наверх
-        </a>
+        {withReviews && (
+          <a
+            className="button button--up button--red-border button--big reviews__up-button"
+            style={{ zIndex: 1 }}
+            href="#header"
+          >
+            Наверх
+          </a>
+        )}
       </section>
     </>
   );

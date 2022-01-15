@@ -1,5 +1,6 @@
 import { ThunkAction } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
+import { setNewCommentStatus } from '../store/comments/comments-actions';
 import {
   AddFilterGuitarType,
   AddFilterStringCount,
@@ -9,6 +10,7 @@ import {
   SetFilterMinPrice
 } from '../store/filter/filter-actions';
 import {
+  addCommentToCurrentGuitar,
   setAllGuitars,
   setCatalogGuitars,
   setCatalogGuitarsStatus,
@@ -38,7 +40,9 @@ export type ActionType =
   | ReturnType<typeof AddFilterStringCount>
   | ReturnType<typeof RemoveFilterStringCount>
   | ReturnType<typeof setPaginationCurrentPage>
-  | ReturnType<typeof setPaginationMaxPage>;
+  | ReturnType<typeof setPaginationMaxPage>
+  | ReturnType<typeof setNewCommentStatus>
+  | ReturnType<typeof addCommentToCurrentGuitar>;
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<
   R,

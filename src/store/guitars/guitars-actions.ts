@@ -1,5 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { Action } from '../../constants/action';
+import { CommentGet } from '../../types/comment';
 import { FetchStatusType } from '../../types/common';
 import { Guitar, GuitarWithComments } from '../../types/guitar';
 
@@ -18,6 +19,12 @@ export const setCatalogGuitarsStatus = createAction(Action.SetCatalogGuitarsStat
 export const setCurrentGuitar = createAction(Action.SetCurrentGuitar, (currentGuitar: GuitarWithComments | null) => ({
   payload: {
     currentGuitar,
+  },
+}));
+
+export const addCommentToCurrentGuitar = createAction(Action.AddNewCommentToCurrentGuitar, (comment: CommentGet) => ({
+  payload: {
+    comment,
   },
 }));
 
