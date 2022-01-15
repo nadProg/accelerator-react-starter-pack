@@ -114,7 +114,7 @@ function AddReviewForm({
             onChange={handleInputChange}
           />
           {isUserNameErrorShown && (
-            <span className="form-review__warning">Заполните поле</span>
+            <span className="form-review__warning" data-testid="username-error">Заполните поле</span>
           )}
         </div>
         <div>
@@ -136,13 +136,13 @@ function AddReviewForm({
                     checked={value === formFields.rating}
                     onChange={handleInputChange}
                   />
-                  <label className="rate__label" htmlFor={id} title={label} />
+                  <label className="rate__label" htmlFor={id} >{label}</label>
                 </Fragment>
               );
             })}
             <span className="rate__count"></span>
             {isRatingErrorShown && (
-              <span className="rate__message">Поставьте оценку</span>
+              <span className="rate__message" data-testid="rating-error">Поставьте оценку</span>
             )}
           </div>
         </div>
