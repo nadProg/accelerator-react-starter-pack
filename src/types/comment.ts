@@ -8,3 +8,12 @@ export type CommentGet = {
   createAt: string;
   guitarId: number;
 };
+
+export type CommentPost = {
+  guitarId: number;
+  userName: string;
+  rating: number;
+  advantage: string;
+  disadvantage: string;
+  comment: string;
+};

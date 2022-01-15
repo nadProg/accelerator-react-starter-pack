@@ -192,7 +192,7 @@ function CardScreen(): JSX.Element {
         </div>
       </div>
 
-      <ReviewSection reviews={guitar.comments} />
+      <ReviewSection guitar={guitar} />
     </>
   );
 }

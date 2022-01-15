@@ -2,6 +2,7 @@ import { datatype, lorem } from 'faker';
 import { GuitarTypeValue } from '../constants/guitar';
 import { ValuesOf } from '../types/common';
 import { Guitar, GuitarWithComments, StringCountType } from '../types/guitar';
+import { createArrayOfObjects } from '../utils/common';
 import { createMockComment } from './comment';
 
 export const createMockGuitar = (): Guitar => ({
@@ -16,7 +17,7 @@ export const createMockGuitar = (): Guitar => ({
   price: datatype.number(),
 });
 
-export const createMockGuitarWithComments = (): GuitarWithComments => ({
+export const createMockGuitarWithComments = (commentsAmount = 1): GuitarWithComments => ({
   ...createMockGuitar(),
-  comments: [createMockComment()],
+  comments: createArrayOfObjects(createMockComment, commentsAmount),
 });

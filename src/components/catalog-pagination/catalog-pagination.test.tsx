@@ -15,6 +15,7 @@ import { CATALOG_PAGE_SIZE } from '../../constants/pagination';
 import { AppRoute } from '../../constants/endpoints';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { datatype } from 'faker';
 
 const mockState = createMockState();
 
@@ -35,7 +36,7 @@ describe('Component: CatalogPagination', () => {
       guitars: {
         ...mockState.guitars,
         catalogGuitars: {
-          data: createArrayOfObjects(createMockGuitarWithComments, mockTotalAmount),
+          data: createArrayOfObjects(() => createMockGuitarWithComments(datatype.number()), mockTotalAmount),
           status: FetchStatus.Succeeded,
         },
       },

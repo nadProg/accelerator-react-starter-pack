@@ -2,10 +2,12 @@ import { useRef } from 'react';
 import { useModal } from '../../hooks/use-modal';
 import { ModalProps, PropsWithChildren } from '../../types/props';
 
-type ModalReviewFormProps = ModalProps & PropsWithChildren;
+type ModalReviewFormProps = ModalProps & PropsWithChildren & {
+  title: string;
+};
 
 function ModalReviewForm({
-  onClose, children,
+  onClose, children, title,
 }: ModalReviewFormProps): JSX.Element {
   const rootRef = useRef<HTMLDivElement>(null);
   useModal(rootRef, onClose);
@@ -29,7 +31,7 @@ function ModalReviewForm({
             Оставить отзыв
           </h2>
           <h3 className="modal__product-name title title--medium-20 title--uppercase">
-            СURT Z30 Plus
+            {title}
           </h3>
 
           {children}

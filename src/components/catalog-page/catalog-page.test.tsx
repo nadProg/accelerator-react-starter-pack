@@ -10,8 +10,9 @@ import { createArrayOfObjects } from '../../utils/common';
 import CatalogPage from './catalog-page';
 import { screen } from '@testing-library/react';
 import { createMockState } from '../../mock/state';
+import { datatype } from 'faker';
 
-const mockGuitars = createArrayOfObjects(createMockGuitarWithComments, 9);
+const mockGuitars = createArrayOfObjects(() => createMockGuitarWithComments(datatype.number()), 9);
 
 const mockState = createMockState();
 

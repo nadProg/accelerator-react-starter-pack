@@ -1,16 +1,67 @@
-import { FormEventHandler } from 'react';
+import {
+  ChangeEventHandler,
+  FormEventHandler,
+  Fragment,
+  useState
+} from 'react';
+import { AddReviewFormField, INITIAL_FORM_ERRORS, INITIAL_FORM_FIELDS, RATING_OPTIONS } from '../../constants/add-review-form';
+import { Guitar } from '../../types/guitar';
 
 type AddReviewFormProps = {
+  guitarId: Guitar['id'];
   onSuccessSubmitting: () => void;
 };
 
 function AddReviewForm({
   onSuccessSubmitting,
+  guitarId,
 }: AddReviewFormProps): JSX.Element {
+  const [isFormDirty, setIsFormDirty] = useState(false);
+  const [formErrors, setFormErrors] = useState(INITIAL_FORM_ERRORS);
+  const [formFields, setFormFields] = useState({
+    ...INITIAL_FORM_FIELDS,
+    guitarId,
+  });
+
+  const handleInputChange: ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = (evt) => {
+    const { value, name } = evt.target;
+
+    const parsedValue = typeof formFields[name as AddReviewFormField] === 'number' ? Number(value) : value;
+
+    setFormFields((prevFields) => ({
+      ...prevFields,
+      [name]: parsedValue,
+    }));
+
+    if (formErrors[name as AddReviewFormField] !== undefined) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: !value,
+      }));
+    }
+
+
+  };
+
+  const isFormValid = (() =>
+    Object.values(formErrors).every((error) => !error))();
+
   const handleSubmit: FormEventHandler<HTMLFormElement> = (evt) => {
     evt.preventDefault();
+
+    setIsFormDirty(true);
+
+    if (!isFormValid) {
+      return;
+    }
+
     onSuccessSubmitting();
   };
+
+  const isUserNameErrorShown = isFormDirty && formErrors.userName;
+  const isRatingErrorShown = isFormDirty && formErrors.rating;
 
   return (
     <form className="form-review" onSubmit={handleSubmit}>
@@ -27,81 +78,41 @@ function AddReviewForm({
             id="user-name"
             type="text"
             autoComplete="off"
+            name="userName"
+            value={formFields.userName}
+            onChange={handleInputChange}
           />
-          <span className="form-review__warning">Заполните поле</span>
+          {isUserNameErrorShown && (
+            <span className="form-review__warning">Заполните поле</span>
+          )}
         </div>
         <div>
           <span className="form-review__label form-review__label--required">
             Ваша Оценка
           </span>
           <div className="rate rate--reverse">
-            <input
-              className="visually-hidden"
-              type="radio"
-              id="star-5"
-              name="rate"
-              value="5"
-            />
-            <label
-              className="rate__label"
-              htmlFor="star-5"
-              title="Отлично"
-            >
-            </label>
-            <input
-              className="visually-hidden"
-              type="radio"
-              id="star-4"
-              name="rate"
-              value="4"
-            />
-            <label
-              className="rate__label"
-              htmlFor="star-4"
-              title="Хорошо"
-            >
-            </label>
-            <input
-              className="visually-hidden"
-              type="radio"
-              id="star-3"
-              name="rate"
-              value="3"
-            />
-            <label
-              className="rate__label"
-              htmlFor="star-3"
-              title="Нормально"
-            >
-            </label>
-            <input
-              className="visually-hidden"
-              type="radio"
-              id="star-2"
-              name="rate"
-              value="2"
-            />
-            <label
-              className="rate__label"
-              htmlFor="star-2"
-              title="Плохо"
-            >
-            </label>
-            <input
-              className="visually-hidden"
-              type="radio"
-              id="star-1"
-              name="rate"
-              value="1"
-            />
-            <label
-              className="rate__label"
-              htmlFor="star-1"
-              title="Ужасно"
-            >
-            </label>
+            {RATING_OPTIONS.map(({ value, label }) => {
+              const id = `star-${value}`;
+
+              return (
+                <Fragment key={id}>
+                  <input
+                    className="visually-hidden"
+                    type="radio"
+                    id={id}
+                    name="rating"
+                    value={value}
+                    checked={value === formFields.rating}
+                    onChange={handleInputChange}
+                  />
+                  <label className="rate__label" htmlFor={id} title={label} />
+                </Fragment>
+              );
+            })}
             <span className="rate__count"></span>
-            <span className="rate__message">Поставьте оценку</span>
+            {isRatingErrorShown && (
+              <span className="rate__message">Поставьте оценку</span>
+            )}
           </div>
         </div>
       </div>
@@ -113,6 +124,9 @@ function AddReviewForm({
         id="pros"
         type="text"
         autoComplete="off"
+        name="advantage"
+        value={formFields.advantage}
+        onChange={handleInputChange}
       />
       <label className="form-review__label" htmlFor="user-name">
         Недостатки
@@ -122,6 +136,9 @@ function AddReviewForm({
         id="user-name"
         type="text"
         autoComplete="off"
+        name="disadvantage"
+        value={formFields.disadvantage}
+        onChange={handleInputChange}
       />
       <label className="form-review__label" htmlFor="user-name">
         Комментарий
@@ -131,6 +148,9 @@ function AddReviewForm({
         id="user-name"
         rows={10}
         autoComplete="off"
+        name="comment"
+        value={formFields.comment}
+        onChange={handleInputChange}
       >
       </textarea>
       <button

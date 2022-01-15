@@ -1,25 +1,23 @@
 import {render} from '@testing-library/react';
 import { datatype } from 'faker';
-import { createMockComment } from '../../mock/comment';
-import { createArrayOfObjects } from '../../utils/common';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import ReviewSection from './review-section';
+import { createMockGuitarWithComments } from '../../mock/guitar';
 
-
-const mockReviews = createArrayOfObjects(createMockComment, datatype.number());
+const mockGuitar = createMockGuitarWithComments(datatype.number());
 
 describe('Component: ReviewSection', () => {
   it('should render without errors', () => {
     render(
-      <ReviewSection reviews={mockReviews} />,
+      <ReviewSection guitar={mockGuitar} />,
     );
   });
 
   it('should handle open/close review-form modal', () => {
     render(
-      <ReviewSection reviews={mockReviews} />,
+      <ReviewSection guitar={mockGuitar} />,
     );
 
     expect(screen.queryByTestId('modal-review-form')).not.toBeInTheDocument();
@@ -39,7 +37,7 @@ describe('Component: ReviewSection', () => {
 
   it('should handle success modal open after success new review submit', () => {
     render(
-      <ReviewSection reviews={mockReviews} />,
+      <ReviewSection guitar={mockGuitar} />,
     );
 
     expect(screen.queryByTestId('modal-review-form')).not.toBeInTheDocument();
