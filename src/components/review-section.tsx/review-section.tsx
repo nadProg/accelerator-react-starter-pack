@@ -1,5 +1,6 @@
 import { MouseEventHandler, useMemo, useState } from 'react';
 import { COMMENTS_PAGE_SIZE } from '../../constants/comment';
+import { useShowMore } from '../../hooks/use-show-more';
 import { GuitarWithComments } from '../../types/guitar';
 import { sortByDate } from '../../utils/comment';
 import AddReviewForm from '../add-review-form/add-review-form';
@@ -11,27 +12,29 @@ type ReviewSectionProps = {
   guitar: GuitarWithComments;
 };
 
-const INITIAL_PAGE = 1;
-
 function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
   const [isReviewFormModalOpen, setIsReviewFormModalOpen] = useState(false);
   const [isSuccessReviewModalOpen, setIsSuccessReviewModalOpen] =
     useState(false);
-
-  const handleAddReviewLink: MouseEventHandler = (evt) => {
-    evt.preventDefault();
-    setIsReviewFormModalOpen(true);
-  };
 
   const sortedReviews = useMemo(
     () => sortByDate(guitar.comments),
     [guitar.comments],
   );
 
-  const [currentPage, setCurrentPage] = useState(INITIAL_PAGE);
-  const increasePage = () => setCurrentPage((prevPage) => prevPage + 1);
-  const isMore = sortedReviews.length > currentPage * COMMENTS_PAGE_SIZE;
-  const shownReviews = sortedReviews.slice(0, currentPage * COMMENTS_PAGE_SIZE);
+  const {
+    shownItems: shownReviews,
+    isMore: isMoreReviews,
+    showMore: showMoreReviews,
+  } = useShowMore({
+    items: sortedReviews,
+    size: COMMENTS_PAGE_SIZE,
+  });
+
+  const handleAddReviewLink: MouseEventHandler = (evt) => {
+    evt.preventDefault();
+    setIsReviewFormModalOpen(true);
+  };
 
   const withReviews = Boolean(guitar.comments.length);
 
@@ -79,10 +82,10 @@ function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
           <Review key={review.id} review={review} />
         ))}
 
-        {isMore && (
+        {isMoreReviews && (
           <button
             className="button button--medium reviews__more-button"
-            onClick={() => increasePage()}
+            onClick={showMoreReviews}
           >
             Показать еще отзывы
           </button>

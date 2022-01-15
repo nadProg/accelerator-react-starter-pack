@@ -12,7 +12,7 @@ import { createMockGuitarWithComments } from '../../mock/guitar';
 import { FetchStatus } from '../../constants/common';
 import { asyncDelay } from '../../utils/common';
 
-const mockGuitar = createMockGuitarWithComments();
+const mockGuitar = createMockGuitarWithComments(10);
 
 const api = createAPI();
 const middlewares = [thunk.withExtraArgument(api)];
