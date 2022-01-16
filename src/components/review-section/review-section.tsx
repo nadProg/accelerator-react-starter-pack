@@ -1,5 +1,6 @@
-import { MouseEventHandler, useMemo, useState } from 'react';
+import { MouseEventHandler, useEffect, useMemo, useRef, useState } from 'react';
 import { COMMENTS_PAGE_SIZE } from '../../constants/comment';
+import { useIntersection } from '../../hooks/use-intersection';
 import { useShowMore } from '../../hooks/use-show-more';
 import { GuitarWithComments } from '../../types/guitar';
 import { sortByDate } from '../../utils/comment';
@@ -37,6 +38,10 @@ function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
   };
 
   const withReviews = Boolean(guitar.comments.length);
+
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useIntersection(buttonRef, showMoreReviews);
 
   return (
     <>
@@ -84,6 +89,7 @@ function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
 
         {isMoreReviews && (
           <button
+            ref={buttonRef}
             className="button button--medium reviews__more-button"
             onClick={showMoreReviews}
           >
