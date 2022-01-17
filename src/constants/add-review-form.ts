@@ -1,7 +1,7 @@
-import { CommentPost } from '../types/comment';
+import { ReviewPost } from '../types/review';
 
 
-export const INITIAL_FORM_FIELDS: CommentPost = {
+export const INITIAL_FORM_FIELDS: ReviewPost = {
   guitarId: 0,
   userName: '',
   rating: 0,
@@ -10,10 +10,10 @@ export const INITIAL_FORM_FIELDS: CommentPost = {
   comment: '',
 } as const;
 
-export type NewCommentFormFields = keyof Omit<CommentPost, 'guitarId'>;
+export type NewReviewFormFields = keyof Omit<ReviewPost, 'guitarId'>;
 
 export const INITIAL_FORM_ERRORS: {
-  [key in NewCommentFormFields]: boolean
+  [key in NewReviewFormFields]: boolean
 } = {
   userName: true,
   rating: true,

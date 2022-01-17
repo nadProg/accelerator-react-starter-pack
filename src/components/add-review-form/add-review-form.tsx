@@ -9,16 +9,17 @@ import {
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  NewCommentFormFields,
+  NewReviewFormFields,
   INITIAL_FORM_ERRORS,
   INITIAL_FORM_FIELDS,
   RATING_OPTIONS
 } from '../../constants/add-review-form';
 import { FetchStatus } from '../../constants/common';
-import { setNewCommentStatus } from '../../store/comments/comments-actions';
-import { postComment } from '../../store/comments/comments-api-actions';
-import { getNewCommentStatus } from '../../store/comments/comments-selector';
+import { setNewReviewStatus } from '../../store/reviews/reviews-actions';
+import { postReview } from '../../store/reviews/reviews-api-actions';
+import { getNewReviewStatus } from '../../store/reviews/reviews-selector';
 import { Guitar } from '../../types/guitar';
+import { isFetchLoading } from '../../utils/fetched-data';
 import styles from './add-review-form.module.css';
 
 type AddReviewFormProps = {
@@ -38,10 +39,10 @@ function AddReviewForm({
   });
 
   const dispatch = useDispatch();
-  const newCommentFetchStatus = useSelector(getNewCommentStatus);
+  const newReviewFetchStatus = useSelector(getNewReviewStatus);
 
   useEffect(() => {
-    switch (newCommentFetchStatus) {
+    switch (newReviewFetchStatus) {
       case FetchStatus.Succeeded:
         onSuccessSubmitting();
         break;
@@ -53,11 +54,11 @@ function AddReviewForm({
       default:
         break;
     }
-  }, [newCommentFetchStatus]);
+  }, [newReviewFetchStatus]);
 
   useEffect(
     () => () => {
-      dispatch(setNewCommentStatus(FetchStatus.Idle));
+      dispatch(setNewReviewStatus(FetchStatus.Idle));
     },
     [],
   );
@@ -68,7 +69,7 @@ function AddReviewForm({
     const { value, name } = evt.target;
 
     const parsedValue =
-      typeof formFields[name as NewCommentFormFields] === 'number'
+      typeof formFields[name as NewReviewFormFields] === 'number'
         ? Number(value)
         : value;
 
@@ -77,7 +78,7 @@ function AddReviewForm({
       [name]: parsedValue,
     }));
 
-    if (formErrors[name as NewCommentFormFields] !== undefined) {
+    if (formErrors[name as NewReviewFormFields] !== undefined) {
       setFormErrors((prevErrors) => ({
         ...prevErrors,
         [name]: !value,
@@ -97,7 +98,7 @@ function AddReviewForm({
       return;
     }
 
-    dispatch(postComment(formFields));
+    dispatch(postReview(formFields));
   };
 
   const isUserNameErrorShown = isFormDirty && formErrors.userName;
@@ -106,7 +107,7 @@ function AddReviewForm({
   const isDisadvantageErrorShown = isFormDirty && formErrors.disadvantage;
   const isCommentErrorShown = isFormDirty && formErrors.comment;
 
-  const isSubmitting = newCommentFetchStatus === FetchStatus.Loading;
+  const isSubmitting = isFetchLoading(newReviewFetchStatus);
 
   return (
     <form className="form-review" onSubmit={handleSubmit}>

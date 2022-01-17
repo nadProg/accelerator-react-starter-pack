@@ -8,10 +8,10 @@ import { APIRoute } from '../../constants/endpoints';
 import { FetchStatus } from '../../constants/common';
 import thunk from 'redux-thunk';
 import { createMockState } from '../../mock/state';
-import { createMockComment } from '../../mock/comment';
-import { postComment } from './comments-api-actions';
-import { addCommentToCurrentGuitar } from '../guitars/guitars-actions';
-import { setNewCommentStatus } from './comments-actions';
+import { createMockReview } from '../../mock/review';
+import { postReview } from './reviews-api-actions';
+import { addReviewToCurrentGuitar } from '../guitars/guitars-actions';
+import { setNewReviewStatus } from './reviews-actions';
 
 const api = createAPI();
 const mockAPI = new MockAdapter(api);
@@ -23,35 +23,35 @@ const createMockStore = configureMockStore<
   ThunkDispatch<State, typeof api, ActionType>
 >(middlewares);
 
-const mockComment = createMockComment();
+const mockReview = createMockReview();
 
-describe('Api-actions: Comments', () => {
-  it('should handle succeed post comment', async () => {
+describe('Api-actions: Reviews', () => {
+  it('should handle succeed post review', async () => {
     const mockState = createMockState();
     const store = createMockStore(mockState);
 
-    mockAPI.onPost(APIRoute.Comment()).reply(200, mockComment);
+    mockAPI.onPost(APIRoute.Reviews()).reply(200, mockReview);
 
-    await store.dispatch(postComment(mockComment));
+    await store.dispatch(postReview(mockReview));
 
     expect(store.getActions()).toEqual([
-      setNewCommentStatus(FetchStatus.Loading),
-      addCommentToCurrentGuitar(mockComment),
-      setNewCommentStatus(FetchStatus.Succeeded),
+      setNewReviewStatus(FetchStatus.Loading),
+      addReviewToCurrentGuitar(mockReview),
+      setNewReviewStatus(FetchStatus.Succeeded),
     ]);
   });
 
-  it('should handle failed post comment', async () => {
+  it('should handle failed post review', async () => {
     const mockState = createMockState();
     const store = createMockStore(mockState);
 
-    mockAPI.onPost(APIRoute.Comment()).reply(400);
+    mockAPI.onPost(APIRoute.Reviews()).reply(400);
 
-    await store.dispatch(postComment(mockComment));
+    await store.dispatch(postReview(mockReview));
 
     expect(store.getActions()).toEqual([
-      setNewCommentStatus(FetchStatus.Loading),
-      setNewCommentStatus(FetchStatus.Failed),
+      setNewReviewStatus(FetchStatus.Loading),
+      setNewReviewStatus(FetchStatus.Failed),
     ]);
   });
 });

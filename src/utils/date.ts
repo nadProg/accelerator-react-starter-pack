@@ -3,4 +3,4 @@ import 'dayjs/locale/ru';
 
 dayjs.locale('ru');
 
-export const formatCommentDate = (date: string) => dayjs(date).format('D MMMM');
+export const formatReviewDate = (date: string) => dayjs(date).format('D MMMM');

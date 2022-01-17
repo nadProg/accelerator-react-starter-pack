@@ -1,10 +1,10 @@
 import { FetchStatus } from '../../constants/common';
 import { FetchedData } from '../../types/common';
-import { Guitar, GuitarWithComments } from '../../types/guitar';
+import { Guitar, GuitarWithReviews } from '../../types/guitar';
 
 export type GuitarsState = {
-  catalogGuitars: FetchedData<GuitarWithComments[]>,
-  currentGuitar: FetchedData<GuitarWithComments>,
+  catalogGuitars: FetchedData<GuitarWithReviews[]>,
+  currentGuitar: FetchedData<GuitarWithReviews>,
   foundGuitars: {
     data: Guitar[] | null,
   },

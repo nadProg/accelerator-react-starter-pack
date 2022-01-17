@@ -1,9 +1,9 @@
 import {render} from '@testing-library/react';
-import { createMockComment } from '../../mock/comment';
+import { createMockReview } from '../../mock/review';
 import Review from './review';
 
 
-const mockReview = createMockComment();
+const mockReview = createMockReview();
 
 describe('Component: Review', () => {
   it('should render without errors', () => {

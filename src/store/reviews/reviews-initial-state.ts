@@ -1,14 +1,14 @@
 import { FetchStatus } from '../../constants/common';
 import { FetchStatusType } from '../../types/common';
 
-export type GuitarsState = {
-  newComment: {
+export type ReviewsState = {
+  newReview: {
     status: FetchStatusType
   },
 };
 
-export const commentsInitialState: GuitarsState = {
-  newComment: {
+export const reviewsInitialState: ReviewsState = {
+  newReview: {
     status: FetchStatus.Idle,
   },
 };

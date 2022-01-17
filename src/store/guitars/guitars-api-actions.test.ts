@@ -7,7 +7,7 @@ import { APIRoute } from '../../constants/endpoints';
 import { datatype, lorem } from 'faker';
 import {
   createMockGuitar,
-  createMockGuitarWithComments
+  createMockGuitarWithReviews
 } from '../../mock/guitar';
 import { createArrayOfObjects } from '../../utils/common';
 import {
@@ -43,10 +43,10 @@ const createMockStore = configureMockStore<
 const mockGuitarName = lorem.word();
 const mockGuitarId = datatype.number();
 const mockCatalogGuitars = createArrayOfObjects(
-  createMockGuitarWithComments,
+  createMockGuitarWithReviews,
   10,
 );
-const mockCurrentGuitar = createMockGuitarWithComments();
+const mockCurrentGuitar = createMockGuitarWithReviews();
 const mockFoundGuitars = createArrayOfObjects(createMockGuitar, 10);
 
 describe('Api-actions: Guitars', () => {
@@ -55,7 +55,7 @@ describe('Api-actions: Guitars', () => {
     const store = createMockStore(mockState);
     const mockTotalCount = datatype.number();
 
-    mockAPI.onGet(APIRoute.CatalogGuitars()).reply(200, mockCatalogGuitars, {
+    mockAPI.onGet(APIRoute.Guitars()).reply(200, mockCatalogGuitars, {
       [TOTAL_COUNT_HEADER]: mockTotalCount,
     });
 
@@ -83,7 +83,7 @@ describe('Api-actions: Guitars', () => {
     });
     const mockTotalCount = datatype.number();
 
-    mockAPI.onGet(APIRoute.CatalogGuitars()).reply(200, mockCatalogGuitars, {
+    mockAPI.onGet(APIRoute.Guitars()).reply(200, mockCatalogGuitars, {
       [TOTAL_COUNT_HEADER]: mockTotalCount,
     });
 
@@ -100,7 +100,7 @@ describe('Api-actions: Guitars', () => {
   it('should handle failed get catalog guitars request', async () => {
     const mockState = createMockState();
     const store = createMockStore(mockState);
-    mockAPI.onGet(APIRoute.CatalogGuitars()).reply(400);
+    mockAPI.onGet(APIRoute.Guitars()).reply(400);
 
     await store.dispatch(getCatalogGuitars());
 
@@ -137,7 +137,7 @@ describe('Api-actions: Guitars', () => {
 
   it('should handle succeed get found guitars request', async () => {
     const store = createMockStore();
-    mockAPI.onGet(APIRoute.CatalogGuitars()).reply(200, mockFoundGuitars);
+    mockAPI.onGet(APIRoute.Guitars()).reply(200, mockFoundGuitars);
 
     await store.dispatch(getGuitarsSimilarToName(mockGuitarName));
 
@@ -146,7 +146,7 @@ describe('Api-actions: Guitars', () => {
 
   it('should handle failed get found guitars request', async () => {
     const store = createMockStore();
-    mockAPI.onGet(APIRoute.CatalogGuitars()).reply(400);
+    mockAPI.onGet(APIRoute.Guitars()).reply(400);
 
     await store.dispatch(getGuitarsSimilarToName(mockGuitarName));
 
@@ -155,7 +155,7 @@ describe('Api-actions: Guitars', () => {
 
   it('should handle succeed get all guitars request', async () => {
     const store = createMockStore();
-    mockAPI.onGet(APIRoute.CatalogGuitars()).reply(200, mockFoundGuitars);
+    mockAPI.onGet(APIRoute.Guitars()).reply(200, mockFoundGuitars);
 
     await store.dispatch(getAllGuitars());
 
@@ -164,7 +164,7 @@ describe('Api-actions: Guitars', () => {
 
   it('should handle failed get all guitars request', async () => {
     const store = createMockStore();
-    mockAPI.onGet(APIRoute.CatalogGuitars()).reply(400);
+    mockAPI.onGet(APIRoute.Guitars()).reply(400);
 
     await store.dispatch(getAllGuitars());
 

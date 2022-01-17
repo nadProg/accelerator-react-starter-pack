@@ -1,10 +1,10 @@
 import {render} from '@testing-library/react';
-import { createMockGuitarWithComments } from '../../mock/guitar';
+import { createMockGuitarWithReviews } from '../../mock/guitar';
 import ModalCartAdd from './modal-cart-add';
 
 const mockOnClose = jest.fn();
 
-const mockProduct = createMockGuitarWithComments();
+const mockProduct = createMockGuitarWithReviews();
 
 describe('Component: ModalCartAdd', () => {
   it('should render without errors', () => {

@@ -1,12 +1,12 @@
 import {render} from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { createMockGuitarWithComments } from '../../mock/guitar';
-import ProductCard from './product-card';
+import { createMockGuitarWithReviews } from '../../mock/guitar';
+import GuitarCard from './guitar-card';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-const mockProduct = createMockGuitarWithComments();
+const mockProduct = createMockGuitarWithReviews();
 
 const mockHistory = createMemoryHistory();
 
@@ -14,7 +14,7 @@ describe('Component: ProductCard', () => {
   it('should render without errors', () => {
     render(
       <Router history={mockHistory}>
-        <ProductCard product={mockProduct} />
+        <GuitarCard guitar={mockProduct} />
       </Router>,
     );
   });
@@ -22,7 +22,7 @@ describe('Component: ProductCard', () => {
   it('should handle open/close add-to-card modal', () => {
     render(
       <Router history={mockHistory}>
-        <ProductCard product={mockProduct} />
+        <GuitarCard guitar={mockProduct} />
       </Router>,
     );
 

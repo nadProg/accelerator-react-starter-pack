@@ -12,7 +12,7 @@ import {
 } from '../../utils/fetched-data';
 import InfoScreen from '../info-screen/info-screen';
 import Loader from '../loader/loader';
-import ProductCard from '../product-card/product-card';
+import GuitarCard from '../guitar-card/guitar-card';
 
 function CatalogPage(): JSX.Element {
   const catalogGuitars = useSelector(getCatalogGuitarsData);
@@ -46,7 +46,7 @@ function CatalogPage(): JSX.Element {
   return (
     <>
       {catalogGuitars.map((guitar) => (
-        <ProductCard key={guitar.id} product={guitar} />
+        <GuitarCard key={guitar.id} guitar={guitar} />
       ))}
     </>
   );

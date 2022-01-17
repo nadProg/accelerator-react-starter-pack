@@ -1,11 +1,11 @@
 import { useRef } from 'react';
 import { HumanizedGuitar } from '../../constants/guitar';
 import { useModal } from '../../hooks/use-modal';
-import { GuitarWithComments } from '../../types/guitar';
+import { GuitarWithReviews } from '../../types/guitar';
 import { ModalProps } from '../../types/props';
 
 type ModalCartAddProps = ModalProps & {
-  product: GuitarWithComments;
+  product: GuitarWithReviews;
 };
 
 function ModalCartAdd({ product, onClose }: ModalCartAddProps): JSX.Element {

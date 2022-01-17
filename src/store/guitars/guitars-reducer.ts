@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import {
-  addCommentToCurrentGuitar,
+  addReviewToCurrentGuitar,
   setAllGuitars,
   setCatalogGuitars,
   setCatalogGuitarsStatus,
@@ -30,7 +30,7 @@ export const guitarsReducer = createReducer(guitarsInitialState, (builder) => {
     .addCase(setAllGuitars, (state, action) => {
       state.allGuitars.data = action.payload.allGuitars;
     })
-    .addCase(addCommentToCurrentGuitar, (state, action) => {
-      state.currentGuitar.data?.comments.push(action.payload.comment);
+    .addCase(addReviewToCurrentGuitar, (state, action) => {
+      state.currentGuitar.data?.comments.push(action.payload.review);
     });
 });

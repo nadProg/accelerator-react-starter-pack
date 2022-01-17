@@ -1,4 +1,4 @@
-export const COMMENTS = 'comments';
+export const REVIEWS = 'comments';
 
 export const Query = {
   Embed: '_embed',

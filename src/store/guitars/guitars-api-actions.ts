@@ -2,9 +2,9 @@ import { CATALOG_PAGE_SIZE, TOTAL_COUNT_HEADER } from '../../constants/paginatio
 import { FetchStatus } from '../../constants/common';
 import { APIRoute } from '../../constants/endpoints';
 import { FilterParameter } from '../../constants/filter';
-import { Query, COMMENTS } from '../../constants/query';
+import { Query, REVIEWS } from '../../constants/query';
 import { NAME_LIKE_QUERY } from '../../constants/search';
-import { Guitar, GuitarWithComments } from '../../types/guitar';
+import { Guitar, GuitarWithReviews } from '../../types/guitar';
 import { ThunkActionResult } from '../../types/store';
 import {
   setAllGuitars,
@@ -25,9 +25,9 @@ export const getCatalogGuitars =
       const maxPrice = _getState().filter.price.max === '' ? undefined : _getState().filter.price.max;
 
       try {
-        const response = await api.get<GuitarWithComments[]>(APIRoute.CatalogGuitars(), {
+        const response = await api.get<GuitarWithReviews[]>(APIRoute.Guitars(), {
           params: {
-            [Query.Embed]: COMMENTS,
+            [Query.Embed]: REVIEWS,
             [Query.Limit]: CATALOG_PAGE_SIZE,
             [Query.Start]: (_getState().pagination.currentPage - 1) * CATALOG_PAGE_SIZE,
             [Query.Sort]: _getState().sort.type,
@@ -55,9 +55,9 @@ export const getCurrentGuitar =
       dispatch(setCurrentGuitarStatus(FetchStatus.Loading));
 
       try {
-        const { data } = await api.get<GuitarWithComments>(APIRoute.Guitar(id), {
+        const { data } = await api.get<GuitarWithReviews>(APIRoute.Guitar(id), {
           params: {
-            [Query.Embed]: COMMENTS,
+            [Query.Embed]: REVIEWS,
           },
         });
 
@@ -72,7 +72,7 @@ export const getGuitarsSimilarToName =
   (name: string): ThunkActionResult =>
     async (dispatch, _getState, api): Promise<void> => {
       try {
-        const { data } = await api.get<Guitar[]>(APIRoute.CatalogGuitars(), {
+        const { data } = await api.get<Guitar[]>(APIRoute.Guitars(), {
           params: {
             [NAME_LIKE_QUERY]: name,
           },
@@ -88,7 +88,7 @@ export const getAllGuitars =
   (): ThunkActionResult =>
     async (dispatch, _getState, api): Promise<void> => {
       try {
-        const { data } = await api.get<Guitar[]>(APIRoute.CatalogGuitars());
+        const { data } = await api.get<Guitar[]>(APIRoute.Guitars());
 
         dispatch(setAllGuitars(data));
       } catch {

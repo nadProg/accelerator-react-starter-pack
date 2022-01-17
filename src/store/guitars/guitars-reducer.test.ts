@@ -1,13 +1,13 @@
 import { UNKNOWN_ACTION } from '../../constants/action';
 import { FetchStatus } from '../../constants/common';
-import { createMockComment } from '../../mock/comment';
+import { createMockReview } from '../../mock/review';
 import {
   createMockGuitar,
-  createMockGuitarWithComments
+  createMockGuitarWithReviews
 } from '../../mock/guitar';
 import { createArrayOfObjects } from '../../utils/common';
 import {
-  addCommentToCurrentGuitar,
+  addReviewToCurrentGuitar,
   setAllGuitars,
   setCatalogGuitars,
   setCatalogGuitarsStatus,
@@ -19,10 +19,10 @@ import { guitarsInitialState } from './guitars-initial-state';
 import { guitarsReducer } from './guitars-reducer';
 
 const mockCatalogGuitars = createArrayOfObjects(
-  createMockGuitarWithComments,
+  createMockGuitarWithReviews,
   10,
 );
-const mockCurrentGuitar = createMockGuitarWithComments();
+const mockCurrentGuitar = createMockGuitarWithReviews();
 const mockFoundGuitars = createArrayOfObjects(createMockGuitar, 10);
 const mockFetchStatus = FetchStatus.Loading;
 
@@ -70,26 +70,26 @@ describe('Reducer: Guitar', () => {
     });
   });
 
-  it('should add new comment to current guitar', () => {
-    const mockComment = createMockComment();
-    const mockNewComment = createMockComment();
-    const mockCurrentGuitarWithOneComment = {
+  it('should add new review to current guitar', () => {
+    const mockReview = createMockReview();
+    const mockNewReview = createMockReview();
+    const mockCurrentGuitarWithOneReview = {
       ...createMockGuitar(),
-      comments: [mockComment],
+      comments: [mockReview],
     };
 
     const mockInitialState = {
       ...guitarsInitialState,
       currentGuitar: {
         ...guitarsInitialState.currentGuitar,
-        data: mockCurrentGuitarWithOneComment,
+        data: mockCurrentGuitarWithOneReview,
       },
     };
 
     expect(
       guitarsReducer(
         mockInitialState,
-        addCommentToCurrentGuitar(mockNewComment),
+        addReviewToCurrentGuitar(mockNewReview),
       ),
     ).toEqual({
       ...mockInitialState,
@@ -97,7 +97,7 @@ describe('Reducer: Guitar', () => {
         ...mockInitialState.currentGuitar,
         data: {
           ...mockInitialState.currentGuitar.data,
-          comments: [mockComment, mockNewComment],
+          comments: [mockReview, mockNewReview],
         },
       },
     });

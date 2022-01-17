@@ -1,10 +1,10 @@
 import { createAction } from '@reduxjs/toolkit';
 import { Action } from '../../constants/action';
-import { CommentGet } from '../../types/comment';
+import { ReviewGet } from '../../types/review';
 import { FetchStatusType } from '../../types/common';
-import { Guitar, GuitarWithComments } from '../../types/guitar';
+import { Guitar, GuitarWithReviews } from '../../types/guitar';
 
-export const setCatalogGuitars = createAction(Action.SetCatalogGuitars, (catalogGuitars: GuitarWithComments[] | null) => ({
+export const setCatalogGuitars = createAction(Action.SetCatalogGuitars, (catalogGuitars: GuitarWithReviews[] | null) => ({
   payload: {
     catalogGuitars,
   },
@@ -16,15 +16,15 @@ export const setCatalogGuitarsStatus = createAction(Action.SetCatalogGuitarsStat
   },
 }));
 
-export const setCurrentGuitar = createAction(Action.SetCurrentGuitar, (currentGuitar: GuitarWithComments | null) => ({
+export const setCurrentGuitar = createAction(Action.SetCurrentGuitar, (currentGuitar: GuitarWithReviews | null) => ({
   payload: {
     currentGuitar,
   },
 }));
 
-export const addCommentToCurrentGuitar = createAction(Action.AddNewCommentToCurrentGuitar, (comment: CommentGet) => ({
+export const addReviewToCurrentGuitar = createAction(Action.AddReviewToCurrentGuitar, (review: ReviewGet) => ({
   payload: {
-    comment,
+    review,
   },
 }));
 

@@ -1,7 +1,7 @@
 import { datatype, internet, lorem } from 'faker';
-import { CommentGet } from '../types/comment';
+import { ReviewGet } from '../types/review';
 
-export const createMockComment = (): CommentGet => ({
+export const createMockReview = (): ReviewGet => ({
   id: datatype.uuid(),
   userName: internet.userName(),
   advantage: lorem.words(),

@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import { FetchStatus } from '../../constants/common';
 import { AppRoute } from '../../constants/endpoints';
-import { createMockGuitarWithComments } from '../../mock/guitar';
+import { createMockGuitarWithReviews } from '../../mock/guitar';
 import { State } from '../../types/store';
 import CardScreen from './card-screen';
 import ReactRouter, { Route } from 'react-router';
@@ -14,7 +14,7 @@ import { screen } from '@testing-library/react';
 import { createMockState } from '../../mock/state';
 import userEvent from '@testing-library/user-event';
 
-const mockGuitar = createMockGuitarWithComments();
+const mockGuitar = createMockGuitarWithReviews();
 const mockState = createMockState();
 
 const mockIdleState: State = {

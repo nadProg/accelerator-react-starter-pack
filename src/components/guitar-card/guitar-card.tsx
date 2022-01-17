@@ -1,49 +1,47 @@
-import { MouseEventHandler, useMemo, useState } from 'react';
+import { MouseEventHandler, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AppRoute } from '../../constants/endpoints';
-import { GuitarWithComments } from '../../types/guitar';
-import { formatPrice, getRating } from '../../utils/guitar';
+import { GuitarWithReviews } from '../../types/guitar';
+import { formatPrice } from '../../utils/guitar';
 import ModalCartAdd from '../modal-cart-add/modal-cart-add';
 import Rating from '../rating/rating';
 
-type ProductCardProps = {
-  product: GuitarWithComments;
+type GuitarCardProps = {
+  guitar: GuitarWithReviews;
 };
 
-function ProductCard({ product }: ProductCardProps): JSX.Element {
+function GuitarCard({ guitar }: GuitarCardProps): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleBasketLinkClick: MouseEventHandler<HTMLAnchorElement> = (evt) => {
     evt.preventDefault();
     setIsModalOpen(true);
   };
 
-  const rating = useMemo(() => getRating(product), [product]);
-
   return (
     <>
-      {isModalOpen && <ModalCartAdd product={product} onClose={() => setIsModalOpen(false)}/>}
+      {isModalOpen && <ModalCartAdd product={guitar} onClose={() => setIsModalOpen(false)}/>}
       <div className="product-card">
         <img
-          src={`/${product.previewImg}`}
+          src={`/${guitar.previewImg}`}
           width="75"
           height="190"
-          alt={product.name}
+          alt={guitar.name}
         />
         <div className="product-card__info">
           <div className="rate product-card__rate" aria-hidden="true">
             <span className="visually-hidden">Рейтинг:</span>
-            <Rating value={rating} />
-            <span className="rate__count">{product.comments.length}</span>
+            <Rating value={guitar.rating} />
+            <span className="rate__count">{guitar.comments.length}</span>
             <span className="rate__message"></span>
           </div>
-          <p className="product-card__title">{product.name}</p>
+          <p className="product-card__title">{guitar.name}</p>
           <p className="product-card__price">
             <span className="visually-hidden">Цена:</span>
-            {formatPrice(product.price)} ₽
+            {formatPrice(guitar.price)} ₽
           </p>
         </div>
         <div className="product-card__buttons">
-          <NavLink className="button button--mini" to={AppRoute.Card(product.id)}>
+          <NavLink className="button button--mini" to={AppRoute.Card(guitar.id)}>
           Подробнее
           </NavLink>
           <a
@@ -61,4 +59,4 @@ function ProductCard({ product }: ProductCardProps): JSX.Element {
   );
 }
 
-export default ProductCard;
+export default GuitarCard;

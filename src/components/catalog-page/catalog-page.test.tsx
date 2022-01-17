@@ -4,14 +4,14 @@ import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import { FetchStatus } from '../../constants/common';
-import { createMockGuitarWithComments } from '../../mock/guitar';
+import { createMockGuitarWithReviews } from '../../mock/guitar';
 import { State } from '../../types/store';
 import { createArrayOfObjects } from '../../utils/common';
 import CatalogPage from './catalog-page';
 import { screen } from '@testing-library/react';
 import { createMockState } from '../../mock/state';
 
-const mockGuitars = createArrayOfObjects(() => createMockGuitarWithComments(), 9);
+const mockGuitars = createArrayOfObjects(() => createMockGuitarWithReviews(), 9);
 
 const mockState = createMockState();
 

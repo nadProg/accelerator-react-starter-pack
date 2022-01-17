@@ -1,16 +1,16 @@
 import { MouseEventHandler, useMemo, useRef, useState } from 'react';
-import { COMMENTS_PAGE_SIZE } from '../../constants/comment';
+import { REVIEWS_PAGE_SIZE } from '../../constants/review';
 import { useIntersection } from '../../hooks/use-intersection';
 import { useShowMore } from '../../hooks/use-show-more';
-import { GuitarWithComments } from '../../types/guitar';
-import { sortByDate } from '../../utils/comment';
+import { GuitarWithReviews } from '../../types/guitar';
+import { sortByDate } from '../../utils/review';
 import AddReviewForm from '../add-review-form/add-review-form';
 import ModalReviewForm from '../modal-review-form/modal-review-form';
 import ModalSuccessReview from '../modal-success-review/modal-success-review';
 import Review from '../review/review';
 
 type ReviewSectionProps = {
-  guitar: GuitarWithComments;
+  guitar: GuitarWithReviews;
 };
 
 function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
@@ -29,7 +29,7 @@ function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
     showMore: showMoreReviews,
   } = useShowMore({
     items: sortedReviews,
-    size: COMMENTS_PAGE_SIZE,
+    size: REVIEWS_PAGE_SIZE,
   });
 
   const handleAddReviewLink: MouseEventHandler = (evt) => {

@@ -10,7 +10,7 @@ import { createMockState } from '../../mock/state';
 import CatalogPagination from './catalog-pagination';
 import { DEBOUNCE_TIME, FetchStatus } from '../../constants/common';
 import { asyncDelay, createArrayOfObjects } from '../../utils/common';
-import { createMockGuitarWithComments } from '../../mock/guitar';
+import { createMockGuitarWithReviews } from '../../mock/guitar';
 import { CATALOG_PAGE_SIZE } from '../../constants/pagination';
 import { AppRoute } from '../../constants/endpoints';
 import { screen } from '@testing-library/react';
@@ -36,7 +36,7 @@ describe('Component: CatalogPagination', () => {
       guitars: {
         ...mockState.guitars,
         catalogGuitars: {
-          data: createArrayOfObjects(() => createMockGuitarWithComments(), mockTotalAmount),
+          data: createArrayOfObjects(() => createMockGuitarWithReviews(), mockTotalAmount),
           status: FetchStatus.Succeeded,
         },
       },

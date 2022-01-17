@@ -71,8 +71,8 @@ describe('Component: AddReviewForm', () => {
   it('should handle success submitting callback', () => {
     const mockSucceedStore = configureMockStore<State>(middlewares)({
       ...mockState,
-      comments: {
-        newComment: {
+      reviews: {
+        newReview: {
           status: FetchStatus.Succeeded,
         },
       },
@@ -96,8 +96,8 @@ describe('Component: AddReviewForm', () => {
   it('should handle failed submit', () => {
     const mockFailedStore = configureMockStore<State>(middlewares)({
       ...mockState,
-      comments: {
-        newComment: {
+      reviews: {
+        newReview: {
           status: FetchStatus.Failed,
         },
       },
@@ -149,8 +149,8 @@ describe('Component: AddReviewForm', () => {
   it('should disable submit button while sending request', () => {
     const mockLoadingStore = configureMockStore<State>(middlewares)({
       ...mockState,
-      comments: {
-        newComment: {
+      reviews: {
+        newReview: {
           status: FetchStatus.Loading,
         },
       },

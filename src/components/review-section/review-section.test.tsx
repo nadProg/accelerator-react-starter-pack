@@ -8,11 +8,11 @@ import { createMockState } from '../../mock/state';
 import { createAPI } from '../../services/api';
 import thunk from 'redux-thunk';
 import ReviewSection from './review-section';
-import { createMockGuitarWithComments } from '../../mock/guitar';
+import { createMockGuitarWithReviews } from '../../mock/guitar';
 import { FetchStatus } from '../../constants/common';
 import { asyncDelay } from '../../utils/common';
 
-const mockGuitar = createMockGuitarWithComments(10);
+const mockGuitar = createMockGuitarWithReviews(10);
 
 const api = createAPI();
 const middlewares = [thunk.withExtraArgument(api)];
@@ -54,8 +54,8 @@ describe('Component: ReviewSection', () => {
   it('should handle success modal open after success new review submit', async () => {
     const mockSucceededStore = configureMockStore<State>(middlewares)({
       ...mockState,
-      comments: {
-        newComment: {
+      reviews: {
+        newReview: {
           status: FetchStatus.Succeeded,
         },
       },

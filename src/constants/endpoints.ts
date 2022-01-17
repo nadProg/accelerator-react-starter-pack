@@ -1,7 +1,7 @@
 export const APIRoute = {
-  CatalogGuitars: () => '/guitars',
+  Guitars: () => '/guitars',
   Guitar: (id: number | string) => `/guitars/${id}`,
-  Comment: () => '/comments',
+  Reviews: () => '/comments',
 } as const;
 
 export const AppRoute = {

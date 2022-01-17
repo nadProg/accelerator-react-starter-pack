@@ -1,4 +1,4 @@
-export type CommentGet = {
+export type ReviewGet = {
   id: string;
   userName: string;
   advantage: string;
@@ -9,7 +9,7 @@ export type CommentGet = {
   guitarId: number;
 };
 
-export type CommentPost = {
+export type ReviewPost = {
   guitarId: number;
   userName: string;
   rating: number;

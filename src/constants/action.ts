@@ -15,8 +15,8 @@ export const Action = {
   RemoveFilterStringCount: 'filter/removeStringCount',
   SetPaginationCurrentPage: 'pagination/setCurrentPage',
   SetPaginationMaxPage: 'pagination/setMaxPage',
-  SetNewCommentStatus: 'newComment/setStatus',
-  AddNewCommentToCurrentGuitar: 'currentGuitar/addComment',
+  SetNewReviewStatus: 'newReview/setStatus',
+  AddReviewToCurrentGuitar: 'currentGuitar/addReview',
 } as const;
 
 export const UNKNOWN_ACTION = {

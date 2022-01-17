@@ -1,5 +1,5 @@
 import { RUSSIAN_LOCALE } from '../constants/common';
-import { Guitar, GuitarWithComments } from '../types/guitar';
+import { Guitar, GuitarWithReviews } from '../types/guitar';
 
 const createNameLikeComparingCallback =
   (nameLike: string) =>
@@ -24,17 +24,17 @@ export const sortByNameLike = <T extends Guitar>(
 export const formatPrice = (price: number) =>
   new Intl.NumberFormat(RUSSIAN_LOCALE).format(price);
 
-export const getRating = (guitar: GuitarWithComments | null) => {
+export const getRating = (guitar: GuitarWithReviews | null) => {
   if (!guitar) {
     return 0;
   }
 
-  const { comments } = guitar;
+  const { comments: reviews } = guitar;
 
-  if (!comments.length) {
+  if (!reviews.length) {
     return 0;
   }
 
-  const totalPoints = comments.reduce((sum, comment) => sum + comment.rating, 0);
-  return totalPoints / comments.length;
+  const totalPoints = reviews.reduce((sum, review) => sum + review.rating, 0);
+  return totalPoints / reviews.length;
 };
