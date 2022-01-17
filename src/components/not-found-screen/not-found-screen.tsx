@@ -5,10 +5,10 @@ import InfoScreen from '../info-screen/info-screen';
 function NotFoundScreen(): JSX.Element {
   return (
     <InfoScreen>
-      <h1>This page does not exist</h1>
+      <h1>Данная страница не существует</h1>
       <p>
         <NavLink to={AppRoute.Root()}>
-          Go to main page
+          Перейти на главную
         </NavLink>
       </p>
     </InfoScreen>

@@ -132,7 +132,8 @@ describe('Component: CardScreen', () => {
       </Provider>,
     );
 
-    expect(screen.getByTestId('not-found')).toBeInTheDocument();
+    expect(screen.queryByTestId('not-found')).not.toBeInTheDocument();
+    expect(screen.getByTestId('card-error-message')).toBeInTheDocument();
   });
 
   it('should handle no guitar id', () => {

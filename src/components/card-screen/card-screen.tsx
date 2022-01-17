@@ -20,6 +20,7 @@ import {
 import { GuitarTabType } from '../../types/guitar';
 import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
 import { formatPrice, getRating } from '../../utils/guitar';
+import InfoScreen from '../info-screen/info-screen';
 import Loader from '../loader/loader';
 import ModalCartAdd from '../modal-cart-add/modal-cart-add';
 import Rating from '../rating/rating';
@@ -61,8 +62,20 @@ function CardScreen(): JSX.Element {
 
   const rating = useMemo(() => getRating(guitar), [guitar]);
 
-  if (error || isFetchError(guitarStatus)) {
+  if (error) {
     return <Redirect to={AppRoute.NotFound()} />;
+  }
+
+  if (isFetchError(guitarStatus)) {
+    return (
+      <InfoScreen>
+        <div data-testid="card-error-message">
+          <h1>Ошибка загрузки!</h1>
+          <p>Не удалось загрузить карточку товара</p>
+          <NavLink to={AppRoute.Catalog()}>Вернуться в каталог</NavLink>
+        </div>
+      </InfoScreen>
+    );
   }
 
   if (isFetchNotReady(guitarStatus)) {
@@ -170,7 +183,11 @@ function CardScreen(): JSX.Element {
                 {HumanizedGuitarTab[guitarTab]}
               </a>
             ))}
-            <div className="tabs__content" id={currentTab} data-testid={`${currentTab}-tab-content`}>
+            <div
+              className="tabs__content"
+              id={currentTab}
+              data-testid={`${currentTab}-tab-content`}
+            >
               {guitarTabContent[currentTab]()}
             </div>
           </div>
