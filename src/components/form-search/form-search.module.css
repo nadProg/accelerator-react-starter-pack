@@ -1,13 +1,13 @@
-.link {
-  font: inherit;
-  color: inherit;
-}
-
-.list {
+.FormSearch_selectList {
   z-index: 1;
   transition: transform 300ms;
 }
 
-.itemActive {
+.FormSearch_selectItem__active {
   color: orange;
+}
+
+.FormSearch_link {
+  font: inherit;
+  color: inherit;
 }

@@ -156,7 +156,7 @@ function FormSearch() {
       </form>
       {isFocused && foundGuitars && !!foundGuitars.length && (
         <ul
-          className={classNames('form-search__select-list', styles.list)}
+          className={classNames('form-search__select-list', styles.FormSearch_selectList)}
           ref={listRef}
         >
           {sortedGuitars?.map((guitar, index) => (
@@ -164,14 +164,14 @@ function FormSearch() {
               key={guitar.id}
               ref={(node) => (itemsRef.current[index] = node)}
               className={classNames('form-search__select-item', {
-                [styles.itemActive]: currentIndex === index,
+                [styles.FormSearch_selectItem__active]: currentIndex === index,
               })}
               tabIndex={0}
               onClick={handleItemLinkClick}
             >
               <NavLink
                 to={AppRoute.Card(guitar.id)}
-                className={styles.link}
+                className={styles.FormSearch_link}
                 data-testid="found-guitar-link"
               >
                 {guitar.name}

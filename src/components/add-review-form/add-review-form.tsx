@@ -167,19 +167,18 @@ function AddReviewForm({
           </div>
         </div>
       </div>
-      <div className={styles.formReviewWrapperColumn}>
+      <div className={styles.FormReview_inputWrapper__column}>
         <label
           className={classNames(
             'form-review__label',
             'form-review__label--required',
-            styles.alignSelfFlexStart,
           )}
           htmlFor="advantage"
         >
           Достоинства
         </label>
         <input
-          className={classNames('form-review__input', styles.formReviewInput)}
+          className={classNames('form-review__input', styles.FormReview_input)}
           id="advantage"
           type="text"
           autoComplete="off"
@@ -193,19 +192,18 @@ function AddReviewForm({
           </span>
         )}
       </div>
-      <div className={styles.formReviewWrapperColumn}>
+      <div className={styles.FormReview_inputWrapper__column}>
         <label
           className={classNames(
             'form-review__label',
             'form-review__label--required',
-            styles.alignSelfFlexStart,
           )}
           htmlFor="disadvantage"
         >
         Недостатки
         </label>
         <input
-          className={classNames('form-review__input', styles.formReviewInput)}
+          className={classNames('form-review__input', styles.FormReview_input)}
           id="disadvantage"
           type="text"
           autoComplete="off"
@@ -219,12 +217,11 @@ function AddReviewForm({
           </span>
         )}
       </div>
-      <div className={styles.formReviewWrapperColumn}>
+      <div className={styles.FormReview_inputWrapper__column}>
         <label
           className={classNames(
             'form-review__label',
             'form-review__label--required',
-            styles.alignSelfFlexStart,
           )}
           htmlFor="comment"
         >
@@ -234,7 +231,7 @@ function AddReviewForm({
           className={classNames(
             'form-review__input',
             'form-review__input--textarea',
-            styles.formReviewInput,
+            styles.FormReview_input,
           )}
           id="comment"
           rows={10}

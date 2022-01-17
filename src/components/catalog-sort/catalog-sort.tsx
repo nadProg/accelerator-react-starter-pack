@@ -34,17 +34,17 @@ function CatalogSort(): JSX.Element {
   const getSortTypeButtonClassName = (type: SortType) =>
     classNames('catalog-sort__type-button', {
       'catalog-sort__type-button--active': isCurrentSortType(type),
-      [styles.fontBold]: isCurrentSortType(type),
+      [styles.CatalogSort_orderButton__active]: isCurrentSortType(type),
     });
   const getSortOrderUpButtonClassName = (order: OrderType) =>
     classNames('catalog-sort__order-button', 'catalog-sort__order-button--up', {
       'catalog-sort__order-button--active': isCurrentSortOrder(order),
-      [styles.semiTransparent]: !isCurrentSortOrder(order),
+      [styles.CatalogSort_orderButton__inactive]: !isCurrentSortOrder(order),
     });
   const getSortOrderDownButtonClassName = (order: OrderType) =>
     classNames('catalog-sort__order-button', 'catalog-sort__order-button--down', {
       'catalog-sort__order-button--active': isCurrentSortOrder(order),
-      [styles.semiTransparent]: !isCurrentSortOrder(order),
+      [styles.CatalogSort_orderButton__inactive]: !isCurrentSortOrder(order),
     });
 
   const handleSortTypeButtonClick: MouseEventHandler = (evt) => {
@@ -77,7 +77,7 @@ function CatalogSort(): JSX.Element {
 
   return (
     <div className="catalog-sort">
-      <h2 className={classNames('catalog-sort__title', styles.fontBold)}>
+      <h2 className={classNames('catalog-sort__title', styles.CatalogSort_title)}>
         Сортировать:
       </h2>
       <div className="catalog-sort__type">

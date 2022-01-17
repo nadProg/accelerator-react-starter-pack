@@ -1,7 +1,11 @@
-.fontBold {
+.CatalogSort_title {
   font-weight: 700;
 }
 
-.semiTransparent {
+.CatalogSort_orderButton__active {
+  font-weight: 700;
+}
+
+.CatalogSort_orderButton__inactive {
   opacity: 0.5;
 }

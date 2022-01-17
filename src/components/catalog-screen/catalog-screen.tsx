@@ -31,7 +31,7 @@ function CatalogScreen(): JSX.Element {
       <div className="catalog">
         <CatalogFilter />
         <CatalogSort />
-        <div className={classNames('cards', 'catalog__cards', styles.cards)}>
+        <div className={classNames('cards', 'catalog__cards', styles.Catalog_cards)}>
           <CatalogPage />
         </div>
         <CatalogPagination />
