@@ -183,14 +183,13 @@ function CardScreen(): JSX.Element {
           <p className="product-container__price-info product-container__price-info--value">
             {formatPrice(guitar.price)} ₽
           </p>
-          <a
+          <button
             className="button button--red button--big product-container__button"
-            href="#"
             onClick={handleAddToCartLink}
             data-testid="button-add-to-cart"
           >
             Добавить в корзину
-          </a>
+          </button>
         </div>
       </div>
 

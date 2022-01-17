@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { MouseEventHandler, useMemo, useRef, useState } from 'react';
 import { REVIEWS_PAGE_SIZE } from '../../constants/review';
 import { useIntersection } from '../../hooks/use-intersection';
@@ -8,6 +9,7 @@ import AddReviewForm from '../add-review-form/add-review-form';
 import ModalReviewForm from '../modal-review-form/modal-review-form';
 import ModalSuccessReview from '../modal-success-review/modal-success-review';
 import Review from '../review/review';
+import styles from './review-section.module.css';
 
 type ReviewSectionProps = {
   guitar: GuitarWithReviews;
@@ -73,15 +75,19 @@ function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
           <h3 className="reviews__title title title--bigger">Отзывы</h3>
         )}
 
-        <a
-          className="button button--red-border button--big reviews__sumbit-button"
-          href="#"
+        <button
+          className={classNames(
+            'button',
+            'button--red-border',
+            'button--big',
+            'reviews__sumbit-button',
+            styles.Reviews_submitButton,
+          )}
           onClick={handleAddReviewLink}
           data-testid="button-add-review"
-          style={{ zIndex: 1 }}
         >
           Оставить отзыв
-        </a>
+        </button>
 
         {shownReviews.map((review) => (
           <Review key={review.id} review={review} />
@@ -99,8 +105,14 @@ function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
 
         {withReviews && (
           <a
-            className="button button--up button--red-border button--big reviews__up-button"
-            style={{ zIndex: 1 }}
+            className={classNames(
+              'button',
+              'button--up',
+              'button--red-border',
+              'button--big',
+              'reviews__up-button',
+              styles.Reviews_upButton,
+            )}
             href="#header"
           >
             Наверх
