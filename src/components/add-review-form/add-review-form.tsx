@@ -7,7 +7,12 @@ import {
 } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { AddReviewFormField, INITIAL_FORM_ERRORS, INITIAL_FORM_FIELDS, RATING_OPTIONS } from '../../constants/add-review-form';
+import {
+  AddReviewFormField,
+  INITIAL_FORM_ERRORS,
+  INITIAL_FORM_FIELDS,
+  RATING_OPTIONS
+} from '../../constants/add-review-form';
 import { FetchStatus } from '../../constants/common';
 import { setNewCommentStatus } from '../../store/comments/comments-actions';
 import { postComment } from '../../store/comments/comments-api-actions';
@@ -48,16 +53,22 @@ function AddReviewForm({
     }
   }, [newCommentFetchStatus]);
 
-  useEffect(() =>  () => {
-    dispatch(setNewCommentStatus(FetchStatus.Idle));
-  }, []);
+  useEffect(
+    () => () => {
+      dispatch(setNewCommentStatus(FetchStatus.Idle));
+    },
+    [],
+  );
 
   const handleInputChange: ChangeEventHandler<
     HTMLInputElement | HTMLTextAreaElement
   > = (evt) => {
     const { value, name } = evt.target;
 
-    const parsedValue = typeof formFields[name as AddReviewFormField] === 'number' ? Number(value) : value;
+    const parsedValue =
+      typeof formFields[name as AddReviewFormField] === 'number'
+        ? Number(value)
+        : value;
 
     setFormFields((prevFields) => ({
       ...prevFields,
@@ -70,8 +81,6 @@ function AddReviewForm({
         [name]: !value,
       }));
     }
-
-
   };
 
   const isFormValid = (() =>
@@ -114,7 +123,9 @@ function AddReviewForm({
             onChange={handleInputChange}
           />
           {isUserNameErrorShown && (
-            <span className="form-review__warning" data-testid="username-error">Заполните поле</span>
+            <span className="form-review__warning" data-testid="username-error">
+              Заполните поле
+            </span>
           )}
         </div>
         <div>
@@ -136,13 +147,17 @@ function AddReviewForm({
                     checked={value === formFields.rating}
                     onChange={handleInputChange}
                   />
-                  <label className="rate__label" htmlFor={id} >{label}</label>
+                  <label className="rate__label" htmlFor={id} title={label}>
+                    <span className="visually-hidden">{label}</span>
+                  </label>
                 </Fragment>
               );
             })}
             <span className="rate__count"></span>
             {isRatingErrorShown && (
-              <span className="rate__message" data-testid="rating-error">Поставьте оценку</span>
+              <span className="rate__message" data-testid="rating-error">
+                Поставьте оценку
+              </span>
             )}
           </div>
         </div>

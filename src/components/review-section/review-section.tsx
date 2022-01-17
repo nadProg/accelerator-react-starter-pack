@@ -1,4 +1,4 @@
-import { MouseEventHandler, useEffect, useMemo, useRef, useState } from 'react';
+import { MouseEventHandler, useMemo, useRef, useState } from 'react';
 import { COMMENTS_PAGE_SIZE } from '../../constants/comment';
 import { useIntersection } from '../../hooks/use-intersection';
 import { useShowMore } from '../../hooks/use-show-more';
