@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import {
   ChangeEventHandler,
   FormEventHandler,
@@ -8,7 +9,7 @@ import {
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  AddReviewFormField,
+  NewCommentFormFields,
   INITIAL_FORM_ERRORS,
   INITIAL_FORM_FIELDS,
   RATING_OPTIONS
@@ -18,6 +19,7 @@ import { setNewCommentStatus } from '../../store/comments/comments-actions';
 import { postComment } from '../../store/comments/comments-api-actions';
 import { getNewCommentStatus } from '../../store/comments/comments-selector';
 import { Guitar } from '../../types/guitar';
+import styles from './add-review-form.module.css';
 
 type AddReviewFormProps = {
   guitarId: Guitar['id'];
@@ -66,7 +68,7 @@ function AddReviewForm({
     const { value, name } = evt.target;
 
     const parsedValue =
-      typeof formFields[name as AddReviewFormField] === 'number'
+      typeof formFields[name as NewCommentFormFields] === 'number'
         ? Number(value)
         : value;
 
@@ -75,7 +77,7 @@ function AddReviewForm({
       [name]: parsedValue,
     }));
 
-    if (formErrors[name as AddReviewFormField] !== undefined) {
+    if (formErrors[name as NewCommentFormFields] !== undefined) {
       setFormErrors((prevErrors) => ({
         ...prevErrors,
         [name]: !value,
@@ -100,6 +102,9 @@ function AddReviewForm({
 
   const isUserNameErrorShown = isFormDirty && formErrors.userName;
   const isRatingErrorShown = isFormDirty && formErrors.rating;
+  const isAdvantageErrorShown = isFormDirty && formErrors.advantage;
+  const isDisadvantageErrorShown = isFormDirty && formErrors.disadvantage;
+  const isCommentErrorShown = isFormDirty && formErrors.comment;
 
   const isSubmitting = newCommentFetchStatus === FetchStatus.Loading;
 
@@ -109,13 +114,13 @@ function AddReviewForm({
         <div className="form-review__name-wrapper">
           <label
             className="form-review__label form-review__label--required"
-            htmlFor="user-name"
+            htmlFor="userName"
           >
             Ваше Имя
           </label>
           <input
             className="form-review__input form-review__input--name"
-            id="user-name"
+            id="userName"
             type="text"
             autoComplete="off"
             name="userName"
@@ -162,43 +167,89 @@ function AddReviewForm({
           </div>
         </div>
       </div>
-      <label className="form-review__label" htmlFor="user-name">
-        Достоинства
-      </label>
-      <input
-        className="form-review__input"
-        id="pros"
-        type="text"
-        autoComplete="off"
-        name="advantage"
-        value={formFields.advantage}
-        onChange={handleInputChange}
-      />
-      <label className="form-review__label" htmlFor="user-name">
+      <div className={styles.formReviewWrapperColumn}>
+        <label
+          className={classNames(
+            'form-review__label',
+            'form-review__label--required',
+            styles.alignSelfFlexStart,
+          )}
+          htmlFor="advantage"
+        >
+          Достоинства
+        </label>
+        <input
+          className={classNames('form-review__input', styles.formReviewInput)}
+          id="advantage"
+          type="text"
+          autoComplete="off"
+          name="advantage"
+          value={formFields.advantage}
+          onChange={handleInputChange}
+        />
+        {isAdvantageErrorShown && (
+          <span className="form-review__warning" data-testid="advantage-error">
+            Заполните поле
+          </span>
+        )}
+      </div>
+      <div className={styles.formReviewWrapperColumn}>
+        <label
+          className={classNames(
+            'form-review__label',
+            'form-review__label--required',
+            styles.alignSelfFlexStart,
+          )}
+          htmlFor="disadvantage"
+        >
         Недостатки
-      </label>
-      <input
-        className="form-review__input"
-        id="user-name"
-        type="text"
-        autoComplete="off"
-        name="disadvantage"
-        value={formFields.disadvantage}
-        onChange={handleInputChange}
-      />
-      <label className="form-review__label" htmlFor="user-name">
+        </label>
+        <input
+          className={classNames('form-review__input', styles.formReviewInput)}
+          id="disadvantage"
+          type="text"
+          autoComplete="off"
+          name="disadvantage"
+          value={formFields.disadvantage}
+          onChange={handleInputChange}
+        />
+        {isDisadvantageErrorShown && (
+          <span className="form-review__warning" data-testid="disadvantage-error">
+          Заполните поле
+          </span>
+        )}
+      </div>
+      <div className={styles.formReviewWrapperColumn}>
+        <label
+          className={classNames(
+            'form-review__label',
+            'form-review__label--required',
+            styles.alignSelfFlexStart,
+          )}
+          htmlFor="comment"
+        >
         Комментарий
-      </label>
-      <textarea
-        className="form-review__input form-review__input--textarea"
-        id="user-name"
-        rows={10}
-        autoComplete="off"
-        name="comment"
-        value={formFields.comment}
-        onChange={handleInputChange}
-      >
-      </textarea>
+        </label>
+        <textarea
+          className={classNames(
+            'form-review__input',
+            'form-review__input--textarea',
+            styles.formReviewInput,
+          )}
+          id="comment"
+          rows={10}
+          autoComplete="off"
+          name="comment"
+          value={formFields.comment}
+          onChange={handleInputChange}
+        >
+        </textarea>
+        {isCommentErrorShown && (
+          <span className="form-review__warning" data-testid="comment-error">
+          Заполните поле
+          </span>
+        )}
+      </div>
       <button
         className="button button--medium-20 form-review__button"
         type="submit"

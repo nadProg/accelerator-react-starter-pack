@@ -1,6 +1,5 @@
 import { CommentPost } from '../types/comment';
 
-export type AddReviewFormField = keyof CommentPost;
 
 export const INITIAL_FORM_FIELDS: CommentPost = {
   guitarId: 0,
@@ -11,11 +10,16 @@ export const INITIAL_FORM_FIELDS: CommentPost = {
   comment: '',
 } as const;
 
+export type NewCommentFormFields = keyof Omit<CommentPost, 'guitarId'>;
+
 export const INITIAL_FORM_ERRORS: {
-  [key in keyof CommentPost]?: boolean
+  [key in NewCommentFormFields]: boolean
 } = {
   userName: true,
   rating: true,
+  advantage: true,
+  disadvantage: true,
+  comment: true,
 } as const;
 
 export const RATING_OPTIONS = [

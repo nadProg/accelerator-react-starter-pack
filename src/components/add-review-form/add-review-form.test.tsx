@@ -46,14 +46,23 @@ describe('Component: AddReviewForm', () => {
 
     expect(screen.queryByTestId('username-error')).not.toBeInTheDocument();
     expect(screen.queryByTestId('rating-error')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('advantage-error')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('disadvantage-error')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('comment-error')).not.toBeInTheDocument();
 
-    userEvent.type(screen.getByLabelText(/Ваше Имя/i), 'Имя');
-    userEvent.click(screen.getByLabelText(/Отлично/i));
+    userEvent.type(screen.getByLabelText(/имя/i), 'имя');
+    userEvent.click(screen.getByLabelText(/отлично/i));
+    userEvent.type(screen.getByLabelText(/достоинства/i), 'достоинство');
+    userEvent.type(screen.getByLabelText(/недостатки/i), 'недостаток');
+    userEvent.type(screen.getByLabelText(/комментарий/i), 'комментарий');
 
     userEvent.click(screen.getByText(/Отправить отзыв/i));
 
     expect(screen.queryByTestId('username-error')).not.toBeInTheDocument();
     expect(screen.queryByTestId('rating-error')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('advantage-error')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('disadvantage-error')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('comment-error')).not.toBeInTheDocument();
 
     expect(mockStore.dispatch).toHaveBeenCalledTimes(1);
     expect(mockOnSuccessSubmitting).not.toBeCalled();
@@ -121,11 +130,17 @@ describe('Component: AddReviewForm', () => {
 
     expect(screen.queryByTestId('username-error')).not.toBeInTheDocument();
     expect(screen.queryByTestId('rating-error')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('advantage-error')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('disadvantage-error')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('comment-error')).not.toBeInTheDocument();
 
     userEvent.click(screen.getByText(/Отправить отзыв/i));
 
     expect(screen.getByTestId('username-error')).toBeInTheDocument();
     expect(screen.getByTestId('rating-error')).toBeInTheDocument();
+    expect(screen.getByTestId('advantage-error')).toBeInTheDocument();
+    expect(screen.getByTestId('disadvantage-error')).toBeInTheDocument();
+    expect(screen.getByTestId('comment-error')).toBeInTheDocument();
 
     expect(mockStore.dispatch).not.toBeCalled();
     expect(mockOnSuccessSubmitting).not.toBeCalled();

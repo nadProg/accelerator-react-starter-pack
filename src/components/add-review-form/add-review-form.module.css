@@ -1,0 +1,11 @@
+.alignSelfFlexStart {
+  align-self: flex-start;
+}
+
+.formReviewInput {
+  margin-bottom: 0;
+}
+
+.formReviewWrapperColumn {
+  margin-bottom: 8px;
+}
