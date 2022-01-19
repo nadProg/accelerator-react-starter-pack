@@ -3,11 +3,19 @@
   transition: transform 300ms;
 }
 
+.FormSearch_selectItem {
+  padding: 0;
+}
+
 .FormSearch_selectItem__active {
   color: orange;
 }
 
 .FormSearch_link {
+  display: inline-block;
+  width: 100%;
+  padding: 4px 0;
+
   font: inherit;
   color: inherit;
 }

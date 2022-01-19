@@ -113,7 +113,8 @@ function FormSearch() {
   }
 
   const sortedGuitars = useMemo(
-    () => (foundGuitars ? sortByNameLike(foundGuitars, inputValue) : foundGuitars),
+    () =>
+      foundGuitars ? sortByNameLike(foundGuitars, inputValue) : foundGuitars,
     [foundGuitars],
   );
 
@@ -128,6 +129,7 @@ function FormSearch() {
           className="form-search__submit"
           type="submit"
           data-testid="search-submit-button"
+          tabIndex={-1}
         >
           <svg
             className="form-search__icon"
@@ -156,17 +158,25 @@ function FormSearch() {
       </form>
       {isFocused && foundGuitars && !!foundGuitars.length && (
         <ul
-          className={classNames('form-search__select-list', styles.FormSearch_selectList)}
+          className={classNames(
+            'form-search__select-list',
+            styles.FormSearch_selectList,
+          )}
           ref={listRef}
+          tabIndex={-1}
         >
           {sortedGuitars?.map((guitar, index) => (
             <li
               key={guitar.id}
               ref={(node) => (itemsRef.current[index] = node)}
-              className={classNames('form-search__select-item', {
-                [styles.FormSearch_selectItem__active]: currentIndex === index,
-              })}
-              tabIndex={0}
+              className={classNames(
+                'form-search__select-item',
+                styles.FormSearch_selectItem,
+                {
+                  [styles.FormSearch_selectItem__active]:
+                    currentIndex === index,
+                },
+              )}
               onClick={handleItemLinkClick}
             >
               <NavLink
