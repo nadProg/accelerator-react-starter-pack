@@ -6,7 +6,7 @@ describe('Hook: useFocus', () => {
   it('should return correct result', () => {
     const { result } = renderHook(() => {
       const ref = useRef<HTMLElement>(null);
-      useFocusLoop(ref);
+      useFocusLoop(true, ref);
     });
 
     expect(result.current).not.toBeDefined();

@@ -8,7 +8,7 @@ describe('Hook: useModal', () => {
 
     const { result } = renderHook(() => {
       const ref = useRef<HTMLElement>(null);
-      useModal(ref, mockCallback);
+      useModal(true ,ref, mockCallback);
     });
 
     expect(result.current).not.toBeDefined();

@@ -23,6 +23,7 @@ import { formatPrice, getRating } from '../../utils/guitar';
 import InfoScreen from '../info-screen/info-screen';
 import Loader from '../loader/loader';
 import ModalCartAdd from '../modal-cart-add/modal-cart-add';
+import ModalContainer from '../modal-container/modal-container';
 import Rating from '../rating/rating';
 import ReviewSection from '../review-section/review-section';
 
@@ -117,12 +118,16 @@ function CardScreen(): JSX.Element {
 
   return (
     <>
-      {isCardModalOpen && (
+      <ModalContainer
+        isActive={isCardModalOpen}
+        onClose={() => setIsCardModalOpen(false)}
+        testId="modal-add-cart"
+      >
         <ModalCartAdd
-          product={guitar}
+          guitar={guitar}
           onClose={() => setIsCardModalOpen(false)}
         />
-      )}
+      </ModalContainer>
 
       <h1 className="page-content__title title title--bigger">{guitar.name}</h1>
 

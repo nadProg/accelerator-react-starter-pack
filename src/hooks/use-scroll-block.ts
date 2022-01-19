@@ -13,12 +13,16 @@ const unblockScroll = () => {
   document.body.style.paddingRight = '';
 };
 
-export const useScrollBlock = () => {
+export const useScrollBlock = (isActive: boolean) => {
   useEffect(() => {
-    blockScroll();
+    if (isActive) {
+      blockScroll();
+    } else {
+      unblockScroll();
+    }
 
     return () => {
       unblockScroll();
     };
-  }, []);
+  }, [isActive]);
 };

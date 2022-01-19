@@ -3,7 +3,7 @@ import { useScrollBlock } from './use-scroll-block';
 
 describe('Hook: useScrollBlock', () => {
   it('should return correct result', () => {
-    const { result } = renderHook(() => useScrollBlock());
+    const { result } = renderHook(() => useScrollBlock(true));
     expect(result.current).not.toBeDefined();
   });
 
@@ -12,7 +12,7 @@ describe('Hook: useScrollBlock', () => {
 
     expect(body.style).not.toHaveProperty('overflow', 'hidden');
 
-    renderHook(() => useScrollBlock());
+    renderHook(() => useScrollBlock(true));
 
     expect(body.style).toHaveProperty('overflow', 'hidden');
   });

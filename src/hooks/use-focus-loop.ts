@@ -1,6 +1,6 @@
 import { RefObject, useEffect } from 'react';
 
-export const useFocusLoop = <T extends HTMLElement>(rootRef: RefObject<T>) => {
+export const useFocusLoop = <T extends HTMLElement>(isActive: boolean, rootRef: RefObject<T>) => {
   useEffect(() => {
     const rootNode = rootRef.current;
 
@@ -17,11 +17,16 @@ export const useFocusLoop = <T extends HTMLElement>(rootRef: RefObject<T>) => {
       firstNode.focus();
     };
 
-    lastNode.addEventListener('blur', handleLastNodeBlur);
-    firstNode.focus();
+    if (isActive) {
+      lastNode.addEventListener('blur', handleLastNodeBlur);
+      firstNode.focus();
+      console.log(firstNode);
+    } else {
+      lastNode.removeEventListener('blur', handleLastNodeBlur);
+    }
 
     return () => {
       lastNode.removeEventListener('blur', handleLastNodeBlur);
     };
-  }, []);
+  }, [isActive, rootRef]);
 };
