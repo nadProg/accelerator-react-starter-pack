@@ -9,8 +9,10 @@ const blockScroll = () => {
 };
 
 const unblockScroll = () => {
-  document.body.style.overflow = '';
-  document.body.style.paddingRight = '';
+  setTimeout(() => {
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+  });
 };
 
 export const useScrollBlock = (isActive: boolean) => {
