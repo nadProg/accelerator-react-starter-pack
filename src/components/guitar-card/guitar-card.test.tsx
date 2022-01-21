@@ -1,4 +1,4 @@
-import {render} from '@testing-library/react';
+import {render, within} from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { createMockGuitarWithReviews } from '../../mock/guitar';
@@ -26,18 +26,14 @@ describe('Component: ProductCard', () => {
       </Router>,
     );
 
-    expect(screen.queryByTestId('modal-cart-add')).not.toBeInTheDocument();
+    const modal = screen.getByTestId('modal-cart-add');
+
+    expect(modal).not.toHaveClass('is-active');
 
     userEvent.click(screen.getByTestId('button-add-to-cart'));
-    expect(screen.getByTestId('modal-cart-add')).toBeInTheDocument();
+    expect(modal).toHaveClass('is-active');
 
-    userEvent.click(screen.getByTestId('modal-overlay'));
-    expect(screen.queryByTestId('modal-cart-add')).not.toBeInTheDocument();
-
-    userEvent.click(screen.getByTestId('button-add-to-cart'));
-    expect(screen.getByTestId('modal-cart-add')).toBeInTheDocument();
-
-    userEvent.click(screen.getByTestId('modal-button-close'));
-    expect(screen.queryByTestId('modal-cart-add')).not.toBeInTheDocument();
+    userEvent.click(within(modal).getByTestId('modal-overlay'));
+    expect(modal).not.toHaveClass('is-active');
   });
 });

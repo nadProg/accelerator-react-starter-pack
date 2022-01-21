@@ -1,4 +1,4 @@
-import { act, render } from '@testing-library/react';
+import { render, within } from '@testing-library/react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { configureMockStore } from '@jedmao/redux-mock-store';
@@ -10,7 +10,6 @@ import thunk from 'redux-thunk';
 import ReviewSection from './review-section';
 import { createMockGuitarWithReviews } from '../../mock/guitar';
 import { FetchStatus } from '../../constants/common';
-import { asyncDelay } from '../../utils/common';
 
 const mockGuitar = createMockGuitarWithReviews(10);
 
@@ -36,19 +35,15 @@ describe('Component: ReviewSection', () => {
       </Provider>,
     );
 
-    expect(screen.queryByTestId('modal-review-form')).not.toBeInTheDocument();
+    const modal = screen.getByTestId('modal-review-form');
+
+    expect(modal).not.toHaveClass('is-active');
 
     userEvent.click(screen.getByTestId('button-add-review'));
-    expect(screen.getByTestId('modal-review-form')).toBeInTheDocument();
+    expect(modal).toHaveClass('is-active');
 
-    userEvent.click(screen.getByTestId('modal-overlay'));
-    expect(screen.queryByTestId('modal-review-form')).not.toBeInTheDocument();
-
-    userEvent.click(screen.getByTestId('button-add-review'));
-    expect(screen.getByTestId('modal-review-form')).toBeInTheDocument();
-
-    userEvent.click(screen.getByTestId('modal-button-close'));
-    expect(screen.queryByTestId('modal-review-form')).not.toBeInTheDocument();
+    userEvent.click(within(modal).getByTestId('modal-overlay'));
+    expect(modal).not.toHaveClass('is-active');
   });
 
   it('should handle success modal open after success new review submit', async () => {
@@ -69,21 +64,16 @@ describe('Component: ReviewSection', () => {
       </Provider>,
     );
 
-    expect(screen.queryByTestId('modal-review-form')).not.toBeInTheDocument();
-    expect(
-      screen.queryByTestId('modal-success-review'),
-    ).not.toBeInTheDocument();
+    expect(screen.getByTestId('modal-review-form')).not.toHaveClass(
+      'is-active',
+    );
 
-    userEvent.click(screen.getByTestId('button-add-review'));
+    const modal = screen.getByTestId('modal-success-review');
 
-    await act(async () => {
-      await asyncDelay(0);
-    });
+    expect(modal).toHaveClass('is-active');
 
-    expect(screen.getByTestId('modal-success-review')).toBeInTheDocument();
+    userEvent.click(within(modal).getByTestId('modal-overlay'));
 
-    userEvent.click(screen.getByTestId('modal-button-close'));
-
-    expect(screen.queryByTestId('modal-success-review')).not.toBeInTheDocument();
+    expect(modal).not.toHaveClass('is-active');
   });
 });

@@ -13,21 +13,26 @@ type GuitarCardProps = {
 
 function GuitarCard({ guitar }: GuitarCardProps): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleBasketLinkClick: MouseEventHandler<HTMLAnchorElement> = (evt) => {
     evt.preventDefault();
     setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
   };
 
   return (
     <>
       <ModalContainer
         isActive={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        testId="modal-add-cart"
+        onClose={handleModalClose}
+        testId="modal-cart-add"
       >
         <ModalCartAdd
           guitar={guitar}
-          onClose={() => setIsModalOpen(false)}
+          onClose={handleModalClose}
         />
       </ModalContainer>
 

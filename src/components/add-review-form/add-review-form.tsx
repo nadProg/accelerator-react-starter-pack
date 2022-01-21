@@ -127,6 +127,7 @@ function AddReviewForm({
             name="userName"
             value={formFields.userName}
             onChange={handleInputChange}
+            autoFocus
           />
           {isUserNameErrorShown && (
             <span className="form-review__warning" data-testid="username-error">

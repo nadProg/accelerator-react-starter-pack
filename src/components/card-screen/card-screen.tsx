@@ -116,16 +116,20 @@ function CardScreen(): JSX.Element {
     setIsCardModalOpen(true);
   };
 
+  const handleCardModalClose = () => {
+    setIsCardModalOpen(false);
+  };
+
   return (
     <>
       <ModalContainer
         isActive={isCardModalOpen}
-        onClose={() => setIsCardModalOpen(false)}
-        testId="modal-add-cart"
+        onClose={handleCardModalClose}
+        testId="modal-cart-add"
       >
         <ModalCartAdd
           guitar={guitar}
-          onClose={() => setIsCardModalOpen(false)}
+          onClose={handleCardModalClose}
         />
       </ModalContainer>
 

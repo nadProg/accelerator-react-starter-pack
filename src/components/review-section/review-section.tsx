@@ -40,6 +40,14 @@ function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
     setIsReviewFormModalOpen(true);
   };
 
+  const handleReviewFormClose = () => {
+    setIsReviewFormModalOpen(false);
+  };
+
+  const handleSuccessReviewClose = () => {
+    setIsSuccessReviewModalOpen(false);
+  };
+
   const withReviews = Boolean(guitar.comments.length);
 
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -50,12 +58,12 @@ function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
     <>
       <ModalContainer
         isActive={isReviewFormModalOpen}
-        onClose={() => setIsReviewFormModalOpen(false)}
+        onClose={handleReviewFormClose}
         testId="modal-review-form"
       >
         <ModalReviewForm
           title={guitar.name}
-          onClose={() => setIsReviewFormModalOpen(false)}
+          onClose={handleReviewFormClose}
         >
           <AddReviewForm
             guitarId={guitar.id}
@@ -69,15 +77,11 @@ function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
 
       <ModalContainer
         isActive={isSuccessReviewModalOpen}
-        onClose={() => {
-          setIsSuccessReviewModalOpen(false);
-        }}
+        onClose={handleSuccessReviewClose}
         testId="modal-success-review"
       >
         <ModalSuccessReview
-          onClose={() => {
-            setIsSuccessReviewModalOpen(false);
-          }}
+          onClose={handleSuccessReviewClose}
         />
       </ModalContainer>
 
