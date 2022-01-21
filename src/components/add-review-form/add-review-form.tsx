@@ -41,9 +41,17 @@ function AddReviewForm({
   const dispatch = useDispatch();
   const newReviewFetchStatus = useSelector(getNewReviewStatus);
 
+  const resetForm = () => {
+    setFormFields((prevFields) => ({
+      ...prevFields,
+      ...INITIAL_FORM_FIELDS,
+    }));
+  };
+
   useEffect(() => {
     switch (newReviewFetchStatus) {
       case FetchStatus.Succeeded:
+        resetForm();
         onSuccessSubmitting();
         break;
 

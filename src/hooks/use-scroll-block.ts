@@ -8,23 +8,24 @@ const blockScroll = () => {
   document.body.style.paddingRight = `${paddingRight}px`;
 };
 
-const unblockScroll = () => {
+const unblockScroll = (transitionTime: number) => {
   setTimeout(() => {
     document.body.style.overflow = '';
     document.body.style.paddingRight = '';
-  });
+  }, transitionTime);
 };
 
-export const useScrollBlock = (isActive: boolean) => {
+export const useScrollBlock = (isActive: boolean, transitionTime = 600) => {
   useEffect(() => {
     if (isActive) {
       blockScroll();
-    } else {
-      unblockScroll();
+      return;
     }
 
-    return () => {
-      unblockScroll();
-    };
+    unblockScroll(transitionTime);
   }, [isActive]);
+
+  useEffect(() => () => {
+    unblockScroll(transitionTime);
+  }, []);
 };

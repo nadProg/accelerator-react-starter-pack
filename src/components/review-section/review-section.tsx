@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import { MouseEventHandler, useMemo, useRef, useState } from 'react';
 import { REVIEWS_PAGE_SIZE } from '../../constants/review';
 import { useIntersection } from '../../hooks/use-intersection';
+import { useScrollBlock } from '../../hooks/use-scroll-block';
 import { useShowMore } from '../../hooks/use-show-more';
 import { GuitarWithReviews } from '../../types/guitar';
 import { sortByDate } from '../../utils/review';
@@ -54,12 +55,15 @@ function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
 
   useIntersection(buttonRef, showMoreReviews);
 
+  useScrollBlock(isReviewFormModalOpen || isSuccessReviewModalOpen);
+
   return (
     <>
       <ModalContainer
         isActive={isReviewFormModalOpen}
         onClose={handleReviewFormClose}
         testId="modal-review-form"
+        noScrollBlock
       >
         <ModalReviewForm
           title={guitar.name}
@@ -79,6 +83,7 @@ function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
         isActive={isSuccessReviewModalOpen}
         onClose={handleSuccessReviewClose}
         testId="modal-success-review"
+        noScrollBlock
       >
         <ModalSuccessReview
           onClose={handleSuccessReviewClose}

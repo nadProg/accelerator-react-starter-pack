@@ -1,17 +1,25 @@
 import { useRef } from 'react';
 import classNames from 'classnames';
-import { useModal } from '../../hooks/use-modal';
 
 import { ModalProps, PropsWithChildren } from '../../types/props';
+import { useScrollBlock } from '../../hooks/use-scroll-block';
+import { useEscape } from '../../hooks/use-escape';
+import { useFocusLoop } from '../../hooks/use-focus-loop';
 
 type ModalContainerProps = PropsWithChildren & ModalProps & {
   isActive: boolean;
   testId?: string;
+  noScrollBlock?: boolean;
 };
 
-function ModalContainer({ onClose, children, testId, isActive }: ModalContainerProps) {
+function ModalContainer({ onClose, children, testId, isActive, noScrollBlock }: ModalContainerProps) {
   const rootRef = useRef<HTMLDivElement>(null);
-  useModal(isActive, rootRef, onClose);
+
+  const isScrollBlock = noScrollBlock ? false : isActive;
+
+  useScrollBlock(isScrollBlock);
+  useEscape(isActive, onClose);
+  useFocusLoop(isActive, rootRef);
 
   return (
     <div
