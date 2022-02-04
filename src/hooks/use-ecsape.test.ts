@@ -8,7 +8,7 @@ describe('Hook: useEscape', () => {
     const mockHandleEscape = jest.fn();
 
     const { result } = renderHook(() => {
-      useEscape(mockHandleEscape);
+      useEscape(true, mockHandleEscape);
     });
 
     expect(result.current).not.toBeDefined();
@@ -28,7 +28,7 @@ describe('Hook: useEscape', () => {
     expect(mockHandleEscape).not.toHaveBeenCalled();
 
     const { unmount } = renderHook(() => {
-      useEscape(mockHandleEscape);
+      useEscape(true, mockHandleEscape);
     });
 
     fireEvent.keyDown(document.body, {

@@ -4,6 +4,7 @@ import { AppRoute } from '../../constants/endpoints';
 import { GuitarWithReviews } from '../../types/guitar';
 import { formatPrice } from '../../utils/guitar';
 import ModalCartAdd from '../modal-cart-add/modal-cart-add';
+import ModalContainer from '../modal-container/modal-container';
 import Rating from '../rating/rating';
 
 type GuitarCardProps = {
@@ -12,14 +13,29 @@ type GuitarCardProps = {
 
 function GuitarCard({ guitar }: GuitarCardProps): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleBasketLinkClick: MouseEventHandler<HTMLAnchorElement> = (evt) => {
     evt.preventDefault();
     setIsModalOpen(true);
   };
 
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
-      {isModalOpen && <ModalCartAdd product={guitar} onClose={() => setIsModalOpen(false)}/>}
+      <ModalContainer
+        isActive={isModalOpen}
+        onClose={handleModalClose}
+        testId="modal-cart-add"
+      >
+        <ModalCartAdd
+          guitar={guitar}
+          onClose={handleModalClose}
+        />
+      </ModalContainer>
+
       <div className="product-card">
         <img
           src={`/${guitar.previewImg}`}

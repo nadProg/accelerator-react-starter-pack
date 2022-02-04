@@ -9,7 +9,7 @@ const mockProduct = createMockGuitarWithReviews();
 describe('Component: ModalCartAdd', () => {
   it('should render without errors', () => {
     render(
-      <ModalCartAdd product={mockProduct} onClose={mockOnClose} />,
+      <ModalCartAdd guitar={mockProduct} onClose={mockOnClose} />,
     );
   });
 });

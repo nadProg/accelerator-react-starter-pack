@@ -2,10 +2,12 @@ import classNames from 'classnames';
 import { MouseEventHandler, useMemo, useRef, useState } from 'react';
 import { REVIEWS_PAGE_SIZE } from '../../constants/review';
 import { useIntersection } from '../../hooks/use-intersection';
+import { useScrollBlock } from '../../hooks/use-scroll-block';
 import { useShowMore } from '../../hooks/use-show-more';
 import { GuitarWithReviews } from '../../types/guitar';
 import { sortByDate } from '../../utils/review';
 import AddReviewForm from '../add-review-form/add-review-form';
+import ModalContainer from '../modal-container/modal-container';
 import ModalReviewForm from '../modal-review-form/modal-review-form';
 import ModalSuccessReview from '../modal-success-review/modal-success-review';
 import Review from '../review/review';
@@ -39,18 +41,33 @@ function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
     setIsReviewFormModalOpen(true);
   };
 
+  const handleReviewFormClose = () => {
+    setIsReviewFormModalOpen(false);
+  };
+
+  const handleSuccessReviewClose = () => {
+    setIsSuccessReviewModalOpen(false);
+  };
+
   const withReviews = Boolean(guitar.comments.length);
 
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   useIntersection(buttonRef, showMoreReviews);
 
+  useScrollBlock(isReviewFormModalOpen || isSuccessReviewModalOpen);
+
   return (
     <>
-      {isReviewFormModalOpen && (
+      <ModalContainer
+        isActive={isReviewFormModalOpen}
+        onClose={handleReviewFormClose}
+        testId="modal-review-form"
+        noScrollBlock
+      >
         <ModalReviewForm
           title={guitar.name}
-          onClose={() => setIsReviewFormModalOpen(false)}
+          onClose={handleReviewFormClose}
         >
           <AddReviewForm
             guitarId={guitar.id}
@@ -60,15 +77,18 @@ function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
             }}
           />
         </ModalReviewForm>
-      )}
+      </ModalContainer>
 
-      {isSuccessReviewModalOpen && (
+      <ModalContainer
+        isActive={isSuccessReviewModalOpen}
+        onClose={handleSuccessReviewClose}
+        testId="modal-success-review"
+        noScrollBlock
+      >
         <ModalSuccessReview
-          onClose={() => {
-            setIsSuccessReviewModalOpen(false);
-          }}
+          onClose={handleSuccessReviewClose}
         />
-      )}
+      </ModalContainer>
 
       <section className="reviews">
         {withReviews && (
