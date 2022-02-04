@@ -9,6 +9,6 @@ export const AppRoute = {
   Catalog: () => '/catalog',
   CatalogPage: (pageNumber?: number) => `/catalog/${Number.isFinite(pageNumber) ? `page_${pageNumber}` : ':page'}`,
   Card: (id: number | string = ':id') => `/card/${id}`,
-  Basket: () => '/basket',
+  Cart: () => '/cart',
   NotFound: () => '/404',
 } as const;

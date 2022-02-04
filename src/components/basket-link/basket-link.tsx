@@ -4,9 +4,11 @@ import { AppRoute } from '../../constants/endpoints';
 import { PropsWithClassName } from '../../types/props';
 
 function BasketLink({ className }: PropsWithClassName) {
+  const isCartCountShown = false;
+
   return (
     <NavLink
-      to={AppRoute.Basket()}
+      to={AppRoute.Cart()}
       className={classNames(className)}
       aria-label="Корзина"
     >
@@ -19,7 +21,7 @@ function BasketLink({ className }: PropsWithClassName) {
         <use xlinkHref="#icon-basket"></use>
       </svg>
       <span className="visually-hidden">Перейти в корзину</span>
-      <span className="header__cart-count">2</span>
+      {isCartCountShown && <span className="header__cart-count">2</span>}
     </NavLink>
   );
 }

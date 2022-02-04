@@ -3,8 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { AppRoute } from '../../constants/endpoints';
 import { GuitarWithReviews } from '../../types/guitar';
 import { formatPrice } from '../../utils/guitar';
-import ModalCartAdd from '../modal-cart-add/modal-cart-add';
-import ModalContainer from '../modal-container/modal-container';
+import ModalAddCart from '../modal-add-cart/modal-add-cart';
 import Rating from '../rating/rating';
 
 type GuitarCardProps = {
@@ -12,29 +11,20 @@ type GuitarCardProps = {
 };
 
 function GuitarCard({ guitar }: GuitarCardProps): JSX.Element {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalAddCartOpen, setIsModalAddCartOpen] = useState(false);
 
   const handleBasketLinkClick: MouseEventHandler<HTMLAnchorElement> = (evt) => {
     evt.preventDefault();
-    setIsModalOpen(true);
-  };
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
+    setIsModalAddCartOpen(true);
   };
 
   return (
     <>
-      <ModalContainer
-        isActive={isModalOpen}
-        onClose={handleModalClose}
-        testId="modal-cart-add"
-      >
-        <ModalCartAdd
-          guitar={guitar}
-          onClose={handleModalClose}
-        />
-      </ModalContainer>
+      <ModalAddCart
+        isActive={isModalAddCartOpen}
+        onClose={() => setIsModalAddCartOpen(false)}
+        guitar={guitar}
+      />
 
       <div className="product-card">
         <img
@@ -57,21 +47,23 @@ function GuitarCard({ guitar }: GuitarCardProps): JSX.Element {
           </p>
         </div>
         <div className="product-card__buttons">
-          <NavLink className="button button--mini" to={AppRoute.Card(guitar.id)}>
-          Подробнее
+          <NavLink
+            className="button button--mini"
+            to={AppRoute.Card(guitar.id)}
+          >
+            Подробнее
           </NavLink>
           <a
             className="button button--red button--mini button--add-to-cart"
-            href={AppRoute.Basket()}
+            href={AppRoute.Cart()}
             onClick={handleBasketLinkClick}
             data-testid="button-add-to-cart"
           >
-          Купить
+            Купить
           </a>
         </div>
       </div>
     </>
-
   );
 }
 

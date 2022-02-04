@@ -28,9 +28,20 @@ function ModalContainer({ onClose, children, testId, isActive, noScrollBlock }: 
         'is-active': isActive,
       })}
       data-testid={testId}
-    >
+    ><div className="modal__overlay" data-close-modal onClick={onClose}></div>
       <div className="modal__wrapper">
-        {children}
+        <div className="modal__content">
+          {children}
+          <button
+            className="modal__close-btn button-cross"
+            type="button"
+            aria-label="Закрыть"
+            onClick={onClose}
+          >
+            <span className="button-cross__icon"></span>
+            <span className="modal__close-btn-interactive-area"></span>
+          </button>
+        </div>
       </div>
     </div>
   );

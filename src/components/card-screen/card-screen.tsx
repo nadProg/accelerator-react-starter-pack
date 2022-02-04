@@ -22,15 +22,14 @@ import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
 import { formatPrice, getRating } from '../../utils/guitar';
 import InfoScreen from '../info-screen/info-screen';
 import Loader from '../loader/loader';
-import ModalCartAdd from '../modal-cart-add/modal-cart-add';
-import ModalContainer from '../modal-container/modal-container';
+import ModalAddCart from '../modal-add-cart/modal-add-cart';
 import Rating from '../rating/rating';
 import ReviewSection from '../review-section/review-section';
 
 function CardScreen(): JSX.Element {
   const { id: guitarId, error } = useIdParam();
 
-  const [isCardModalOpen, setIsCardModalOpen] = useState(false);
+  const [isModalAddCartOpen, setIsModalCardAddOpen] = useState(false);
 
   const [currentTab, setCurrentTab] = useState<GuitarTabType>(
     GuitarTab.Characteristics,
@@ -113,25 +112,16 @@ function CardScreen(): JSX.Element {
 
   const handleAddToCartLink: MouseEventHandler = (evt) => {
     evt.preventDefault();
-    setIsCardModalOpen(true);
+    setIsModalCardAddOpen(true);
   };
 
-  const handleCardModalClose = () => {
-    setIsCardModalOpen(false);
+  const handleModalAddCartClose = () => {
+    setIsModalCardAddOpen(false);
   };
 
   return (
     <>
-      <ModalContainer
-        isActive={isCardModalOpen}
-        onClose={handleCardModalClose}
-        testId="modal-cart-add"
-      >
-        <ModalCartAdd
-          guitar={guitar}
-          onClose={handleCardModalClose}
-        />
-      </ModalContainer>
+      <ModalAddCart guitar={guitar} isActive={isModalAddCartOpen} onClose={handleModalAddCartClose} />
 
       <h1 className="page-content__title title title--bigger">{guitar.name}</h1>
 

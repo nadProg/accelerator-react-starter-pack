@@ -3,6 +3,7 @@ import Layout from '../layout/layout';
 import CatalogScreen from '../catalog-screen/catalog-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import CardScreen from '../card-screen/card-screen';
+import CartScreen from '../cart-screen/cart-screen';
 import { AppRoute } from '../../constants/endpoints';
 
 function App(): JSX.Element {
@@ -21,8 +22,8 @@ function App(): JSX.Element {
         <Route path={AppRoute.Card()} exact>
           <CardScreen />
         </Route>
-        <Route path={AppRoute.Basket()} exact>
-          <Redirect to={AppRoute.NotFound()} />
+        <Route path={AppRoute.Cart()} exact>
+          <CartScreen />
         </Route>
         <Route path={AppRoute.NotFound()} exact>
           <NotFoundScreen />
