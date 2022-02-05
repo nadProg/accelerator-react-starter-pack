@@ -11,12 +11,12 @@ import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { GuitarTypeValue, STRING_COUNT_VALUES } from '../../constants/guitar';
 import {
-  AddFilterGuitarType,
-  AddFilterStringCount,
-  RemoveFilterGuitarType,
-  RemoveFilterStringCount,
-  SetFilterMaxPrice,
-  SetFilterMinPrice
+  addFilterGuitarType,
+  addFilterStringCount,
+  removeFilterGuitarType,
+  removeFilterStringCount,
+  setFilterMaxPrice,
+  setFilterMinPrice
 } from '../../store/filter/filter-actions';
 import { AppRoute } from '../../constants/endpoints';
 import { asyncDelay, createArrayOfObjects } from '../../utils/common';
@@ -157,24 +157,24 @@ describe('Component: CatalogFilter', () => {
       code: KeyCode.Enter,
     });
 
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(123));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(setFilterMinPrice(123));
 
     userEvent.type(screen.getByTestId('min-price-input'), '456');
     userEvent.click(screen.getByTestId('max-price-input'));
 
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(123456));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(setFilterMinPrice(123456));
 
     userEvent.type(screen.getByTestId('max-price-input'), '123');
     fireEvent.keyDown(screen.getByTestId('max-price-input'), {
       code: KeyCode.NumpadEnter,
     });
 
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(123));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(setFilterMaxPrice(123));
 
     userEvent.type(screen.getByTestId('max-price-input'), '456');
     userEvent.click(screen.getByTestId('min-price-input'));
 
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(123456));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(setFilterMaxPrice(123456));
 
     await act(async () => {
       await asyncDelay(DEBOUNCE_TIME);
@@ -212,10 +212,10 @@ describe('Component: CatalogFilter', () => {
       code: KeyCode.Enter,
     });
 
-    expect(mockStore.dispatch).not.toHaveBeenCalledWith(SetFilterMinPrice(-5));
-    expect(mockStore.dispatch).not.toHaveBeenCalledWith(SetFilterMaxPrice(-5));
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(5));
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(5));
+    expect(mockStore.dispatch).not.toHaveBeenCalledWith(setFilterMinPrice(-5));
+    expect(mockStore.dispatch).not.toHaveBeenCalledWith(setFilterMaxPrice(-5));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(setFilterMinPrice(5));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(setFilterMaxPrice(5));
 
     await act(async () => {
       await asyncDelay(DEBOUNCE_TIME);
@@ -249,7 +249,7 @@ describe('Component: CatalogFilter', () => {
       code: KeyCode.NumpadEnter,
     });
 
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(mockMinPrice));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(setFilterMaxPrice(mockMinPrice));
 
     await act(async () => {
       await asyncDelay(DEBOUNCE_TIME);
@@ -283,7 +283,7 @@ describe('Component: CatalogFilter', () => {
       code: KeyCode.NumpadEnter,
     });
 
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(mockMaxPrice));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(setFilterMinPrice(mockMaxPrice));
 
     await act(async () => {
       await asyncDelay(DEBOUNCE_TIME);
@@ -323,7 +323,7 @@ describe('Component: CatalogFilter', () => {
     });
 
 
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(mockLimit));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(setFilterMinPrice(mockLimit));
 
     userEvent.clear(screen.getByTestId('min-price-input'));
     userEvent.type(screen.getByTestId('min-price-input'), String(mockLimit + 1));
@@ -331,14 +331,14 @@ describe('Component: CatalogFilter', () => {
       code: KeyCode.NumpadEnter,
     });
 
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(mockLimit));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(setFilterMinPrice(mockLimit));
 
     userEvent.type(screen.getByTestId('max-price-input'), String(mockLimit + 1));
     fireEvent.keyDown(screen.getByTestId('max-price-input'), {
       code: KeyCode.NumpadEnter,
     });
 
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(mockLimit));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(setFilterMaxPrice(mockLimit));
 
     userEvent.clear(screen.getByTestId('max-price-input'));
     userEvent.type(screen.getByTestId('max-price-input'), String(mockLimit - 1));
@@ -346,7 +346,7 @@ describe('Component: CatalogFilter', () => {
       code: KeyCode.NumpadEnter,
     });
 
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(mockLimit));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(setFilterMaxPrice(mockLimit));
 
     await act(async () => {
       await asyncDelay(DEBOUNCE_TIME);
@@ -391,8 +391,8 @@ describe('Component: CatalogFilter', () => {
       await asyncDelay(DEBOUNCE_TIME);
     });
 
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMinPrice(''));
-    expect(mockStore.dispatch).toHaveBeenCalledWith(SetFilterMaxPrice(''));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(setFilterMinPrice(''));
+    expect(mockStore.dispatch).toHaveBeenCalledWith(setFilterMaxPrice(''));
   });
 
   it('should render correctly when empty all guitars', () => {
@@ -463,10 +463,10 @@ describe('Component: CatalogFilter', () => {
     );
 
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      SetFilterMinPrice(expect.any(Number)),
+      setFilterMinPrice(expect.any(Number)),
     );
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      SetFilterMaxPrice(expect.any(Number)),
+      setFilterMaxPrice(expect.any(Number)),
     );
   });
 
@@ -488,13 +488,13 @@ describe('Component: CatalogFilter', () => {
     userEvent.click(screen.getByTestId(`${GuitarTypeValue.Ukulele}-checkbox`));
 
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      AddFilterGuitarType(GuitarTypeValue.Acoustic),
+      addFilterGuitarType(GuitarTypeValue.Acoustic),
     );
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      AddFilterGuitarType(GuitarTypeValue.Electric),
+      addFilterGuitarType(GuitarTypeValue.Electric),
     );
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      AddFilterGuitarType(GuitarTypeValue.Ukulele),
+      addFilterGuitarType(GuitarTypeValue.Ukulele),
     );
 
     userEvent.click(
@@ -511,16 +511,16 @@ describe('Component: CatalogFilter', () => {
     );
 
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      AddFilterStringCount(STRING_COUNT_VALUES[0]),
+      addFilterStringCount(STRING_COUNT_VALUES[0]),
     );
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      AddFilterStringCount(STRING_COUNT_VALUES[1]),
+      addFilterStringCount(STRING_COUNT_VALUES[1]),
     );
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      AddFilterStringCount(STRING_COUNT_VALUES[2]),
+      addFilterStringCount(STRING_COUNT_VALUES[2]),
     );
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      AddFilterStringCount(STRING_COUNT_VALUES[3]),
+      addFilterStringCount(STRING_COUNT_VALUES[3]),
     );
 
     await act(async () => {
@@ -562,16 +562,16 @@ describe('Component: CatalogFilter', () => {
     );
 
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      AddFilterStringCount(STRING_COUNT_VALUES[0]),
+      addFilterStringCount(STRING_COUNT_VALUES[0]),
     );
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      AddFilterStringCount(STRING_COUNT_VALUES[1]),
+      addFilterStringCount(STRING_COUNT_VALUES[1]),
     );
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      AddFilterStringCount(STRING_COUNT_VALUES[2]),
+      addFilterStringCount(STRING_COUNT_VALUES[2]),
     );
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      AddFilterStringCount(STRING_COUNT_VALUES[3]),
+      addFilterStringCount(STRING_COUNT_VALUES[3]),
     );
 
     await act(async () => {
@@ -604,13 +604,13 @@ describe('Component: CatalogFilter', () => {
     userEvent.click(screen.getByTestId(`${GuitarTypeValue.Ukulele}-checkbox`));
 
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      RemoveFilterGuitarType(GuitarTypeValue.Acoustic),
+      removeFilterGuitarType(GuitarTypeValue.Acoustic),
     );
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      RemoveFilterGuitarType(GuitarTypeValue.Electric),
+      removeFilterGuitarType(GuitarTypeValue.Electric),
     );
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      RemoveFilterGuitarType(GuitarTypeValue.Ukulele),
+      removeFilterGuitarType(GuitarTypeValue.Ukulele),
     );
 
     userEvent.click(
@@ -627,16 +627,16 @@ describe('Component: CatalogFilter', () => {
     );
 
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      RemoveFilterStringCount(STRING_COUNT_VALUES[0]),
+      removeFilterStringCount(STRING_COUNT_VALUES[0]),
     );
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      RemoveFilterStringCount(STRING_COUNT_VALUES[1]),
+      removeFilterStringCount(STRING_COUNT_VALUES[1]),
     );
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      RemoveFilterStringCount(STRING_COUNT_VALUES[2]),
+      removeFilterStringCount(STRING_COUNT_VALUES[2]),
     );
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      RemoveFilterStringCount(STRING_COUNT_VALUES[3]),
+      removeFilterStringCount(STRING_COUNT_VALUES[3]),
     );
 
     await act(async () => {
@@ -665,13 +665,13 @@ describe('Component: CatalogFilter', () => {
     );
 
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      RemoveFilterStringCount(STRING_COUNT_VALUES[1]),
+      removeFilterStringCount(STRING_COUNT_VALUES[1]),
     );
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      RemoveFilterStringCount(STRING_COUNT_VALUES[2]),
+      removeFilterStringCount(STRING_COUNT_VALUES[2]),
     );
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      RemoveFilterStringCount(STRING_COUNT_VALUES[3]),
+      removeFilterStringCount(STRING_COUNT_VALUES[3]),
     );
 
     await act(async () => {

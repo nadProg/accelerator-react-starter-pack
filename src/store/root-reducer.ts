@@ -4,6 +4,7 @@ import { filterReducer } from './filter/filter-reducer';
 import { guitarsReducer } from './guitars/guitars-reducer';
 import { paginationReducer } from './pagination/pagination-reducer';
 import { sortReducer } from './sort/sort-reducer';
+import { cartReducer } from './cart/cart-reducer';
 
 export const rootReducer = combineReducers({
   guitars: guitarsReducer,
@@ -11,4 +12,5 @@ export const rootReducer = combineReducers({
   filter: filterReducer,
   pagination: paginationReducer,
   reviews: reviewsReducer,
+  cart: cartReducer,
 });

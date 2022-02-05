@@ -22,7 +22,7 @@ export const sortByNameLike = <T extends Guitar>(
     );
 
 export const formatPrice = (price: number) =>
-  new Intl.NumberFormat(RUSSIAN_LOCALE).format(price);
+  `${new Intl.NumberFormat(RUSSIAN_LOCALE).format(price)} ₽`;
 
 export const getRating = (guitar: GuitarWithReviews | null) => {
   if (!guitar) {

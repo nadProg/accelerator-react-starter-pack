@@ -2,12 +2,12 @@ import { ThunkAction } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { setNewReviewStatus } from '../store/reviews/reviews-actions';
 import {
-  AddFilterGuitarType,
-  AddFilterStringCount,
-  RemoveFilterGuitarType,
-  RemoveFilterStringCount,
-  SetFilterMaxPrice,
-  SetFilterMinPrice
+  addFilterGuitarType,
+  addFilterStringCount,
+  removeFilterGuitarType,
+  removeFilterStringCount,
+  setFilterMaxPrice,
+  setFilterMinPrice
 } from '../store/filter/filter-actions';
 import {
   addReviewToCurrentGuitar,
@@ -23,6 +23,7 @@ import {
   setPaginationMaxPage
 } from '../store/pagination/pagination-actions';
 import { rootReducer } from '../store/root-reducer';
+import { addItemToCart } from '../store/cart/cart-actions';
 
 export type State = ReturnType<typeof rootReducer>;
 
@@ -33,16 +34,17 @@ export type ActionType =
   | ReturnType<typeof setCurrentGuitarStatus>
   | ReturnType<typeof setFoundGuitars>
   | ReturnType<typeof setAllGuitars>
-  | ReturnType<typeof SetFilterMinPrice>
-  | ReturnType<typeof SetFilterMaxPrice>
-  | ReturnType<typeof AddFilterGuitarType>
-  | ReturnType<typeof RemoveFilterGuitarType>
-  | ReturnType<typeof AddFilterStringCount>
-  | ReturnType<typeof RemoveFilterStringCount>
+  | ReturnType<typeof setFilterMinPrice>
+  | ReturnType<typeof setFilterMaxPrice>
+  | ReturnType<typeof addFilterGuitarType>
+  | ReturnType<typeof removeFilterGuitarType>
+  | ReturnType<typeof addFilterStringCount>
+  | ReturnType<typeof removeFilterStringCount>
   | ReturnType<typeof setPaginationCurrentPage>
   | ReturnType<typeof setPaginationMaxPage>
   | ReturnType<typeof setNewReviewStatus>
-  | ReturnType<typeof addReviewToCurrentGuitar>;
+  | ReturnType<typeof addReviewToCurrentGuitar>
+  | ReturnType<typeof addItemToCart>;
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<
   R,

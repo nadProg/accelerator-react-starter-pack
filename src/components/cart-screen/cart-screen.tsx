@@ -1,10 +1,14 @@
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { AppRoute } from '../../constants/endpoints';
-import CartItem from '../cart-item/cart-item';
+import { getCartItems } from '../../store/cart/cart-selectors';
+import CartItemCard from '../cart-item-card/cart-item-card';
 import CartTotalInfo from '../cart-total-info/cart-total-info';
 import Coupon from '../coupon/coupon';
 
 function CartScreen(): JSX.Element {
+  const cartItems = useSelector(getCartItems);
+
   return (
     <>
       <h1 className="title title--bigger page-content__title">Корзина</h1>
@@ -22,8 +26,7 @@ function CartScreen(): JSX.Element {
         </li>
       </ul>
       <div className="cart">
-        <CartItem />
-        <CartItem />
+        {cartItems.map((cartItem) => <CartItemCard key={cartItem.product.id} item={cartItem} />)}
         <div className="cart__footer">
           <Coupon className="cart__coupon" />
           <CartTotalInfo />

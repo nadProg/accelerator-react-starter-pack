@@ -1,5 +1,5 @@
 import { PropsWithChildren } from '../../types/props';
-import BasketLink from '../basket-link/basket-link';
+import HeaderCart from '../header-cart/header-cart';
 import FooterContacts from '../footer-contacts.tsx/footer-contacts';
 import FooterInfo from '../footer-info.tsx/footer-info';
 import FooterLinks from '../footer-links.tsx/footer-links';
@@ -16,7 +16,7 @@ function Layout({ children }: PropsWithChildren): JSX.Element {
           <Logo className="header__logo" />
           <MainNavigation />
           <FormSearch />
-          <BasketLink className="header__cart-link"></BasketLink>
+          <HeaderCart className="header__cart-link"></HeaderCart>
         </div>
       </header>
       <main className="page-content">

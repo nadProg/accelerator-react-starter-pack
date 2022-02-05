@@ -17,6 +17,7 @@ export const Action = {
   SetPaginationMaxPage: 'pagination/setMaxPage',
   SetNewReviewStatus: 'newReview/setStatus',
   AddReviewToCurrentGuitar: 'currentGuitar/addReview',
+  AddItemToCart: 'cart/addItem',
 } as const;
 
 export const UNKNOWN_ACTION = {

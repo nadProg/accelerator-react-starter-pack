@@ -1,10 +1,13 @@
 import classNames from 'classnames';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { AppRoute } from '../../constants/endpoints';
+import { getTotalQuantity } from '../../store/cart/cart-selectors';
 import { PropsWithClassName } from '../../types/props';
 
-function BasketLink({ className }: PropsWithClassName) {
-  const isCartCountShown = false;
+function HeaderCart({ className }: PropsWithClassName) {
+  const totalQuantity = useSelector(getTotalQuantity);
+  const isCartCountShown = totalQuantity > 0;
 
   return (
     <NavLink
@@ -21,9 +24,11 @@ function BasketLink({ className }: PropsWithClassName) {
         <use xlinkHref="#icon-basket"></use>
       </svg>
       <span className="visually-hidden">Перейти в корзину</span>
-      {isCartCountShown && <span className="header__cart-count">2</span>}
+      {isCartCountShown && (
+        <span className="header__cart-count">{totalQuantity}</span>
+      )}
     </NavLink>
   );
 }
 
-export default BasketLink;
+export default HeaderCart;

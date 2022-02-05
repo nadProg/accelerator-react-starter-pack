@@ -6,13 +6,22 @@ import { useScrollBlock } from '../../hooks/use-scroll-block';
 import { useEscape } from '../../hooks/use-escape';
 import { useFocusLoop } from '../../hooks/use-focus-loop';
 
-type ModalContainerProps = PropsWithChildren & ModalProps & {
-  isActive: boolean;
-  testId?: string;
-  noScrollBlock?: boolean;
-};
+type ModalContainerProps = PropsWithChildren &
+  ModalProps & {
+    isActive: boolean;
+    success?: boolean;
+    testId?: string;
+    noScrollBlock?: boolean;
+  };
 
-function ModalContainer({ onClose, children, testId, isActive, noScrollBlock }: ModalContainerProps) {
+function ModalContainer({
+  onClose,
+  children,
+  testId,
+  isActive,
+  success,
+  noScrollBlock,
+}: ModalContainerProps) {
   const rootRef = useRef<HTMLDivElement>(null);
 
   const isScrollBlock = noScrollBlock ? false : isActive;
@@ -26,10 +35,12 @@ function ModalContainer({ onClose, children, testId, isActive, noScrollBlock }: 
       ref={rootRef}
       className={classNames('modal', {
         'is-active': isActive,
+        'modal--success': success,
       })}
       data-testid={testId}
-    ><div className="modal__overlay" data-close-modal onClick={onClose}></div>
+    >
       <div className="modal__wrapper">
+        <div className="modal__overlay" data-close-modal onClick={onClose}></div>
         <div className="modal__content">
           {children}
           <button

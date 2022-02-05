@@ -1,7 +1,7 @@
 import { datatype } from 'faker';
 import { UNKNOWN_ACTION } from '../../constants/action';
 import { GuitarTypeValue, STRING_COUNT_VALUES } from '../../constants/guitar';
-import { AddFilterGuitarType, AddFilterStringCount, RemoveFilterGuitarType, RemoveFilterStringCount, SetFilterMaxPrice, SetFilterMinPrice } from './filter-actions';
+import { addFilterGuitarType, addFilterStringCount, removeFilterGuitarType, removeFilterStringCount, setFilterMaxPrice, setFilterMinPrice } from './filter-actions';
 import { filterInitialState } from './filter-initial-state';
 import { filterReducer } from './filter-reducer';
 
@@ -14,7 +14,7 @@ describe('Reducer: Filter', () => {
   it('should set filter min price', () => {
     const mockMinPrice = datatype.number();
 
-    expect(filterReducer(filterInitialState, SetFilterMinPrice(mockMinPrice)))
+    expect(filterReducer(filterInitialState, setFilterMinPrice(mockMinPrice)))
       .toEqual({
         ...filterInitialState,
         price: {
@@ -27,7 +27,7 @@ describe('Reducer: Filter', () => {
   it('should set filter max price', () => {
     const mockMaxPrice = datatype.number();
 
-    expect(filterReducer(filterInitialState, SetFilterMaxPrice(mockMaxPrice)))
+    expect(filterReducer(filterInitialState, setFilterMaxPrice(mockMaxPrice)))
       .toEqual({
         ...filterInitialState,
         price: {
@@ -44,7 +44,7 @@ describe('Reducer: Filter', () => {
       types: [GuitarTypeValue.Electric],
     };
 
-    expect(filterReducer(mockInitialState, AddFilterGuitarType(mockGuitarType)))
+    expect(filterReducer(mockInitialState, addFilterGuitarType(mockGuitarType)))
       .toEqual({
         ...filterInitialState,
         types: [...mockInitialState.types, mockGuitarType],
@@ -58,7 +58,7 @@ describe('Reducer: Filter', () => {
       types: [GuitarTypeValue.Electric, mockGuitarType],
     };
 
-    expect(filterReducer(mockInitialState, RemoveFilterGuitarType(mockGuitarType)))
+    expect(filterReducer(mockInitialState, removeFilterGuitarType(mockGuitarType)))
       .toEqual({
         ...filterInitialState,
         types:  [GuitarTypeValue.Electric],
@@ -72,7 +72,7 @@ describe('Reducer: Filter', () => {
       stringCounts: [STRING_COUNT_VALUES[2]],
     };
 
-    expect(filterReducer(mockInitialState, AddFilterStringCount(mockStringCount)))
+    expect(filterReducer(mockInitialState, addFilterStringCount(mockStringCount)))
       .toEqual({
         ...filterInitialState,
         stringCounts: [...mockInitialState.stringCounts, mockStringCount],
@@ -86,7 +86,7 @@ describe('Reducer: Filter', () => {
       stringCounts: [STRING_COUNT_VALUES[2], mockStringCount],
     };
 
-    expect(filterReducer(mockInitialState, RemoveFilterStringCount(mockStringCount)))
+    expect(filterReducer(mockInitialState, removeFilterStringCount(mockStringCount)))
       .toEqual({
         ...filterInitialState,
         stringCounts: [STRING_COUNT_VALUES[2]],

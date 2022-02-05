@@ -11,12 +11,12 @@ import {
 } from '../../constants/guitar';
 import { useDebounce } from '../../hooks/use-debounce';
 import {
-  AddFilterGuitarType,
-  AddFilterStringCount,
-  RemoveFilterGuitarType,
-  RemoveFilterStringCount,
-  SetFilterMaxPrice,
-  SetFilterMinPrice
+  addFilterGuitarType,
+  addFilterStringCount,
+  removeFilterGuitarType,
+  removeFilterStringCount,
+  setFilterMaxPrice,
+  setFilterMinPrice
 } from '../../store/filter/filter-actions';
 import {
   getFilterMaxPrice,
@@ -57,19 +57,19 @@ function CatalogFilter(): JSX.Element {
     const currentValue = Number(newValue);
 
     if (maxPrice && currentValue > maxPrice) {
-      dispatch(SetFilterMinPrice(maxPrice));
+      dispatch(setFilterMinPrice(maxPrice));
       return;
     }
 
     if (priceLimits.min !== undefined) {
       if (currentValue < priceLimits.min) {
-        dispatch(SetFilterMinPrice(priceLimits.min));
+        dispatch(setFilterMinPrice(priceLimits.min));
       }
     }
 
     if (priceLimits.max !== undefined) {
       if (currentValue > priceLimits.max) {
-        dispatch(SetFilterMinPrice(priceLimits.max));
+        dispatch(setFilterMinPrice(priceLimits.max));
       }
     }
   };
@@ -78,19 +78,19 @@ function CatalogFilter(): JSX.Element {
     const currentValue = Number(newValue);
 
     if (minPrice && currentValue < minPrice) {
-      dispatch(SetFilterMaxPrice(minPrice));
+      dispatch(setFilterMaxPrice(minPrice));
       return;
     }
 
     if (priceLimits.min !== undefined) {
       if (currentValue < priceLimits.min) {
-        dispatch(SetFilterMaxPrice(priceLimits.min));
+        dispatch(setFilterMaxPrice(priceLimits.min));
       }
     }
 
     if (priceLimits.max !== undefined) {
       if (currentValue > priceLimits.max) {
-        dispatch(SetFilterMaxPrice(priceLimits.max));
+        dispatch(setFilterMaxPrice(priceLimits.max));
       }
     }
   };
@@ -105,11 +105,11 @@ function CatalogFilter(): JSX.Element {
 
     if (code === KeyCode.Enter || code === KeyCode.NumpadEnter) {
       if ((evt.target as HTMLInputElement).value === '') {
-        dispatch(SetFilterMinPrice(''));
+        dispatch(setFilterMinPrice(''));
         return;
       }
 
-      dispatch(SetFilterMinPrice(Number((evt.target as HTMLInputElement).value)));
+      dispatch(setFilterMinPrice(Number((evt.target as HTMLInputElement).value)));
 
       fixMinPrice((evt.target as HTMLInputElement).value);
     }
@@ -125,11 +125,11 @@ function CatalogFilter(): JSX.Element {
 
     if (code === KeyCode.Enter || code === KeyCode.NumpadEnter) {
       if ((evt.target as HTMLInputElement).value === '') {
-        dispatch(SetFilterMaxPrice(''));
+        dispatch(setFilterMaxPrice(''));
         return;
       }
 
-      dispatch(SetFilterMaxPrice(Number((evt.target as HTMLInputElement).value)));
+      dispatch(setFilterMaxPrice(Number((evt.target as HTMLInputElement).value)));
 
       fixMaxPrice((evt.target as HTMLInputElement).value);
     }
@@ -137,22 +137,22 @@ function CatalogFilter(): JSX.Element {
 
   const handleMinPriceBlur: FocusEventHandler<HTMLInputElement> = (evt) => {
     if (evt.target.value === '') {
-      dispatch(SetFilterMinPrice(''));
+      dispatch(setFilterMinPrice(''));
       return;
     }
 
-    dispatch(SetFilterMinPrice(Number(evt.target.value)));
+    dispatch(setFilterMinPrice(Number(evt.target.value)));
 
     fixMinPrice(evt.target.value);
   };
 
   const handleMaxPriceBlur: FocusEventHandler<HTMLInputElement> = (evt) => {
     if (evt.target.value === '') {
-      dispatch(SetFilterMaxPrice(''));
+      dispatch(setFilterMaxPrice(''));
       return;
     }
 
-    dispatch(SetFilterMaxPrice(Number(evt.target.value)));
+    dispatch(setFilterMaxPrice(Number(evt.target.value)));
 
     fixMaxPrice(evt.target.value);
   };
@@ -160,11 +160,11 @@ function CatalogFilter(): JSX.Element {
   const handleTypeChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
     const guitarType = evt.target.value as GuitarType;
     if (evt.target.checked) {
-      dispatch(AddFilterGuitarType(guitarType));
+      dispatch(addFilterGuitarType(guitarType));
       return;
     }
 
-    dispatch(RemoveFilterGuitarType(guitarType));
+    dispatch(removeFilterGuitarType(guitarType));
   };
 
   const handleStringCountChange: ChangeEventHandler<HTMLInputElement> = (
@@ -172,11 +172,11 @@ function CatalogFilter(): JSX.Element {
   ) => {
     const stringCount = Number(evt.target.value) as StringCountType;
     if (evt.target.checked) {
-      dispatch(AddFilterStringCount(stringCount));
+      dispatch(addFilterStringCount(stringCount));
       return;
     }
 
-    dispatch(RemoveFilterStringCount(stringCount));
+    dispatch(removeFilterStringCount(stringCount));
   };
 
   const fetchCatalogGuitarsDebounced = useDebounce(() => dispatch(setCatalogGuitarsStatus(FetchStatus.Idle)));
@@ -196,21 +196,21 @@ function CatalogFilter(): JSX.Element {
   useEffect(() => {
     if (priceLimits.min !== undefined) {
       if (minPrice !== '' && minPrice < priceLimits.min) {
-        dispatch(SetFilterMinPrice(priceLimits.min));
+        dispatch(setFilterMinPrice(priceLimits.min));
       }
 
       if (maxPrice !== '' && maxPrice < priceLimits.min) {
-        dispatch(SetFilterMaxPrice(priceLimits.min));
+        dispatch(setFilterMaxPrice(priceLimits.min));
       }
     }
 
     if (priceLimits.max !== undefined) {
       if (minPrice !== '' && minPrice > priceLimits.max) {
-        dispatch(SetFilterMinPrice(priceLimits.max));
+        dispatch(setFilterMinPrice(priceLimits.max));
       }
 
       if (maxPrice !== '' && maxPrice > priceLimits.max) {
-        dispatch(SetFilterMaxPrice(priceLimits.max));
+        dispatch(setFilterMaxPrice(priceLimits.max));
       }
     }
   }, [priceLimits]);
@@ -268,17 +268,17 @@ function CatalogFilter(): JSX.Element {
     const queryStringCounts = search.getAll(FilterParameter.StringCount);
 
     if (queryMinPrice !== null && queryMinPrice !== '') {
-      dispatch(SetFilterMinPrice(Number(queryMinPrice)));
+      dispatch(setFilterMinPrice(Number(queryMinPrice)));
     }
 
     if (queryMaxPrice !== null && queryMaxPrice !== '') {
-      dispatch(SetFilterMaxPrice(Number(queryMaxPrice)));
+      dispatch(setFilterMaxPrice(Number(queryMaxPrice)));
     }
 
     if (queryTypes.length) {
       queryTypes.forEach((type) => {
         if (type !== '') {
-          dispatch(AddFilterGuitarType(type as GuitarType));
+          dispatch(addFilterGuitarType(type as GuitarType));
         }
       });
     }
@@ -287,7 +287,7 @@ function CatalogFilter(): JSX.Element {
       queryStringCounts.forEach((stringCount) => {
         if (stringCount !== '') {
           dispatch(
-            AddFilterStringCount(Number(stringCount) as StringCountType),
+            addFilterStringCount(Number(stringCount) as StringCountType),
           );
         }
       });
@@ -364,7 +364,7 @@ function CatalogFilter(): JSX.Element {
           const isChecked = stringCounts.includes(stringCount);
 
           if (isDisabled && isChecked) {
-            dispatch(RemoveFilterStringCount(stringCount));
+            dispatch(removeFilterStringCount(stringCount));
           }
 
           return (

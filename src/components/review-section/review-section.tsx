@@ -83,6 +83,7 @@ function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
         isActive={isSuccessReviewModalOpen}
         onClose={handleSuccessReviewClose}
         testId="modal-success-review"
+        success
         noScrollBlock
       >
         <ModalSuccessReview

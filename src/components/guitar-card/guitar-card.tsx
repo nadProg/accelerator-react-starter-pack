@@ -1,6 +1,8 @@
+import classNames from 'classnames';
 import { MouseEventHandler, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AppRoute } from '../../constants/endpoints';
+import { useInCart } from '../../hooks/use-in-cart';
 import { GuitarWithReviews } from '../../types/guitar';
 import { formatPrice } from '../../utils/guitar';
 import ModalAddCart from '../modal-add-cart/modal-add-cart';
@@ -13,9 +15,13 @@ type GuitarCardProps = {
 function GuitarCard({ guitar }: GuitarCardProps): JSX.Element {
   const [isModalAddCartOpen, setIsModalAddCartOpen] = useState(false);
 
+  const inCart = useInCart(guitar.id);
+
   const handleBasketLinkClick: MouseEventHandler<HTMLAnchorElement> = (evt) => {
-    evt.preventDefault();
-    setIsModalAddCartOpen(true);
+    if (!inCart) {
+      evt.preventDefault();
+      setIsModalAddCartOpen(true);
+    }
   };
 
   return (
@@ -43,7 +49,7 @@ function GuitarCard({ guitar }: GuitarCardProps): JSX.Element {
           <p className="product-card__title">{guitar.name}</p>
           <p className="product-card__price">
             <span className="visually-hidden">Цена:</span>
-            {formatPrice(guitar.price)} ₽
+            {formatPrice(guitar.price)}
           </p>
         </div>
         <div className="product-card__buttons">
@@ -53,14 +59,20 @@ function GuitarCard({ guitar }: GuitarCardProps): JSX.Element {
           >
             Подробнее
           </NavLink>
-          <a
-            className="button button--red button--mini button--add-to-cart"
-            href={AppRoute.Cart()}
+          <NavLink
+            className={classNames(
+              'button',
+              'button--mini',
+              inCart
+                ? 'button--red-border button--in-cart'
+                : 'button--red button--add-to-cart',
+            )}
+            to={AppRoute.Cart()}
             onClick={handleBasketLinkClick}
             data-testid="button-add-to-cart"
           >
-            Купить
-          </a>
+            {inCart ? 'В Корзине' : 'Купить'}
+          </NavLink>
         </div>
       </div>
     </>

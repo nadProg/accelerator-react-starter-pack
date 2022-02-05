@@ -1,36 +1,36 @@
 import { createReducer } from '@reduxjs/toolkit';
 import {
-  AddFilterGuitarType,
-  AddFilterStringCount,
-  RemoveFilterGuitarType,
-  RemoveFilterStringCount,
-  SetFilterMaxPrice,
-  SetFilterMinPrice
+  addFilterGuitarType,
+  addFilterStringCount,
+  removeFilterGuitarType,
+  removeFilterStringCount,
+  setFilterMaxPrice,
+  setFilterMinPrice
 } from './filter-actions';
 import { filterInitialState } from './filter-initial-state';
 
 export const filterReducer = createReducer(filterInitialState, (builder) =>
   builder
-    .addCase(AddFilterGuitarType, (state, action) => {
+    .addCase(addFilterGuitarType, (state, action) => {
       state.types.push(action.payload.guitarType);
     })
-    .addCase(RemoveFilterGuitarType, (state, action) => {
+    .addCase(removeFilterGuitarType, (state, action) => {
       state.types = state.types.filter(
         (type) => type !== action.payload.guitarType,
       );
     })
-    .addCase(AddFilterStringCount, (state, action) => {
+    .addCase(addFilterStringCount, (state, action) => {
       state.stringCounts.push(action.payload.stringCount);
     })
-    .addCase(RemoveFilterStringCount, (state, action) => {
+    .addCase(removeFilterStringCount, (state, action) => {
       state.stringCounts = state.stringCounts.filter(
         (stringCount) => stringCount !== action.payload.stringCount,
       );
     })
-    .addCase(SetFilterMinPrice, (state, action) => {
+    .addCase(setFilterMinPrice, (state, action) => {
       state.price.min = action.payload.minPrice;
     })
-    .addCase(SetFilterMaxPrice, (state, action) => {
+    .addCase(setFilterMaxPrice, (state, action) => {
       state.price.max = action.payload.maxPrice;
     }),
 );

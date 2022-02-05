@@ -197,7 +197,7 @@ function CardScreen(): JSX.Element {
             Цена:
           </p>
           <p className="product-container__price-info product-container__price-info--value">
-            {formatPrice(guitar.price)} ₽
+            {formatPrice(guitar.price)}
           </p>
           <button
             className="button button--red button--big product-container__button"

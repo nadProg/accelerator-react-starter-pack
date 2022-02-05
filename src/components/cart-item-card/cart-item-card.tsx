@@ -1,9 +1,18 @@
 import { useState } from 'react';
+import { HumanizedGuitar } from '../../constants/guitar';
+import { CartItem } from '../../types/cart';
+import { formatPrice } from '../../utils/guitar';
 import ModalContainer from '../modal-container/modal-container';
 import ModalDeleteCartItem from '../modal-delete-cart-item/modal-delete-cart-item';
 
-function CartItem(): JSX.Element {
+type CartItemProps= {
+  item: CartItem;
+}
+
+function CartItemCard({item: {product, quantity}}: CartItemProps): JSX.Element {
   const [isModalDeleteCartItem, setIsModalDeleteCartItem] = useState(false);
+
+  const totalPrice = product.price * quantity;
 
   return (
     <>
@@ -26,18 +35,18 @@ function CartItem(): JSX.Element {
         </button>
         <div className="cart-item__image">
           <img
-            src="img/content/guitar-2.jpg"
+            src={`/${product.previewImg}`}
             width="55"
             height="130"
-            alt="ЭлектроГитара Честер bass"
+            alt={product.name}
           />
         </div>
         <div className="product-info cart-item__info">
-          <p className="product-info__title">ЭлектроГитара Честер bass</p>
-          <p className="product-info__info">Артикул: SO757575</p>
-          <p className="product-info__info">Электрогитара, 6 струнная</p>
+          <p className="product-info__title">{product.name}</p>
+          <p className="product-info__info">Артикул: {product.vendorCode}</p>
+          <p className="product-info__info">{HumanizedGuitar[product.type]}, {product.stringCount} струнная</p>
         </div>
-        <div className="cart-item__price">17 500 ₽</div>
+        <div className="cart-item__price">{formatPrice(product.price)}</div>
         <div className="quantity cart-item__quantity">
           <button
             className="quantity__button"
@@ -51,6 +60,7 @@ function CartItem(): JSX.Element {
             className="quantity__input"
             type="number"
             placeholder="1"
+            value={quantity}
             id="2-count"
             name="2-count"
             max="99"
@@ -64,10 +74,10 @@ function CartItem(): JSX.Element {
             </svg>
           </button>
         </div>
-        <div className="cart-item__price-total">17 500 ₽</div>
+        <div className="cart-item__price-total">{formatPrice(totalPrice)}</div>
       </div>
     </>
   );
 }
 
-export default CartItem;
+export default CartItemCard;
