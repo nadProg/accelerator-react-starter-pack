@@ -15,6 +15,10 @@ describe('Component: ModalSuccessReview', () => {
 
     expect(screen.getByTestId('children')).toBeInTheDocument();
     expect(screen.getByTestId('modal-container')).toBeInTheDocument();
+    expect(screen.getByTestId('modal-overlay')).toBeInTheDocument();
+    expect(screen.getByTestId('modal-btn-close')).toBeInTheDocument();
+
+    expect(screen.getByTestId('modal-container')).not.toHaveClass('is-active');
   });
 
   it('should render without errors in active mode', () => {
@@ -28,6 +32,7 @@ describe('Component: ModalSuccessReview', () => {
 
     expect(screen.getByTestId('children')).toBeInTheDocument();
     expect(screen.getByTestId('modal-container')).toBeInTheDocument();
+
     expect(screen.getByTestId('modal-container')).toHaveClass('is-active');
   });
 
@@ -45,6 +50,7 @@ describe('Component: ModalSuccessReview', () => {
     expect(screen.getByTestId('input')).not.toHaveFocus();
     expect(screen.getByTestId('textarea')).not.toHaveFocus();
     expect(screen.getByTestId('button')).not.toHaveFocus();
+    expect(screen.getByTestId('modal-btn-close')).not.toHaveFocus();
 
     await act(async () => await asyncDelay(300));
 
@@ -55,26 +61,31 @@ describe('Component: ModalSuccessReview', () => {
     expect(screen.getByTestId('input')).not.toHaveFocus();
     expect(screen.getByTestId('textarea')).toHaveFocus();
     expect(screen.getByTestId('button')).not.toHaveFocus();
+    expect(screen.getByTestId('modal-btn-close')).not.toHaveFocus();
 
     userEvent.tab();
 
     expect(screen.getByTestId('input')).not.toHaveFocus();
     expect(screen.getByTestId('textarea')).not.toHaveFocus();
     expect(screen.getByTestId('button')).toHaveFocus();
+    expect(screen.getByTestId('modal-btn-close')).not.toHaveFocus();
 
+    userEvent.tab();
+
+    expect(screen.getByTestId('input')).not.toHaveFocus();
+    expect(screen.getByTestId('textarea')).not.toHaveFocus();
+    expect(screen.getByTestId('button')).not.toHaveFocus();
+    expect(screen.getByTestId('modal-btn-close')).toHaveFocus();
+
+    userEvent.tab();
+    userEvent.tab();
+    userEvent.tab();
+    userEvent.tab();
     userEvent.tab();
 
     expect(screen.getByTestId('input')).toHaveFocus();
     expect(screen.getByTestId('textarea')).not.toHaveFocus();
     expect(screen.getByTestId('button')).not.toHaveFocus();
-
-    userEvent.tab();
-    userEvent.tab();
-    userEvent.tab();
-    userEvent.tab();
-
-    expect(screen.getByTestId('input')).not.toHaveFocus();
-    expect(screen.getByTestId('textarea')).toHaveFocus();
-    expect(screen.getByTestId('button')).not.toHaveFocus();
+    expect(screen.getByTestId('modal-btn-close')).not.toHaveFocus();
   });
 });

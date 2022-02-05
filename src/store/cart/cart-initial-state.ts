@@ -1,5 +1,9 @@
 import { CartItem } from '../../types/cart';
 
-type CartState = CartItem[];
+type CartState = {
+  items: CartItem[]
+};
 
-export const cartInitialState: CartState = [];
+export const cartInitialState: CartState = {
+  items: [],
+};

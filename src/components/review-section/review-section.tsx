@@ -2,14 +2,10 @@ import classNames from 'classnames';
 import { MouseEventHandler, useMemo, useRef, useState } from 'react';
 import { REVIEWS_PAGE_SIZE } from '../../constants/review';
 import { useIntersection } from '../../hooks/use-intersection';
-import { useScrollBlock } from '../../hooks/use-scroll-block';
 import { useShowMore } from '../../hooks/use-show-more';
 import { GuitarWithReviews } from '../../types/guitar';
 import { sortByDate } from '../../utils/review';
-import AddReviewForm from '../add-review-form/add-review-form';
-import ModalContainer from '../modal-container/modal-container';
-import ModalReviewForm from '../modal-review-form/modal-review-form';
-import ModalSuccessReview from '../modal-success-review/modal-success-review';
+import ModalAddReview from '../modal-add-review/modal-add-review';
 import Review from '../review/review';
 import styles from './review-section.module.css';
 
@@ -18,9 +14,7 @@ type ReviewSectionProps = {
 };
 
 function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
-  const [isReviewFormModalOpen, setIsReviewFormModalOpen] = useState(false);
-  const [isSuccessReviewModalOpen, setIsSuccessReviewModalOpen] =
-    useState(false);
+  const [isModalAddReviewOpen, setIsModalAddReviewOpen] = useState(false);
 
   const sortedReviews = useMemo(
     () => sortByDate(guitar.comments),
@@ -38,15 +32,7 @@ function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
 
   const handleAddReviewLink: MouseEventHandler = (evt) => {
     evt.preventDefault();
-    setIsReviewFormModalOpen(true);
-  };
-
-  const handleReviewFormClose = () => {
-    setIsReviewFormModalOpen(false);
-  };
-
-  const handleSuccessReviewClose = () => {
-    setIsSuccessReviewModalOpen(false);
+    setIsModalAddReviewOpen(true);
   };
 
   const withReviews = Boolean(guitar.comments.length);
@@ -55,41 +41,9 @@ function ReviewSection({ guitar }: ReviewSectionProps): JSX.Element {
 
   useIntersection(buttonRef, showMoreReviews);
 
-  useScrollBlock(isReviewFormModalOpen || isSuccessReviewModalOpen);
-
   return (
     <>
-      <ModalContainer
-        isActive={isReviewFormModalOpen}
-        onClose={handleReviewFormClose}
-        testId="modal-review-form"
-        noScrollBlock
-      >
-        <ModalReviewForm
-          title={guitar.name}
-          onClose={handleReviewFormClose}
-        >
-          <AddReviewForm
-            guitarId={guitar.id}
-            onSuccessSubmitting={() => {
-              setIsReviewFormModalOpen(false);
-              setIsSuccessReviewModalOpen(true);
-            }}
-          />
-        </ModalReviewForm>
-      </ModalContainer>
-
-      <ModalContainer
-        isActive={isSuccessReviewModalOpen}
-        onClose={handleSuccessReviewClose}
-        testId="modal-success-review"
-        success
-        noScrollBlock
-      >
-        <ModalSuccessReview
-          onClose={handleSuccessReviewClose}
-        />
-      </ModalContainer>
+      <ModalAddReview isActive={isModalAddReviewOpen} onClose={() => setIsModalAddReviewOpen(false)} guitar={guitar} />
 
       <section className="reviews">
         {withReviews && (

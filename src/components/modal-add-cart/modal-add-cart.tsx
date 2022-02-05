@@ -12,7 +12,6 @@ import { ModalProps } from '../../types/props';
 import ModalContainer from '../modal-container/modal-container';
 
 type ModalAddCartProps = ModalProps & {
-  isActive: boolean;
   guitar: GuitarWithReviews;
 };
 
@@ -63,8 +62,7 @@ function ModalAddCart({
       <ModalContainer
         isActive={isActive && isAddCartOpen}
         onClose={onClose}
-        testId="modal-cart-add"
-        noScrollBlock
+        testId="modal-add-cart"
       >
         <h2 className="modal__header title title--medium">
           Добавить товар в корзину
@@ -106,8 +104,8 @@ function ModalAddCart({
       <ModalContainer
         isActive={isActive && isAddCartSuccessOpen}
         onClose={handleAddCartSuccessClose}
+        testId="modal-add-cart-success"
         success
-        noScrollBlock
       >
         <svg className="modal__icon" width="26" height="20" aria-hidden="true">
           <use xlinkHref="#icon-success"></use>

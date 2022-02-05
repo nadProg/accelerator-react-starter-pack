@@ -8,10 +8,9 @@ import { useFocusLoop } from '../../hooks/use-focus-loop';
 
 type ModalContainerProps = PropsWithChildren &
   ModalProps & {
-    isActive: boolean;
     success?: boolean;
     testId?: string;
-    noScrollBlock?: boolean;
+    scrollBlock?: boolean;
   };
 
 function ModalContainer({
@@ -20,11 +19,11 @@ function ModalContainer({
   testId,
   isActive,
   success,
-  noScrollBlock,
+  scrollBlock,
 }: ModalContainerProps) {
   const rootRef = useRef<HTMLDivElement>(null);
 
-  const isScrollBlock = noScrollBlock ? false : isActive;
+  const isScrollBlock = scrollBlock ? isActive : false;
 
   useScrollBlock(isScrollBlock);
   useEscape(isActive, onClose);
@@ -40,7 +39,13 @@ function ModalContainer({
       data-testid={testId}
     >
       <div className="modal__wrapper">
-        <div className="modal__overlay" data-close-modal onClick={onClose}></div>
+        <div
+          className="modal__overlay"
+          data-close-modal
+          onClick={onClose}
+          data-testid="modal-overlay"
+        >
+        </div>
         <div className="modal__content">
           {children}
           <button
@@ -48,6 +53,7 @@ function ModalContainer({
             type="button"
             aria-label="Закрыть"
             onClick={onClose}
+            data-testid="modal-btn-close"
           >
             <span className="button-cross__icon"></span>
             <span className="modal__close-btn-interactive-area"></span>

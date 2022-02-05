@@ -45,6 +45,7 @@ function AddReviewForm({
     setFormFields((prevFields) => ({
       ...prevFields,
       ...INITIAL_FORM_FIELDS,
+      guitarId,
     }));
   };
 

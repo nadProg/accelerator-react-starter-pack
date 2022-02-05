@@ -1,14 +1,19 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { State } from '../../types/store';
 
-export const getCartItems = ({ cart }: State) => cart;
+export const getCartItems = ({ cart }: State) => cart.items;
 
-export const getTotalQuantity = createSelector([getCartItems], (cartItems) =>
-  cartItems.reduce((totalQuantity, { quantity }) => totalQuantity + quantity, 0),
-);
+export const getTotalQuantity = createSelector([getCartItems], (cartItems) => {
+  const total = cartItems.reduce(
+    (totalQuantity, { quantity }) => totalQuantity + quantity,
+    0,
+  );
+  return total;
+});
 
-export const getTotalPrice = createSelector([getCartItems], (cartItems) =>
-  cartItems
+export const getTotalPrice = createSelector([getCartItems], (cartItems) => {
+  const total = cartItems
     .map(({ quantity, product: { price } }) => price * quantity)
-    .reduce((totalPrice, totalItemPrice) => totalPrice + totalItemPrice),
-);
+    .reduce((totalPrice, totalItemPrice) => totalPrice + totalItemPrice, 0);
+  return total;
+});

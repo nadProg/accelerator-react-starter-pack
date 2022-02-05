@@ -19,6 +19,7 @@ function CartItemCard({item: {product, quantity}}: CartItemProps): JSX.Element {
       <ModalContainer
         isActive={isModalDeleteCartItem}
         onClose={() => setIsModalDeleteCartItem(false)}
+        scrollBlock
       >
         <ModalDeleteCartItem />
       </ModalContainer>

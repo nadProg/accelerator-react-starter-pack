@@ -7,5 +7,6 @@ export type PropsWithClassName = {
 };
 
 export type ModalProps = {
+  isActive: boolean;
   onClose: () => void;
 };

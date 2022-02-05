@@ -5,7 +5,7 @@ import { cartInitialState } from './cart-initial-state';
 export const cartReducer = createReducer(cartInitialState, (builder) =>
   builder
     .addCase(addItemToCart, (state, action) => {
-      state.push({
+      state.items.push({
         product: action.payload.product,
         quantity: 1,
       });
