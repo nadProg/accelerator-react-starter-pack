@@ -35,7 +35,7 @@ describe('Component: ReviewSection', () => {
       </Provider>,
     );
 
-    const modal = screen.getByTestId('modal-review-form');
+    const modal = screen.getByTestId('modal-add-review');
 
     expect(modal).not.toHaveClass('is-active');
 
@@ -64,11 +64,13 @@ describe('Component: ReviewSection', () => {
       </Provider>,
     );
 
-    expect(screen.getByTestId('modal-review-form')).not.toHaveClass(
+    expect(screen.getByTestId('modal-add-review')).not.toHaveClass(
       'is-active',
     );
 
-    const modal = screen.getByTestId('modal-success-review');
+    userEvent.click(screen.getByTestId('button-add-review'));
+
+    const modal = screen.getByTestId('modal-add-review-success');
 
     expect(modal).toHaveClass('is-active');
 

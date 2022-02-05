@@ -12,7 +12,7 @@ const mockStore = configureMockStore<State>()(mockState);
 
 const mockHistory = createMemoryHistory();
 
-describe('Component: Coupon', () => {
+describe('Component: CartTotalInfo', () => {
   it('should render correctly', () => {
     render(
       <Router history={mockHistory}>
@@ -21,6 +21,6 @@ describe('Component: Coupon', () => {
         </Provider>
       </Router>);
 
-    expect(screen.getByTestId(/coupon/i)).toBeInTheDocument();
+    expect(screen.getByTestId('cart-total-info')).toBeInTheDocument();
   });
 });

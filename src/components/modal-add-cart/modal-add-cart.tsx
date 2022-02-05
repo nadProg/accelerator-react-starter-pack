@@ -94,6 +94,7 @@ function ModalAddCart({
         <div className="modal__button-container">
           <button
             className="button button--red button--big modal__button modal__button--add"
+            data-testid="modal-add-cart-submit"
             onClick={handleAddCartSubmit}
           >
             Добавить в корзину
@@ -120,6 +121,7 @@ function ModalAddCart({
           </NavLink>
           <button
             className="button button--black-border button--small modal__button modal__button--right"
+            data-testid="modal-add-cart-success-submit"
             onClick={handleAddCartSuccessClose}
           >
             Продолжить покупки

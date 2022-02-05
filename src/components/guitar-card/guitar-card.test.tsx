@@ -5,6 +5,13 @@ import { createMockGuitarWithReviews } from '../../mock/guitar';
 import GuitarCard from './guitar-card';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { createMockState } from '../../mock/state';
+import { configureMockStore } from '@jedmao/redux-mock-store';
+import { State } from '../../types/store';
+import { Provider } from 'react-redux';
+
+const mockState = createMockState();
+const mockStore = configureMockStore<State>()(mockState);
 
 const mockProduct = createMockGuitarWithReviews();
 
@@ -14,7 +21,9 @@ describe('Component: ProductCard', () => {
   it('should render without errors', () => {
     render(
       <Router history={mockHistory}>
-        <GuitarCard guitar={mockProduct} />
+        <Provider store={mockStore}>
+          <GuitarCard guitar={mockProduct} />
+        </Provider>
       </Router>,
     );
   });
@@ -22,11 +31,13 @@ describe('Component: ProductCard', () => {
   it('should handle open/close add-to-card modal', () => {
     render(
       <Router history={mockHistory}>
-        <GuitarCard guitar={mockProduct} />
+        <Provider store={mockStore}>
+          <GuitarCard guitar={mockProduct} />
+        </Provider>
       </Router>,
     );
 
-    const modal = screen.getByTestId('modal-cart-add');
+    const modal = screen.getByTestId('modal-add-cart');
 
     expect(modal).not.toHaveClass('is-active');
 

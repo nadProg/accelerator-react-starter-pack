@@ -11,7 +11,7 @@ function CartTotalInfo(): JSX.Element {
   const withDiscount = discount > 0;
 
   return (
-    <div className="cart__total-info">
+    <div className="cart__total-info" data-testid="cart-total-info">
       <p className="cart__total-item">
         <span className="cart__total-value-name">Всего:</span>
         <span className="cart__total-value">{formatPrice(totalPrice)}</span>

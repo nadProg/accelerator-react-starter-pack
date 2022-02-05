@@ -202,7 +202,7 @@ describe('Component: CardScreen', () => {
     );
 
 
-    const modal = screen.getByTestId('modal-cart-add');
+    const modal = screen.getByTestId('modal-add-cart');
 
     expect(modal).not.toHaveClass('is-active');
 
