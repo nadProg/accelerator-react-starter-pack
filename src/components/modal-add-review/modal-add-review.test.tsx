@@ -7,7 +7,7 @@ import { Router } from 'react-router-dom';
 import { createMockGuitarWithReviews } from '../../mock/guitar';
 import { createMockState } from '../../mock/state';
 import { State } from '../../types/store';
-import ModalAddCart from './modal-add-cart';
+import ModalAddReview from './modal-add-review';
 
 const mockState = createMockState();
 const mockStore = configureMockStore<State>()(mockState);
@@ -20,17 +20,17 @@ const mockGuitar = createMockGuitarWithReviews();
 
 const mockHistory = createMemoryHistory();
 
-describe('Component: ModalAddCart', () => {
+describe('Component: ModalAddReview', () => {
   it('should render without errors', () => {
     render(
       <Router history={mockHistory}>
         <Provider store={mockStore}>
-          <ModalAddCart guitar={mockGuitar} isActive onClose={mockOnClose} />
+          <ModalAddReview guitar={mockGuitar} isActive onClose={mockOnClose} />
         </Provider>
       </Router>,
     );
 
-    expect(screen.getByTestId('modal-add-cart')).toBeInTheDocument();
-    expect(screen.getByTestId('modal-add-cart-success')).toBeInTheDocument();
+    expect(screen.getByTestId('modal-add-review')).toBeInTheDocument();
+    expect(screen.getByTestId('modal-add-review-success')).toBeInTheDocument();
   });
 });

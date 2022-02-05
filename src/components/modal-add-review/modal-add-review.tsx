@@ -31,7 +31,7 @@ function ModalAddReview({ isActive, onClose, guitar }: ModalAddReviewProps) {
       <ModalContainer
         isActive={isActive && isMainModalOpen}
         onClose={onClose}
-        testId="modal-review-form"
+        testId="modal-add-review"
       >
         <h2 className="modal__header modal__header--review title title--medium">
           Оставить отзыв
@@ -48,7 +48,7 @@ function ModalAddReview({ isActive, onClose, guitar }: ModalAddReviewProps) {
       <ModalContainer
         isActive={isActive && isSuccessModalOpen}
         onClose={handleSuccessModalClose}
-        testId="modal-success-review"
+        testId="modal-add-review-success"
         success
       >
         <svg className="modal__icon" width="26" height="20" aria-hidden="true">

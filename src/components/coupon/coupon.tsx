@@ -10,7 +10,7 @@ function Coupon({ className }: PropsWithClassName) {
   };
 
   return (
-    <div className={classNames(className, 'coupon')}>
+    <div className={classNames(className, 'coupon')} data-testid="coupon">
       <h2 className="title title--little coupon__title">Промокод на скидку</h2>
       <p className="coupon__info">Введите свой промокод, если он у вас есть.</p>
       <form className="coupon__form" id="coupon-form" onSubmit={handleSubmit}>

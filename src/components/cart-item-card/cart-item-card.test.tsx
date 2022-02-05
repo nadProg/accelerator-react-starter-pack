@@ -20,6 +20,6 @@ describe('Component: CartItem', () => {
         <CartItemCard item={mockCartItem} />
       </Router>);
 
-    expect(screen.getByTestId(/cart-item/i)).toBeInTheDocument();
+    expect(screen.getByTestId('cart-item-card')).toBeInTheDocument();
   });
 });

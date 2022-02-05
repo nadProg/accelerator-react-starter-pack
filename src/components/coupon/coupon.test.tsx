@@ -12,6 +12,6 @@ describe('Component: Coupon', () => {
         <Coupon />
       </Router>);
 
-    expect(screen.getByTestId(/coupon/i)).toBeInTheDocument();
+    expect(screen.getByTestId('coupon')).toBeInTheDocument();
   });
 });

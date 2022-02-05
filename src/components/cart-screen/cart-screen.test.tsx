@@ -21,6 +21,6 @@ describe('Component: CartScreen', () => {
         </Provider>
       </Router>);
 
-    expect(screen.getByTestId(/cart-screen/i)).toBeInTheDocument();
+    expect(screen.getByTestId('coupon')).toBeInTheDocument();
   });
 });
