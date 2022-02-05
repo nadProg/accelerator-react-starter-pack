@@ -44,7 +44,7 @@ function ModalAddCart({
     try {
       // throw new Error();
       if (inCart) {
-        console.log('Should increase quantity');
+        // 'Should increase quantity'
       } else {
         dispatch(addItemToCart(guitar));
       }
