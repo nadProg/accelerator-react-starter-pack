@@ -7,6 +7,8 @@ import { createMockGuitar } from '../../mock/guitar';
 import { CartItem } from '../../types/cart';
 import CartItemCard from './cart-item-card';
 
+const mockOnDelete = jest.fn();
+
 const mockHistory = createMemoryHistory();
 
 const mockCartItem: CartItem = {
@@ -18,7 +20,7 @@ describe('Component: CartItem', () => {
   it('should render correctly', () => {
     render(
       <Router history={mockHistory}>
-        <CartItemCard item={mockCartItem} />
+        <CartItemCard item={mockCartItem} onDelete={mockOnDelete} />
       </Router>);
 
     expect(screen.getByTestId('cart-item-card')).toBeInTheDocument();
@@ -28,15 +30,11 @@ describe('Component: CartItem', () => {
   it('should handle delete button click correctly', () => {
     render(
       <Router history={mockHistory}>
-        <CartItemCard item={mockCartItem} />
+        <CartItemCard item={mockCartItem} onDelete={mockOnDelete} />
       </Router>);
-
-    const modal = screen.getByTestId('modal-delete-cart');
-
-    expect(modal).not.toHaveClass('is-active');
 
     userEvent.click(screen.getByTestId('cart-item-delete-btn'));
 
-    expect(modal).toHaveClass('is-active');
+    expect(mockOnDelete).toHaveBeenCalledTimes(1);
   });
 });
