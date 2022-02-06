@@ -3,17 +3,12 @@ import { State } from '../../types/store';
 
 export const getCartItems = ({ cart }: State) => cart.items;
 
-export const getTotalQuantity = createSelector([getCartItems], (cartItems) => {
-  const total = cartItems.reduce(
-    (totalQuantity, { quantity }) => totalQuantity + quantity,
-    0,
-  );
-  return total;
-});
+export const getTotalQuantity = createSelector([getCartItems], (cartItems) =>
+  cartItems.reduce((totalQuantity, { quantity }) => totalQuantity + quantity, 0),
+);
 
-export const getTotalPrice = createSelector([getCartItems], (cartItems) => {
-  const total = cartItems
+export const getTotalPrice = createSelector([getCartItems], (cartItems) =>
+  cartItems
     .map(({ quantity, product: { price } }) => price * quantity)
-    .reduce((totalPrice, totalItemPrice) => totalPrice + totalItemPrice, 0);
-  return total;
-});
+    .reduce((totalPrice, totalItemPrice) => totalPrice + totalItemPrice, 0),
+);
