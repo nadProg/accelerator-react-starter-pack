@@ -37,3 +37,13 @@ export const decreaseItemInCart = createAction(
     },
   }),
 );
+
+export const setCartItemQuantity = createAction(
+  Action.SetCartItemQuantity,
+  (productId: Guitar['id'], quantity) => ({
+    payload: {
+      productId,
+      quantity,
+    },
+  }),
+);

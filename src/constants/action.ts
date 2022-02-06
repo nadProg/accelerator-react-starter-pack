@@ -21,6 +21,7 @@ export const Action = {
   DeleteItemFromCart: 'cart/deleteItem',
   IncreaseItemInCart: 'cart/increaseItem',
   DecreaseItemInCart: 'cart/decreaseItem',
+  SetCartItemQuantity: 'cart/setItemQuantity',
 } as const;
 
 export const UNKNOWN_ACTION = {

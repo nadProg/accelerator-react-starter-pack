@@ -2,7 +2,7 @@ import { datatype } from 'faker';
 import { UNKNOWN_ACTION } from '../../constants/action';
 import { createMockCart } from '../../mock/cart';
 import { createMockGuitar } from '../../mock/guitar';
-import { addItemToCart, decreaseItemInCart, deleteItemFromCart, increaseItemInCart } from './cart-actions';
+import { addItemToCart, decreaseItemInCart, deleteItemFromCart, increaseItemInCart, setCartItemQuantity } from './cart-actions';
 import { cartInitialState } from './cart-initial-state';
 import { cartReducer } from './cart-reducer';
 
@@ -129,6 +129,43 @@ describe('Reducer: Cart', () => {
         ...mockCart,
       },
       decreaseItemInCart(mockId),
+    )).toThrowError();
+  });
+
+  it('should set item quantity', () => {
+    const mockCart = createMockCart(10);
+    const mockIndex = 5;
+    const mockCartItem = mockCart.items[mockIndex];
+
+    const mockQuantity = datatype.number();
+
+    const state = cartReducer(
+      {
+        ...cartInitialState,
+        ...mockCart,
+      },
+      setCartItemQuantity(mockCartItem.product.id, mockQuantity),
+    );
+
+    mockCart.items[mockIndex].quantity = mockQuantity;
+
+    expect(state).toEqual({
+      ...cartInitialState,
+      ...mockCart,
+    });
+  });
+
+  it('should throw error when setting quantity of item that is absent in the cart', () => {
+    const mockCart = createMockCart(10);
+    const mockId = datatype.number();
+    mockCart.items = mockCart.items.filter(({product}) => product.id !== mockId);
+
+    expect(() => cartReducer(
+      {
+        ...cartInitialState,
+        ...mockCart,
+      },
+      setCartItemQuantity(mockId, datatype.number()),
     )).toThrowError();
   });
 });

@@ -1,7 +1,20 @@
-import { ChangeEventHandler } from 'react';
+import {
+  FocusEventHandler,
+  KeyboardEvent,
+  FocusEvent,
+  useEffect,
+  useRef,
+  KeyboardEventHandler
+} from 'react';
 import { useDispatch } from 'react-redux';
+import { QuantityRestriction } from '../../constants/cart';
+import { KeyCode } from '../../constants/common';
 import { HumanizedGuitar } from '../../constants/guitar';
-import { decreaseItemInCart, increaseItemInCart } from '../../store/cart/cart-actions';
+import {
+  decreaseItemInCart,
+  increaseItemInCart,
+  setCartItemQuantity
+} from '../../store/cart/cart-actions';
 import { CartItem } from '../../types/cart';
 import { formatPrice } from '../../utils/guitar';
 
@@ -10,21 +23,25 @@ type CartItemProps = {
   onDelete: () => void;
 };
 
-const QuantityRestriction = {
-  Min: 1,
-  Max: 99,
-};
-
 function CartItemCard({
-  item: { product, quantity }, onDelete,
+  item: { product, quantity },
+  onDelete,
 }: CartItemProps): JSX.Element {
+  const inputQuantityRef = useRef<HTMLInputElement>(null);
+
   const dispatch = useDispatch();
 
   const totalPrice = product.price * quantity;
 
+  useEffect(() => {
+    if (inputQuantityRef.current) {
+      inputQuantityRef.current.value = String(quantity);
+    }
+  }, [quantity]);
+
   const handleIncreaseButtonClick = () => {
     if (quantity >= QuantityRestriction.Max) {
-      console.log('Set max value');
+      dispatch(setCartItemQuantity(product.id, QuantityRestriction.Max));
       return;
     }
 
@@ -33,8 +50,7 @@ function CartItemCard({
 
   const handleDecreaseButtonClick = () => {
     if (quantity <= QuantityRestriction.Min) {
-
-      console.log('Set min value');
+      dispatch(setCartItemQuantity(product.id, QuantityRestriction.Min));
       onDelete();
       return;
     }
@@ -42,18 +58,39 @@ function CartItemCard({
     dispatch(decreaseItemInCart(product.id));
   };
 
-  const handleQuantityInputChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
-    const newQuantity = Number(evt.target.value);
-    if (Number.isNaN(newQuantity) || newQuantity > QuantityRestriction.Max) {
+  const handleQuantityInputChange = (
+    evt: FocusEvent<HTMLInputElement> | KeyboardEvent<HTMLInputElement>,
+  ) => {
+    const newQuantity = Number((evt.target as HTMLInputElement).value);
+    if (Number.isNaN(newQuantity)) {
+      return;
+    }
+
+    if (newQuantity > QuantityRestriction.Max) {
+      dispatch(setCartItemQuantity(product.id, QuantityRestriction.Max));
       return;
     }
 
     if (newQuantity < QuantityRestriction.Min) {
+      dispatch(setCartItemQuantity(product.id, QuantityRestriction.Min));
       onDelete();
       return;
     }
 
-    console.log('Set new value');
+    dispatch(setCartItemQuantity(product.id, newQuantity));
+  };
+
+  const handleQuantityInputKeydown: KeyboardEventHandler<HTMLInputElement> = (evt) => {
+    if (evt.code === KeyCode.Enter || evt.code === KeyCode.NumpadEnter) {
+      handleQuantityInputChange(evt);
+      (evt.target as HTMLInputElement).blur();
+    }
+  };
+
+  const handleQuantityInputBlur: FocusEventHandler<HTMLInputElement> = (
+    evt,
+  ) => {
+    handleQuantityInputChange(evt);
   };
 
   return (
@@ -95,14 +132,16 @@ function CartItemCard({
           </svg>
         </button>
         <input
+          ref={inputQuantityRef}
           className="quantity__input"
           type="number"
-          value={quantity}
+          defaultValue={quantity}
           id={`${product.id}-count`}
           name={`${product.id}-count`}
           min="0"
           max="99"
-          onChange={handleQuantityInputChange}
+          onBlur={handleQuantityInputBlur}
+          onKeyDown={handleQuantityInputKeydown}
         />
         <button
           className="quantity__button"

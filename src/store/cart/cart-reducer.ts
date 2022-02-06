@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { CartItem } from '../../types/cart';
-import { addItemToCart, decreaseItemInCart, deleteItemFromCart, increaseItemInCart } from './cart-actions';
+import { addItemToCart, decreaseItemInCart, deleteItemFromCart, increaseItemInCart, setCartItemQuantity } from './cart-actions';
 import { cartInitialState } from './cart-initial-state';
 
 export const cartReducer = createReducer(cartInitialState, (builder) =>
@@ -53,5 +53,19 @@ export const cartReducer = createReducer(cartInitialState, (builder) =>
       };
 
       state.items.splice(itemIndex, 1, increasedItem);
+    })
+    .addCase(setCartItemQuantity, (state, action) => {
+      const itemIndex = state.items.findIndex(({product}) => product.id === action.payload.productId);
+
+      if (itemIndex === -1) {
+        throw new Error(`The product with id ${action.payload.productId} is absent in the cart`);
+      }
+
+      const updatedItem: CartItem = {
+        ...state.items[itemIndex],
+        quantity: action.payload.quantity,
+      };
+
+      state.items.splice(itemIndex, 1, updatedItem);
     }),
 );
