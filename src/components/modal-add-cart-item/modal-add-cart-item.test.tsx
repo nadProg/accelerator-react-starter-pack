@@ -7,11 +7,12 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import { createMockGuitarWithReviews } from '../../mock/guitar';
 import { createMockState } from '../../mock/state';
+import { addItemToCart, increaseItemInCart } from '../../store/cart/cart-actions';
 import { State } from '../../types/store';
 import ModalAddCartItem from './modal-add-cart-item';
 
 const mockState = createMockState();
-const mockStore = configureMockStore<State>()(mockState);
+let mockStore = configureMockStore<State>()(mockState);
 
 const mockOnClose = jest.fn();
 
@@ -21,6 +22,7 @@ const mockHistory = createMemoryHistory();
 
 describe('Component: ModalAddCartItem', () => {
   beforeEach(() => {
+    mockStore = configureMockStore<State>()(mockState);
     mockStore.dispatch = jest.fn();
   });
 
@@ -103,5 +105,48 @@ describe('Component: ModalAddCartItem', () => {
 
     expect(screen.getByTestId('modal-add-cart-item')).not.toHaveClass('is-active');
     expect(screen.getByTestId('modal-add-cart-item-success')).not.toHaveClass('is-active');
+  });
+
+  it('should handle adding new item to the cart', () => {
+    render(
+      <Router history={mockHistory}>
+        <Provider store={mockStore}>
+          <ModalAddCartItem guitar={mockGuitar} isActive onClose={mockOnClose} />
+        </Provider>
+      </Router>,
+    );
+
+
+    userEvent.click(screen.getByTestId('modal-add-cart-item-submit'));
+
+    expect(mockStore.dispatch).toHaveBeenCalledTimes(1);
+    expect(mockStore.dispatch).toHaveBeenCalledWith(addItemToCart(mockGuitar));
+  });
+
+  it('should increasing item quantity if it is in the cart already', () => {
+    mockStore = configureMockStore<State>()({
+      ...mockState,
+      cart: {
+        items: [{
+          product: mockGuitar,
+          quantity: 1,
+        }],
+      },
+    });
+
+    mockStore.dispatch = jest.fn();
+
+    render(
+      <Router history={mockHistory}>
+        <Provider store={mockStore}>
+          <ModalAddCartItem guitar={mockGuitar} isActive onClose={mockOnClose} />
+        </Provider>
+      </Router>,
+    );
+
+    userEvent.click(screen.getByTestId('modal-add-cart-item-submit'));
+
+    expect(mockStore.dispatch).toHaveBeenCalledTimes(1);
+    expect(mockStore.dispatch).toHaveBeenCalledWith(increaseItemInCart(mockGuitar.id));
   });
 });

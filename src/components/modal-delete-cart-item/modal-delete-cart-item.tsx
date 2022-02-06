@@ -18,11 +18,7 @@ function ModalDeleteCartItem({
   const dispatch = useDispatch();
 
   const handleDeleteButtonClick = () => {
-    if (!product) {
-      return;
-    }
-
-    dispatch(deleteItemFromCart(product.id));
+    dispatch(deleteItemFromCart((product as Guitar).id));
     onClose();
   };
 
@@ -68,12 +64,14 @@ function ModalDeleteCartItem({
             <button
               className="button button--small modal__button"
               onClick={handleDeleteButtonClick}
+              data-testid="modal-delete-cart-item-submit"
             >
               Удалить товар
             </button>
             <button
               className="button button--black-border button--small modal__button modal__button--right"
               onClick={onClose}
+              data-testid="modal-delete-cart-item-cancel"
             >
               Продолжить покупки
             </button>
