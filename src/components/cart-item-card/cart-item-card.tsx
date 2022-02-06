@@ -62,9 +62,6 @@ function CartItemCard({
     evt: FocusEvent<HTMLInputElement> | KeyboardEvent<HTMLInputElement>,
   ) => {
     const newQuantity = Number((evt.target as HTMLInputElement).value);
-    if (Number.isNaN(newQuantity)) {
-      return;
-    }
 
     if (newQuantity > QuantityRestriction.Max) {
       dispatch(setCartItemQuantity(product.id, QuantityRestriction.Max));
@@ -126,6 +123,7 @@ function CartItemCard({
           className="quantity__button"
           aria-label="Уменьшить количество"
           onClick={handleDecreaseButtonClick}
+          data-testid="cart-item-decrease-btn"
         >
           <svg width="8" height="8" aria-hidden="true">
             <use xlinkHref="#icon-minus"></use>
@@ -142,11 +140,13 @@ function CartItemCard({
           max="99"
           onBlur={handleQuantityInputBlur}
           onKeyDown={handleQuantityInputKeydown}
+          data-testid="cart-item-quantity-input"
         />
         <button
           className="quantity__button"
           aria-label="Увеличить количество"
           onClick={handleIncreaseButtonClick}
+          data-testid="cart-item-increase-btn"
         >
           <svg width="8" height="8" aria-hidden="true">
             <use xlinkHref="#icon-plus"></use>

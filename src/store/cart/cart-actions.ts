@@ -40,7 +40,7 @@ export const decreaseItemInCart = createAction(
 
 export const setCartItemQuantity = createAction(
   Action.SetCartItemQuantity,
-  (productId: Guitar['id'], quantity) => ({
+  (productId: Guitar['id'], quantity: number) => ({
     payload: {
       productId,
       quantity,
