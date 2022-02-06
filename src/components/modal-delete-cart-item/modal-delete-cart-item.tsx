@@ -1,13 +1,14 @@
 import { useDispatch } from 'react-redux';
 import { HumanizedGuitar } from '../../constants/guitar';
 import { deleteItemFromCart } from '../../store/cart/cart-actions';
+import { Product } from '../../types/cart';
 import { Guitar } from '../../types/guitar';
 import { ModalProps } from '../../types/props';
 import { formatPrice } from '../../utils/guitar';
 import ModalContainer from '../modal-container/modal-container';
 
 type ModalDeleteCartItemProps = ModalProps & {
-  product: Guitar | null;
+  product: Product | null;
 };
 
 function ModalDeleteCartItem({

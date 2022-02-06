@@ -6,24 +6,27 @@ import { AppRoute } from '../../constants/endpoints';
 import { HumanizedGuitar } from '../../constants/guitar';
 import { useInCart } from '../../hooks/use-in-cart';
 import { useScrollBlock } from '../../hooks/use-scroll-block';
-import { addItemToCart, increaseItemInCart } from '../../store/cart/cart-actions';
-import { GuitarWithReviews } from '../../types/guitar';
+import {
+  addItemToCart,
+  increaseItemInCart
+} from '../../store/cart/cart-actions';
+import { Product } from '../../types/cart';
 import { ModalProps } from '../../types/props';
 import ModalContainer from '../modal-container/modal-container';
 
 type ModalAddCartProps = ModalProps & {
-  guitar: GuitarWithReviews;
+  product: Product | null;
 };
 
 function ModalAddCartItem({
-  guitar,
+  product,
   isActive,
   onClose,
 }: ModalAddCartProps): JSX.Element {
   const [isAddCartOpen, setIsAddCartOpen] = useState(true);
   const [isAddCartSuccessOpen, setIsAddCartSuccessOpen] = useState(false);
 
-  const inCart = useInCart(guitar.id);
+  const inCart = useInCart(product?.id);
 
   const dispatch = useDispatch();
 
@@ -40,12 +43,11 @@ function ModalAddCartItem({
   };
 
   const handleAddCartSubmit = () => {
-
     try {
       if (inCart) {
-        dispatch(increaseItemInCart(guitar.id));
+        dispatch(increaseItemInCart((product as Product).id));
       } else {
-        dispatch(addItemToCart(guitar));
+        dispatch(addItemToCart(product as Product));
       }
       handleAddCartClose();
     } catch (error) {
@@ -63,42 +65,47 @@ function ModalAddCartItem({
         onClose={onClose}
         testId="modal-add-cart-item"
       >
-        <h2 className="modal__header title title--medium">
-          Добавить товар в корзину
-        </h2>
-        <div className="modal__info">
-          <img
-            className="modal__img"
-            src={`/${guitar.previewImg}`}
-            width="67"
-            height="137"
-            alt={guitar.name}
-          />
-          <div className="modal__info-wrapper">
-            <h3 className="modal__product-name title title--little title--uppercase">
-              {guitar.name}
-            </h3>
-            <p className="modal__product-params modal__product-params--margin-11">
-              Артикул: {guitar.vendorCode}
-            </p>
-            <p className="modal__product-params">
-              {HumanizedGuitar[guitar.type]}, {guitar.stringCount} струнная
-            </p>
-            <p className="modal__price-wrapper">
-              <span className="modal__price">Цена:</span>
-              <span className="modal__price">{guitar.price} ₽</span>
-            </p>
-          </div>
-        </div>
-        <div className="modal__button-container">
-          <button
-            className="button button--red button--big modal__button modal__button--add"
-            data-testid="modal-add-cart-item-submit"
-            onClick={handleAddCartSubmit}
-          >
-            Добавить в корзину
-          </button>
-        </div>
+        {product && (
+          <>
+            <h2 className="modal__header title title--medium">
+              Добавить товар в корзину
+            </h2>
+            <div className="modal__info">
+              <img
+                className="modal__img"
+                src={`/${product.previewImg}`}
+                width="67"
+                height="137"
+                alt={product.name}
+              />
+              <div className="modal__info-wrapper">
+                <h3 className="modal__product-name title title--little title--uppercase">
+                  {product.name}
+                </h3>
+                <p className="modal__product-params modal__product-params--margin-11">
+                  Артикул: {product.vendorCode}
+                </p>
+                <p className="modal__product-params">
+                  {HumanizedGuitar[product.type]}, {product.stringCount}{' '}
+                  струнная
+                </p>
+                <p className="modal__price-wrapper">
+                  <span className="modal__price">Цена:</span>
+                  <span className="modal__price">{product.price} ₽</span>
+                </p>
+              </div>
+            </div>
+            <div className="modal__button-container">
+              <button
+                className="button button--red button--big modal__button modal__button--add"
+                data-testid="modal-add-cart-item-submit"
+                onClick={handleAddCartSubmit}
+              >
+                Добавить в корзину
+              </button>
+            </div>
+          </>
+        )}
       </ModalContainer>
 
       <ModalContainer

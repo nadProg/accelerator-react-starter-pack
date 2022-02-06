@@ -38,14 +38,14 @@ const mockStore = configureMockStore<State>()({
 
 mockStore.dispatch = jest.fn();
 
-const mockOnDelete = jest.fn();
+const mockOnDeleteCartItem = jest.fn();
 
 describe('Component: CartItem', () => {
   it('should render correctly', () => {
     render(
       <Router history={mockHistory}>
         <Provider store={mockStore}>
-          <CartItemCard item={mockCartItem} onDelete={mockOnDelete} />
+          <CartItemCard item={mockCartItem} onDeleteCartItem={mockOnDeleteCartItem} />
         </Provider>
       </Router>,
     );
@@ -58,21 +58,21 @@ describe('Component: CartItem', () => {
     render(
       <Router history={mockHistory}>
         <Provider store={mockStore}>
-          <CartItemCard item={mockCartItem} onDelete={mockOnDelete} />
+          <CartItemCard item={mockCartItem} onDeleteCartItem={mockOnDeleteCartItem} />
         </Provider>
       </Router>,
     );
 
     userEvent.click(screen.getByTestId('cart-item-delete-btn'));
 
-    expect(mockOnDelete).toHaveBeenCalledTimes(1);
+    expect(mockOnDeleteCartItem).toHaveBeenCalledTimes(1);
   });
 
   it('should handle increasing quantity', () => {
     render(
       <Router history={mockHistory}>
         <Provider store={mockStore}>
-          <CartItemCard item={mockCartItem} onDelete={mockOnDelete} />
+          <CartItemCard item={mockCartItem} onDeleteCartItem={mockOnDeleteCartItem} />
         </Provider>
       </Router>,
     );
@@ -84,7 +84,7 @@ describe('Component: CartItem', () => {
       increaseItemInCart(mockProduct.id),
     );
 
-    expect(mockOnDelete).not.toHaveBeenCalled();
+    expect(mockOnDeleteCartItem).not.toHaveBeenCalled();
   });
 
   it('should prevent increasing quantity higher than highest limit', () => {
@@ -96,7 +96,7 @@ describe('Component: CartItem', () => {
               ...mockCartItem,
               quantity: QuantityRestriction.Max,
             }}
-            onDelete={mockOnDelete}
+            onDeleteCartItem={mockOnDeleteCartItem}
           />
         </Provider>
       </Router>,
@@ -112,14 +112,14 @@ describe('Component: CartItem', () => {
       setCartItemQuantity(mockProduct.id, QuantityRestriction.Max),
     );
 
-    expect(mockOnDelete).not.toHaveBeenCalled();
+    expect(mockOnDeleteCartItem).not.toHaveBeenCalled();
   });
 
   it('should handle decreasing quantity', () => {
     render(
       <Router history={mockHistory}>
         <Provider store={mockStore}>
-          <CartItemCard item={mockCartItem} onDelete={mockOnDelete} />
+          <CartItemCard item={mockCartItem} onDeleteCartItem={mockOnDeleteCartItem} />
         </Provider>
       </Router>,
     );
@@ -131,7 +131,7 @@ describe('Component: CartItem', () => {
       decreaseItemInCart(mockProduct.id),
     );
 
-    expect(mockOnDelete).not.toHaveBeenCalled();
+    expect(mockOnDeleteCartItem).not.toHaveBeenCalled();
   });
 
   it('should prevent decreasing quantity lower than lowest limit', () => {
@@ -143,7 +143,7 @@ describe('Component: CartItem', () => {
               ...mockCartItem,
               quantity: QuantityRestriction.Min,
             }}
-            onDelete={mockOnDelete}
+            onDeleteCartItem={mockOnDeleteCartItem}
           />
         </Provider>
       </Router>,
@@ -159,14 +159,14 @@ describe('Component: CartItem', () => {
       setCartItemQuantity(mockProduct.id, QuantityRestriction.Min),
     );
 
-    expect(mockOnDelete).toHaveBeenCalledTimes(1);
+    expect(mockOnDeleteCartItem).toHaveBeenCalledTimes(1);
   });
 
   it('should handle manual quantity changing', () => {
     render(
       <Router history={mockHistory}>
         <Provider store={mockStore}>
-          <CartItemCard item={mockCartItem} onDelete={mockOnDelete} />
+          <CartItemCard item={mockCartItem} onDeleteCartItem={mockOnDeleteCartItem} />
         </Provider>
       </Router>,
     );
@@ -210,14 +210,14 @@ describe('Component: CartItem', () => {
       setCartItemQuantity(mockProduct.id, mockInput - 1),
     );
 
-    expect(mockOnDelete).not.toHaveBeenCalled();
+    expect(mockOnDeleteCartItem).not.toHaveBeenCalled();
   });
 
   it('should prevent incorrect manual quantity changing', () => {
     render(
       <Router history={mockHistory}>
         <Provider store={mockStore}>
-          <CartItemCard item={mockCartItem} onDelete={mockOnDelete} />
+          <CartItemCard item={mockCartItem} onDeleteCartItem={mockOnDeleteCartItem} />
         </Provider>
       </Router>,
     );
@@ -261,6 +261,6 @@ describe('Component: CartItem', () => {
       setCartItemQuantity(mockProduct.id, QuantityRestriction.Min),
     );
 
-    expect(mockOnDelete).toHaveBeenCalled();
+    expect(mockOnDeleteCartItem).toHaveBeenCalled();
   });
 });

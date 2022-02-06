@@ -121,7 +121,7 @@ function CardScreen(): JSX.Element {
 
   return (
     <>
-      <ModalAddCartItem guitar={guitar} isActive={isModalAddCartOpen} onClose={handleModalAddCartClose} />
+      <ModalAddCartItem product={guitar} isActive={isModalAddCartOpen} onClose={handleModalAddCartClose} />
 
       <h1 className="page-content__title title title--bigger">{guitar.name}</h1>
 

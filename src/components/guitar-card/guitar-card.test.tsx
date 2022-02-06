@@ -1,4 +1,4 @@
-import {render, within} from '@testing-library/react';
+import {render} from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Route, Router } from 'react-router-dom';
 import { createMockGuitarWithReviews } from '../../mock/guitar';
@@ -18,6 +18,8 @@ const mockProduct = createMockGuitarWithReviews();
 
 const mockHistory = createMemoryHistory();
 
+const mockOnAddCartItem = jest.fn();
+
 describe('Component: ProductCard', () => {
   beforeEach(() => {
     mockStore = configureMockStore<State>()(mockState);
@@ -27,7 +29,7 @@ describe('Component: ProductCard', () => {
     render(
       <Router history={mockHistory}>
         <Provider store={mockStore}>
-          <GuitarCard guitar={mockProduct} />
+          <GuitarCard guitar={mockProduct} onAddCartItem={mockOnAddCartItem} />
         </Provider>
       </Router>,
     );
@@ -41,26 +43,18 @@ describe('Component: ProductCard', () => {
             <div data-testid="cart-screen" />
           </Route>
           <Route>
-            <GuitarCard guitar={mockProduct} />
+            <GuitarCard guitar={mockProduct} onAddCartItem={mockOnAddCartItem} />
           </Route>
         </Provider>
       </Router>,
     );
 
-    const modal = screen.getByTestId('modal-add-cart-item');
+    expect(screen.getByTestId('product-card-add-cart-item-btn')).toHaveTextContent(/Купить/i);
+    expect(screen.getByTestId('product-card-add-cart-item-btn')).not.toHaveTextContent(/В корзине/i);
 
-    expect(modal).not.toHaveClass('is-active');
+    userEvent.click(screen.getByTestId('product-card-add-cart-item-btn'));
 
-    expect(screen.getByTestId('button-add-to-cart')).toHaveTextContent(/Купить/i);
-    expect(screen.getByTestId('button-add-to-cart')).not.toHaveTextContent(/В корзине/i);
-
-    userEvent.click(screen.getByTestId('button-add-to-cart'));
-    expect(modal).toHaveClass('is-active');
-
-    userEvent.click(within(modal).getByTestId('modal-overlay'));
-    expect(modal).not.toHaveClass('is-active');
-
-    expect(screen.queryByTestId('cart-screen')).not.toBeInTheDocument();
+    expect(mockOnAddCartItem).toHaveBeenCalledTimes(1);
   });
 
   it('should handle redirect to cart screen when product is in the cart already', () => {
@@ -81,21 +75,15 @@ describe('Component: ProductCard', () => {
             <div data-testid="cart-screen" />
           </Route>
           <Route>
-            <GuitarCard guitar={mockProduct} />
+            <GuitarCard guitar={mockProduct} onAddCartItem={mockOnAddCartItem} />
           </Route>
         </Provider>
       </Router>,
     );
 
-    expect(screen.getByTestId('modal-add-cart-item')).not.toHaveClass('is-active');
+    expect(screen.getByTestId('product-card-add-cart-item-btn')).not.toHaveTextContent(/Купить/i);
+    expect(screen.getByTestId('product-card-add-cart-item-btn')).toHaveTextContent(/В корзине/i);
 
-    expect(screen.getByTestId('button-add-to-cart')).not.toHaveTextContent(/Купить/i);
-    expect(screen.getByTestId('button-add-to-cart')).toHaveTextContent(/В корзине/i);
-
-    expect(screen.queryByTestId('cart-screen')).not.toBeInTheDocument();
-
-    userEvent.click(screen.getByTestId('button-add-to-cart'));
-
-    expect(screen.getByTestId('cart-screen')).toBeInTheDocument();
+    expect(mockOnAddCartItem).not.toHaveBeenCalled();
   });
 });

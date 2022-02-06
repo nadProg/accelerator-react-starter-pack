@@ -20,12 +20,12 @@ import { formatPrice } from '../../utils/guitar';
 
 type CartItemProps = {
   item: CartItem;
-  onDelete: () => void;
+  onDeleteCartItem: () => void;
 };
 
 function CartItemCard({
   item: { product, quantity },
-  onDelete,
+  onDeleteCartItem,
 }: CartItemProps): JSX.Element {
   const inputQuantityRef = useRef<HTMLInputElement>(null);
 
@@ -51,7 +51,7 @@ function CartItemCard({
   const handleDecreaseButtonClick = () => {
     if (quantity <= QuantityRestriction.Min) {
       dispatch(setCartItemQuantity(product.id, QuantityRestriction.Min));
-      onDelete();
+      onDeleteCartItem();
       return;
     }
 
@@ -70,7 +70,7 @@ function CartItemCard({
 
     if (newQuantity < QuantityRestriction.Min) {
       dispatch(setCartItemQuantity(product.id, QuantityRestriction.Min));
-      onDelete();
+      onDeleteCartItem();
       return;
     }
 
@@ -97,7 +97,7 @@ function CartItemCard({
         type="button"
         aria-label="Удалить"
         data-testid="cart-item-delete-btn"
-        onClick={onDelete}
+        onClick={onDeleteCartItem}
       >
         <span className="button-cross__icon"></span>
         <span className="cart-item__close-button-interactive-area"></span>

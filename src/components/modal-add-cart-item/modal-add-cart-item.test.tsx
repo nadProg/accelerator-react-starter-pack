@@ -30,7 +30,7 @@ describe('Component: ModalAddCartItem', () => {
     render(
       <Router history={mockHistory}>
         <Provider store={mockStore}>
-          <ModalAddCartItem guitar={mockGuitar} isActive onClose={mockOnClose} />
+          <ModalAddCartItem product={mockGuitar} isActive onClose={mockOnClose} />
         </Provider>
       </Router>,
     );
@@ -47,7 +47,7 @@ describe('Component: ModalAddCartItem', () => {
     render(
       <Router history={mockHistory}>
         <Provider store={mockStore}>
-          <ModalAddCartItem guitar={mockGuitar} isActive onClose={mockOnClose} />
+          <ModalAddCartItem product={mockGuitar} isActive onClose={mockOnClose} />
         </Provider>
       </Router>,
     );
@@ -76,7 +76,7 @@ describe('Component: ModalAddCartItem', () => {
     render(
       <Router history={mockHistory}>
         <Provider store={mockStore}>
-          <ModalAddCartItem guitar={mockGuitar} isActive onClose={mockOnClose} />
+          <ModalAddCartItem product={mockGuitar} isActive onClose={mockOnClose} />
         </Provider>
       </Router>,
     );
@@ -95,7 +95,7 @@ describe('Component: ModalAddCartItem', () => {
     render(
       <Router history={mockHistory}>
         <Provider store={mockStore}>
-          <ModalAddCartItem guitar={mockGuitar} isActive={false} onClose={mockOnClose} />
+          <ModalAddCartItem product={mockGuitar} isActive={false} onClose={mockOnClose} />
         </Provider>
       </Router>,
     );
@@ -111,7 +111,7 @@ describe('Component: ModalAddCartItem', () => {
     render(
       <Router history={mockHistory}>
         <Provider store={mockStore}>
-          <ModalAddCartItem guitar={mockGuitar} isActive onClose={mockOnClose} />
+          <ModalAddCartItem product={mockGuitar} isActive onClose={mockOnClose} />
         </Provider>
       </Router>,
     );
@@ -139,7 +139,7 @@ describe('Component: ModalAddCartItem', () => {
     render(
       <Router history={mockHistory}>
         <Provider store={mockStore}>
-          <ModalAddCartItem guitar={mockGuitar} isActive onClose={mockOnClose} />
+          <ModalAddCartItem product={mockGuitar} isActive onClose={mockOnClose} />
         </Provider>
       </Router>,
     );

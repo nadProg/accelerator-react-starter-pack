@@ -1,5 +1,5 @@
 import { configureMockStore } from '@jedmao/redux-mock-store';
-import {render} from '@testing-library/react';
+import {render, within} from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
@@ -10,6 +10,7 @@ import { createArrayOfObjects } from '../../utils/common';
 import CatalogPage from './catalog-page';
 import { screen } from '@testing-library/react';
 import { createMockState } from '../../mock/state';
+import userEvent from '@testing-library/user-event';
 
 const mockGuitars = createArrayOfObjects(() => createMockGuitarWithReviews(), 9);
 
@@ -141,5 +142,45 @@ describe('Component: CatalogPage', () => {
     );
 
     expect(screen.getByTestId('catalog-error-message')).toBeInTheDocument();
+  });
+
+  it('should handle add item modal', () => {
+    const mockStore = configureMockStore<State>()({
+      guitars: {
+        ...mockSucceedState.guitars,
+        catalogGuitars: {
+          data: mockGuitars,
+          status: FetchStatus.Succeeded,
+        },
+      },
+      cart: {
+        items: [],
+      },
+    });
+
+    mockStore.dispatch = jest.fn();
+
+    render(
+      <Provider store={mockStore}>
+        <Router history={mockHistory}>
+          <CatalogPage />
+        </Router>
+      </Provider>,
+    );
+
+    const modal = screen.getByTestId('modal-add-cart-item');
+
+    expect(modal).toBeInTheDocument();
+    expect(modal).not.toHaveClass('is-active');
+
+    const mockCurrentCard = screen.getAllByTestId('product-card')[5];
+
+    userEvent.click(within(mockCurrentCard).getByTestId('product-card-add-cart-item-btn'));
+
+    expect(modal).toHaveClass('is-active');
+
+    userEvent.click(within(modal).getByTestId('modal-overlay'));
+
+    expect(modal).not.toHaveClass('is-active');
   });
 });

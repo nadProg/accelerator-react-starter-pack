@@ -45,7 +45,7 @@ function CartScreen(): JSX.Element {
           <CartItemCard
             key={cartItem.product.id}
             item={cartItem}
-            onDelete={() => {
+            onDeleteCartItem={() => {
               setCurrentProduct(cartItem.product);
               setIsModalDeleteCartItemOpen(true);
             }}

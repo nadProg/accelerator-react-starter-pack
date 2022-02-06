@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCatalogGuitars } from '../../store/guitars/guitars-api-actions';
 import {
@@ -13,8 +13,13 @@ import {
 import InfoScreen from '../info-screen/info-screen';
 import Loader from '../loader/loader';
 import GuitarCard from '../guitar-card/guitar-card';
+import { Guitar } from '../../types/guitar';
+import ModalAddCartItem from '../modal-add-cart-item/modal-add-cart-item';
 
 function CatalogPage(): JSX.Element {
+  const [isModalAddCartOpen, setIsModalAddCartOpen] = useState(false);
+  const [currentGuitar, setCurrentGuitar] = useState<Guitar | null>(null);
+
   const catalogGuitars = useSelector(getCatalogGuitarsData);
   const catalogGuitarsStatus = useSelector(getCatalogGuitarsStatus);
 
@@ -45,8 +50,18 @@ function CatalogPage(): JSX.Element {
 
   return (
     <>
+      <ModalAddCartItem
+        isActive={isModalAddCartOpen}
+        onClose={() => setIsModalAddCartOpen(false)}
+        product={currentGuitar}
+      />
+
       {catalogGuitars.map((guitar) => (
-        <GuitarCard key={guitar.id} guitar={guitar} />
+        <GuitarCard key={guitar.id} guitar={guitar} onAddCartItem={() => {
+          setCurrentGuitar(guitar);
+          setIsModalAddCartOpen(true);
+        }}
+        />
       ))}
     </>
   );

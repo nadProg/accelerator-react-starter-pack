@@ -1,6 +1,8 @@
 import { Guitar } from './guitar';
 
-export type CartItem<T extends Guitar = Guitar> = {
-  product: T;
+export type Product<T extends Guitar = Guitar> = T;
+
+export type CartItem = {
+  product: Product;
   quantity: number;
 };
