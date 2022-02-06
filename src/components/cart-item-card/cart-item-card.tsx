@@ -1,4 +1,7 @@
+import { ChangeEventHandler } from 'react';
+import { useDispatch } from 'react-redux';
 import { HumanizedGuitar } from '../../constants/guitar';
+import { decreaseItemInCart, increaseItemInCart } from '../../store/cart/cart-actions';
 import { CartItem } from '../../types/cart';
 import { formatPrice } from '../../utils/guitar';
 
@@ -7,11 +10,51 @@ type CartItemProps = {
   onDelete: () => void;
 };
 
+const QuantityRestriction = {
+  Min: 1,
+  Max: 99,
+};
+
 function CartItemCard({
   item: { product, quantity }, onDelete,
 }: CartItemProps): JSX.Element {
+  const dispatch = useDispatch();
 
   const totalPrice = product.price * quantity;
+
+  const handleIncreaseButtonClick = () => {
+    if (quantity >= QuantityRestriction.Max) {
+      console.log('Set max value');
+      return;
+    }
+
+    dispatch(increaseItemInCart(product.id));
+  };
+
+  const handleDecreaseButtonClick = () => {
+    if (quantity <= QuantityRestriction.Min) {
+
+      console.log('Set min value');
+      onDelete();
+      return;
+    }
+
+    dispatch(decreaseItemInCart(product.id));
+  };
+
+  const handleQuantityInputChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
+    const newQuantity = Number(evt.target.value);
+    if (Number.isNaN(newQuantity) || newQuantity > QuantityRestriction.Max) {
+      return;
+    }
+
+    if (newQuantity < QuantityRestriction.Min) {
+      onDelete();
+      return;
+    }
+
+    console.log('Set new value');
+  };
 
   return (
     <div className="cart-item" data-testid="cart-item-card">
@@ -45,6 +88,7 @@ function CartItemCard({
         <button
           className="quantity__button"
           aria-label="Уменьшить количество"
+          onClick={handleDecreaseButtonClick}
         >
           <svg width="8" height="8" aria-hidden="true">
             <use xlinkHref="#icon-minus"></use>
@@ -53,15 +97,17 @@ function CartItemCard({
         <input
           className="quantity__input"
           type="number"
-          placeholder="1"
           value={quantity}
-          id="2-count"
-          name="2-count"
+          id={`${product.id}-count`}
+          name={`${product.id}-count`}
+          min="0"
           max="99"
+          onChange={handleQuantityInputChange}
         />
         <button
           className="quantity__button"
           aria-label="Увеличить количество"
+          onClick={handleIncreaseButtonClick}
         >
           <svg width="8" height="8" aria-hidden="true">
             <use xlinkHref="#icon-plus"></use>
