@@ -5,7 +5,7 @@ import { AppRoute } from '../../constants/endpoints';
 import { useInCart } from '../../hooks/use-in-cart';
 import { GuitarWithReviews } from '../../types/guitar';
 import { formatPrice } from '../../utils/guitar';
-import ModalAddCart from '../modal-add-cart/modal-add-cart';
+import ModalAddCartItem from '../modal-add-cart-item/modal-add-cart-item';
 import Rating from '../rating/rating';
 
 type GuitarCardProps = {
@@ -26,7 +26,7 @@ function GuitarCard({ guitar }: GuitarCardProps): JSX.Element {
 
   return (
     <>
-      <ModalAddCart
+      <ModalAddCartItem
         isActive={isModalAddCartOpen}
         onClose={() => setIsModalAddCartOpen(false)}
         guitar={guitar}

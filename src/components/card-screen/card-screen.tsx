@@ -22,7 +22,7 @@ import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
 import { formatPrice, getRating } from '../../utils/guitar';
 import InfoScreen from '../info-screen/info-screen';
 import Loader from '../loader/loader';
-import ModalAddCart from '../modal-add-cart/modal-add-cart';
+import ModalAddCartItem from '../modal-add-cart-item/modal-add-cart-item';
 import Rating from '../rating/rating';
 import ReviewSection from '../review-section/review-section';
 
@@ -121,7 +121,7 @@ function CardScreen(): JSX.Element {
 
   return (
     <>
-      <ModalAddCart guitar={guitar} isActive={isModalAddCartOpen} onClose={handleModalAddCartClose} />
+      <ModalAddCartItem guitar={guitar} isActive={isModalAddCartOpen} onClose={handleModalAddCartClose} />
 
       <h1 className="page-content__title title title--bigger">{guitar.name}</h1>
 

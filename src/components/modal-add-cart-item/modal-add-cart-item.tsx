@@ -6,7 +6,7 @@ import { AppRoute } from '../../constants/endpoints';
 import { HumanizedGuitar } from '../../constants/guitar';
 import { useInCart } from '../../hooks/use-in-cart';
 import { useScrollBlock } from '../../hooks/use-scroll-block';
-import { addItemToCart } from '../../store/cart/cart-actions';
+import { addItemToCart, increaseItemInCart } from '../../store/cart/cart-actions';
 import { GuitarWithReviews } from '../../types/guitar';
 import { ModalProps } from '../../types/props';
 import ModalContainer from '../modal-container/modal-container';
@@ -15,7 +15,7 @@ type ModalAddCartProps = ModalProps & {
   guitar: GuitarWithReviews;
 };
 
-function ModalAddCart({
+function ModalAddCartItem({
   guitar,
   isActive,
   onClose,
@@ -42,9 +42,8 @@ function ModalAddCart({
   const handleAddCartSubmit = () => {
 
     try {
-      // throw new Error();
       if (inCart) {
-        // 'Should increase quantity'
+        dispatch(increaseItemInCart(guitar.id));
       } else {
         dispatch(addItemToCart(guitar));
       }
@@ -62,7 +61,7 @@ function ModalAddCart({
       <ModalContainer
         isActive={isActive && isAddCartOpen}
         onClose={onClose}
-        testId="modal-add-cart"
+        testId="modal-add-cart-item"
       >
         <h2 className="modal__header title title--medium">
           Добавить товар в корзину
@@ -94,7 +93,7 @@ function ModalAddCart({
         <div className="modal__button-container">
           <button
             className="button button--red button--big modal__button modal__button--add"
-            data-testid="modal-add-cart-submit"
+            data-testid="modal-add-cart-item-submit"
             onClick={handleAddCartSubmit}
           >
             Добавить в корзину
@@ -105,7 +104,7 @@ function ModalAddCart({
       <ModalContainer
         isActive={isActive && isAddCartSuccessOpen}
         onClose={handleAddCartSuccessClose}
-        testId="modal-add-cart-success"
+        testId="modal-add-cart-item-success"
         success
       >
         <svg className="modal__icon" width="26" height="20" aria-hidden="true">
@@ -121,7 +120,7 @@ function ModalAddCart({
           </NavLink>
           <button
             className="button button--black-border button--small modal__button modal__button--right"
-            data-testid="modal-add-cart-success-submit"
+            data-testid="modal-add-cart-item-success-submit"
             onClick={handleAddCartSuccessClose}
           >
             Продолжить покупки
@@ -132,4 +131,4 @@ function ModalAddCart({
   );
 }
 
-export default ModalAddCart;
+export default ModalAddCartItem;

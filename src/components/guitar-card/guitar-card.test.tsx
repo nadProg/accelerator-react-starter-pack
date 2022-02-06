@@ -37,7 +37,7 @@ describe('Component: ProductCard', () => {
       </Router>,
     );
 
-    const modal = screen.getByTestId('modal-add-cart');
+    const modal = screen.getByTestId('modal-add-cart-item');
 
     expect(modal).not.toHaveClass('is-active');
 
