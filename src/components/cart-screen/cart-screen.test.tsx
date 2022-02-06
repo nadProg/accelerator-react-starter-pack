@@ -3,12 +3,16 @@ import { render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
+import { createMockCart } from '../../mock/cart';
 import { createMockState } from '../../mock/state';
 import { State } from '../../types/store';
 import CartScreen from './cart-screen';
 
 const mockState = createMockState();
-const mockStore = configureMockStore<State>()(mockState);
+const mockStore = configureMockStore<State>()({
+  ...mockState,
+  cart: createMockCart(),
+});
 
 const mockHistory = createMemoryHistory();
 

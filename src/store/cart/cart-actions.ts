@@ -10,3 +10,30 @@ export const addItemToCart = createAction(
     },
   }),
 );
+
+export const deleteItemFromCart = createAction(
+  Action.DeleteItemFromCart,
+  (productId: Guitar['id']) => ({
+    payload: {
+      productId,
+    },
+  }),
+);
+
+export const increaseItemInCart = createAction(
+  Action.IncreaseItemInCart,
+  (productId: Guitar['id']) => ({
+    payload: {
+      productId,
+    },
+  }),
+);
+
+export const decreaseItemInCart = createAction(
+  Action.DecreaseItemInCart,
+  (productId: Guitar['id']) => ({
+    payload: {
+      productId,
+    },
+  }),
+);

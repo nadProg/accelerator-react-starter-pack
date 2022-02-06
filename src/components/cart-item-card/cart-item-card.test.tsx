@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { datatype } from 'faker';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
@@ -21,5 +22,21 @@ describe('Component: CartItem', () => {
       </Router>);
 
     expect(screen.getByTestId('cart-item-card')).toBeInTheDocument();
+    expect(screen.getByTestId('cart-item-delete-btn')).toBeInTheDocument();
+  });
+
+  it('should handle delete button click correctly', () => {
+    render(
+      <Router history={mockHistory}>
+        <CartItemCard item={mockCartItem} />
+      </Router>);
+
+    const modal = screen.getByTestId('modal-delete-cart');
+
+    expect(modal).not.toHaveClass('is-active');
+
+    userEvent.click(screen.getByTestId('cart-item-delete-btn'));
+
+    expect(modal).toHaveClass('is-active');
   });
 });

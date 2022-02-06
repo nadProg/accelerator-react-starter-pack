@@ -22,6 +22,7 @@ function CartItemCard({
         isActive={isModalDeleteCartItem}
         onClose={() => setIsModalDeleteCartItem(false)}
         scrollBlock
+        testId="modal-delete-cart"
       >
         <ModalDeleteCartItem />
       </ModalContainer>
@@ -31,6 +32,7 @@ function CartItemCard({
           className="cart-item__close-button button-cross"
           type="button"
           aria-label="Удалить"
+          data-testid="cart-item-delete-btn"
           onClick={() => setIsModalDeleteCartItem(true)}
         >
           <span className="button-cross__icon"></span>

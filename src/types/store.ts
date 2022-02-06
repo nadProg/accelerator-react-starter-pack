@@ -23,7 +23,7 @@ import {
   setPaginationMaxPage
 } from '../store/pagination/pagination-actions';
 import { rootReducer } from '../store/root-reducer';
-import { addItemToCart } from '../store/cart/cart-actions';
+import { addItemToCart, decreaseItemInCart, deleteItemFromCart, increaseItemInCart } from '../store/cart/cart-actions';
 
 export type State = ReturnType<typeof rootReducer>;
 
@@ -44,7 +44,10 @@ export type ActionType =
   | ReturnType<typeof setPaginationMaxPage>
   | ReturnType<typeof setNewReviewStatus>
   | ReturnType<typeof addReviewToCurrentGuitar>
-  | ReturnType<typeof addItemToCart>;
+  | ReturnType<typeof addItemToCart>
+  | ReturnType<typeof deleteItemFromCart>
+  | ReturnType<typeof increaseItemInCart>
+  | ReturnType<typeof decreaseItemInCart>;
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<
   R,

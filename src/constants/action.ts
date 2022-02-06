@@ -18,6 +18,9 @@ export const Action = {
   SetNewReviewStatus: 'newReview/setStatus',
   AddReviewToCurrentGuitar: 'currentGuitar/addReview',
   AddItemToCart: 'cart/addItem',
+  DeleteItemFromCart: 'cart/deleteItem',
+  IncreaseItemInCart: 'cart/increaseItem',
+  DecreaseItemInCart: 'cart/decreaseItem',
 } as const;
 
 export const UNKNOWN_ACTION = {
