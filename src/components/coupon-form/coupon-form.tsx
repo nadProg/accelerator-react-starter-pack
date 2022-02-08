@@ -1,7 +1,6 @@
 import {
   ChangeEventHandler,
   FormEventHandler,
-  useEffect,
   useState
 } from 'react';
 import classNames from 'classnames';
@@ -16,8 +15,7 @@ import {
   isFetchLoading,
   isFetchSuccess
 } from '../../utils/fetched-data';
-import { setCoupon, setDiscountStatus } from '../../store/coupon/coupon-actions';
-import { FetchStatus } from '../../constants/common';
+import { setCoupon } from '../../store/coupon/coupon-actions';
 import { Coupon, CouponPost } from '../../types/coupon';
 import { postCoupon } from '../../store/coupon/coupon-api-actions';
 import { sanitizeTextInput } from '../../utils/coupon';
@@ -42,13 +40,6 @@ function CouponForm({ className }: PropsWithClassName) {
   const dispatch = useDispatch();
 
   const couponStatus = useSelector(getDiscountStatus);
-
-  useEffect(
-    () => () => {
-      dispatch(setDiscountStatus(FetchStatus.Idle));
-    },
-    [],
-  );
 
   const handleCouponChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
     setCurrentCoupon(sanitizeTextInput(evt.target.value));
