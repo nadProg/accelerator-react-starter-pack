@@ -8,7 +8,7 @@ import { APIRoute } from '../../constants/endpoints';
 import { FetchStatus } from '../../constants/common';
 import thunk from 'redux-thunk';
 import { createMockState } from '../../mock/state';
-import { CouponGet, CouponPost } from '../../types/coupon';
+import { Discount, CouponPost } from '../../types/coupon';
 import { datatype, lorem } from 'faker';
 import { postCoupon } from './coupon-api-actions';
 import { setDiscount, setDiscountStatus } from './coupon-actions';
@@ -27,7 +27,7 @@ const mockCouponPost: CouponPost = {
   coupon: lorem.word(),
 };
 
-const mockCouponGet: CouponGet = datatype.number();
+const mockCouponGet: Discount = datatype.number();
 
 describe('Api-actions: Coupon', () => {
   it('should handle succeed post coupon', async () => {

@@ -18,11 +18,11 @@ import {
 } from '../../utils/fetched-data';
 import { setCoupon, setDiscountStatus } from '../../store/coupon/coupon-actions';
 import { FetchStatus } from '../../constants/common';
-import { CouponPost } from '../../types/coupon';
+import { Coupon, CouponPost } from '../../types/coupon';
 import { postCoupon } from '../../store/coupon/coupon-api-actions';
 import { sanitizeTextInput } from '../../utils/coupon';
 
-function Coupon({ className }: PropsWithClassName) {
+function CouponForm({ className }: PropsWithClassName) {
   const handleSubmit: FormEventHandler<HTMLFormElement> = (evt) => {
     evt.preventDefault();
 
@@ -37,7 +37,7 @@ function Coupon({ className }: PropsWithClassName) {
   const couponInitialValue =  useSelector(getCoupon);
 
   const [currentCoupon, setCurrentCoupon] =
-    useState<CouponPost['coupon']>(couponInitialValue);
+    useState<Coupon>(couponInitialValue);
 
   const dispatch = useDispatch();
 
@@ -98,4 +98,4 @@ function Coupon({ className }: PropsWithClassName) {
   );
 }
 
-export default Coupon;
+export default CouponForm;

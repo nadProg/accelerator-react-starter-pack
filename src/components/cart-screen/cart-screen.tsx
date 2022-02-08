@@ -6,7 +6,7 @@ import { getCartItems } from '../../store/cart/cart-selectors';
 import { Guitar } from '../../types/guitar';
 import CartItemCard from '../cart-item-card/cart-item-card';
 import CartTotalInfo from '../cart-total-info/cart-total-info';
-import Coupon from '../coupon/coupon';
+import CouponForm from '../coupon-form/coupon-form';
 import ModalDeleteCartItem from '../modal-delete-cart-item/modal-delete-cart-item';
 
 function CartScreen(): JSX.Element {
@@ -52,7 +52,7 @@ function CartScreen(): JSX.Element {
           />
         ))}
         <div className="cart__footer">
-          <Coupon className="cart__coupon" />
+          <CouponForm className="cart__coupon" />
           <CartTotalInfo />
         </div>
       </div>

@@ -9,14 +9,14 @@ import { FetchStatus } from '../../constants/common';
 import { createMockState } from '../../mock/state';
 import { setCoupon } from '../../store/coupon/coupon-actions';
 import { State } from '../../types/store';
-import Coupon from './coupon';
+import CouponForm from './coupon-form';
 
 const mockState = createMockState();
 let mockStore = configureMockStore<State>()(mockState);
 
 const mockHistory = createMemoryHistory();
 
-describe('Component: Coupon', () => {
+describe('Component: CouponForm', () => {
   beforeEach(() => {
     mockStore = configureMockStore<State>()(mockState);
   });
@@ -24,7 +24,7 @@ describe('Component: Coupon', () => {
     render(
       <Router history={mockHistory}>
         <Provider store={mockStore}>
-          <Coupon />
+          <CouponForm />
         </Provider>
       </Router>);
 
@@ -38,7 +38,7 @@ describe('Component: Coupon', () => {
     render(
       <Router history={mockHistory}>
         <Provider store={mockStore}>
-          <Coupon />
+          <CouponForm />
         </Provider>
       </Router>);
 
@@ -67,7 +67,7 @@ describe('Component: Coupon', () => {
     render(
       <Router history={mockHistory}>
         <Provider store={mockStore}>
-          <Coupon />
+          <CouponForm />
         </Provider>
       </Router>);
 
@@ -89,7 +89,7 @@ describe('Component: Coupon', () => {
     render(
       <Router history={mockHistory}>
         <Provider store={mockStore}>
-          <Coupon />
+          <CouponForm />
         </Provider>
       </Router>);
 

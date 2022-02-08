@@ -1,10 +1,10 @@
 import { FetchStatus } from '../../constants/common';
 import { FetchedData } from '../../types/common';
-import { CouponGet, CouponPost } from '../../types/coupon';
+import { Discount, Coupon } from '../../types/coupon';
 
 type CouponState = {
-  coupon: CouponPost['coupon'],
-  discount: FetchedData<CouponGet>
+  coupon: Coupon,
+  discount: FetchedData<Discount>
 }
 
 export const couponInitialState: CouponState = {
