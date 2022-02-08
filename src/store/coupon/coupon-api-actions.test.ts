@@ -8,10 +8,10 @@ import { APIRoute } from '../../constants/endpoints';
 import { FetchStatus } from '../../constants/common';
 import thunk from 'redux-thunk';
 import { createMockState } from '../../mock/state';
-import { createMockReview } from '../../mock/review';
-import { postReview } from './reviews-api-actions';
-import { addReviewToCurrentGuitar } from '../guitars/guitars-actions';
-import { setNewReviewStatus } from './reviews-actions';
+import { CouponGet, CouponPost } from '../../types/coupon';
+import { datatype, lorem } from 'faker';
+import { postCoupon } from './coupon-api-actions';
+import { setDiscount, setDiscountStatus } from './coupon-actions';
 
 const api = createAPI();
 const mockAPI = new MockAdapter(api);
@@ -23,35 +23,40 @@ const createMockStore = configureMockStore<
   ThunkDispatch<State, typeof api, ActionType>
 >(middlewares);
 
-const mockReview = createMockReview();
+const mockCouponPost: CouponPost = {
+  coupon: lorem.word(),
+};
 
-describe('Api-actions: Reviews', () => {
-  it('should handle succeed post review', async () => {
+const mockCouponGet: CouponGet = datatype.number();
+
+describe('Api-actions: Coupon', () => {
+  it('should handle succeed post coupon', async () => {
     const mockState = createMockState();
     const store = createMockStore(mockState);
 
-    mockAPI.onPost(APIRoute.Reviews()).reply(200, mockReview);
+    mockAPI.onPost(APIRoute.Coupons()).reply(201, mockCouponGet);
 
-    await store.dispatch(postReview(mockReview));
+    await store.dispatch(postCoupon(mockCouponPost));
 
     expect(store.getActions()).toEqual([
-      setNewReviewStatus(FetchStatus.Loading),
-      addReviewToCurrentGuitar(mockReview),
-      setNewReviewStatus(FetchStatus.Succeeded),
+      setDiscountStatus(FetchStatus.Loading),
+      setDiscount(mockCouponGet),
+      setDiscountStatus(FetchStatus.Succeeded),
     ]);
   });
 
-  it('should handle failed post review', async () => {
+  it('should handle failed post coupon', async () => {
     const mockState = createMockState();
     const store = createMockStore(mockState);
 
-    mockAPI.onPost(APIRoute.Reviews()).reply(400);
+    mockAPI.onPost(APIRoute.Coupons()).reply(400);
 
-    await store.dispatch(postReview(mockReview));
+    await store.dispatch(postCoupon(mockCouponPost));
 
     expect(store.getActions()).toEqual([
-      setNewReviewStatus(FetchStatus.Loading),
-      setNewReviewStatus(FetchStatus.Failed),
+      setDiscountStatus(FetchStatus.Loading),
+      setDiscount(null),
+      setDiscountStatus(FetchStatus.Failed),
     ]);
   });
 });

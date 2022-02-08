@@ -72,6 +72,7 @@ function Coupon({ className }: PropsWithClassName) {
             name="coupon"
             value={currentCoupon}
             onChange={handleCouponChange}
+            data-testid="coupon-input"
           />
           {isCouponSuccess && (
             <p className="form-input__message form-input__message--success">
@@ -88,6 +89,7 @@ function Coupon({ className }: PropsWithClassName) {
         <button
           className="button button--big coupon__button"
           disabled={isSendingRequest}
+          data-testid="coupon-submit"
         >
           Применить
         </button>
