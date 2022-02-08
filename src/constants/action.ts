@@ -22,6 +22,9 @@ export const Action = {
   IncreaseItemInCart: 'cart/increaseItem',
   DecreaseItemInCart: 'cart/decreaseItem',
   SetCartItemQuantity: 'cart/setItemQuantity',
+  SetDiscount: 'discount/setData',
+  SetDiscountStatus: 'discount/setStatus',
+  SetCoupon: 'coupon/setValue',
 } as const;
 
 export const UNKNOWN_ACTION = {

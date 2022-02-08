@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
-import { getTotalPrice } from '../../store/cart/cart-selectors';
+import { getDiscountPrice, getTotalPrice, getTotalPriceWithDiscount } from '../../store/cart/cart-selectors';
 import { formatPrice } from '../../utils/guitar';
 
 function CartTotalInfo(): JSX.Element {
   const totalPrice = useSelector(getTotalPrice);
-  const discount = 0;
-  const totalPriceWithDiscount = totalPrice - discount;
+  const discount = useSelector(getDiscountPrice);
+  const totalPriceWithDiscount = useSelector(getTotalPriceWithDiscount);
 
   const withDiscount = discount > 0;
 

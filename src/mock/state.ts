@@ -5,6 +5,7 @@ import { paginationInitialState } from '../store/pagination/pagination-initial-s
 import { sortInitialState } from '../store/sort/sort-initial-state';
 import { State } from '../types/store';
 import { cartInitialState } from '../store/cart/cart-initial-state';
+import { couponInitialState } from '../store/coupon/coupon-initial-state';
 
 export const createMockState = (): State => ({
   guitars: {
@@ -24,5 +25,8 @@ export const createMockState = (): State => ({
   },
   cart: {
     ...cartInitialState,
+  },
+  coupon: {
+    ...couponInitialState,
   },
 });

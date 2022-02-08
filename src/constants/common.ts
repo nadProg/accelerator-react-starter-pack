@@ -25,3 +25,5 @@ export const FetchStatus = {
 export const DEBOUNCE_TIME = 300;
 
 export const RUSSIAN_LOCALE = 'ru-RU';
+
+export const ONE_HUNDRED_PERCENT = 100;

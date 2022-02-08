@@ -2,6 +2,7 @@ export const APIRoute = {
   Guitars: () => '/guitars',
   Guitar: (id: number | string) => `/guitars/${id}`,
   Reviews: () => '/comments',
+  Coupons: () => '/coupons',
 } as const;
 
 export const AppRoute = {

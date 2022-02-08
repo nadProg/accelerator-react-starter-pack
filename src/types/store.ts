@@ -30,6 +30,7 @@ import {
   increaseItemInCart,
   setCartItemQuantity
 } from '../store/cart/cart-actions';
+import { setCoupon, setDiscount, setDiscountStatus } from '../store/coupon/coupon-actions';
 
 export type State = ReturnType<typeof rootReducer>;
 
@@ -54,7 +55,10 @@ export type ActionType =
   | ReturnType<typeof deleteItemFromCart>
   | ReturnType<typeof increaseItemInCart>
   | ReturnType<typeof decreaseItemInCart>
-  | ReturnType<typeof setCartItemQuantity>;
+  | ReturnType<typeof setCartItemQuantity>
+  | ReturnType<typeof setCoupon>
+  | ReturnType<typeof setDiscount>
+  | ReturnType<typeof setDiscountStatus>;
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<
   R,
