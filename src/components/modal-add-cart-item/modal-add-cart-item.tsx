@@ -14,7 +14,7 @@ import { Product } from '../../types/cart';
 import { ModalProps } from '../../types/props';
 import ModalContainer from '../modal-container/modal-container';
 
-type ModalAddCartProps = ModalProps & {
+type ModalAddCartItemProps = ModalProps & {
   product: Product | null;
 };
 
@@ -22,7 +22,7 @@ function ModalAddCartItem({
   product,
   isActive,
   onClose,
-}: ModalAddCartProps): JSX.Element {
+}: ModalAddCartItemProps): JSX.Element {
   const [isAddCartOpen, setIsAddCartOpen] = useState(true);
   const [isAddCartSuccessOpen, setIsAddCartSuccessOpen] = useState(false);
 

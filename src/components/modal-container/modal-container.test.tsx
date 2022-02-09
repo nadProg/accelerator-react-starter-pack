@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { asyncDelay } from '../../utils/common';
 import ModalContainer from './modal-container';
 
-describe('Component: ModalSuccessReview', () => {
+describe('Component: ModalContainer', () => {
   it('should render without errors in inactive mode', () => {
     const mockOnClose = jest.fn();
 

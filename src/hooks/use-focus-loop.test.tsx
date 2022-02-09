@@ -3,7 +3,7 @@ import { useFocusLoop } from './use-focus-loop';
 import { renderHook } from '@testing-library/react-hooks';
 import { render } from '@testing-library/react';
 
-describe('Hook: useFocus', () => {
+describe('Hook: useFocusLoop', () => {
   it('should return correct result', () => {
     const {
       result: { current: ref },

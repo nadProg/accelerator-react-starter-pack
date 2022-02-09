@@ -18,7 +18,7 @@ import {
 import { CartItem } from '../../types/cart';
 import { formatPrice } from '../../utils/guitar';
 
-type CartItemProps = {
+type CartItemCardProps = {
   item: CartItem;
   onDeleteCartItem: () => void;
 };
@@ -26,7 +26,7 @@ type CartItemProps = {
 function CartItemCard({
   item: { product, quantity },
   onDeleteCartItem,
-}: CartItemProps): JSX.Element {
+}: CartItemCardProps): JSX.Element {
   const inputQuantityRef = useRef<HTMLInputElement>(null);
 
   const dispatch = useDispatch();

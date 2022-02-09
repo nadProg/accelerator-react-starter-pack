@@ -40,7 +40,7 @@ mockStore.dispatch = jest.fn();
 
 const mockOnDeleteCartItem = jest.fn();
 
-describe('Component: CartItem', () => {
+describe('Component: CartItemCard', () => {
   it('should render correctly', () => {
     render(
       <Router history={mockHistory}>
